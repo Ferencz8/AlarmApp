@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.AddAlarmActivity"
+    tools:showIn="@layout/activity_add_alarm"
+    android:background="@drawable/ic_background">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/HourTextID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:lineHeight="70sp"
+            android:text="07:58"
+            android:textColor="#ffffff"
+            android:textSize="60sp"
+            app:layout_constraintBottom_toBottomOf="@+id/SetHourID"
+            app:layout_constraintEnd_toEndOf="@+id/SetHourID"
+            app:layout_constraintStart_toStartOf="@+id/SetHourID"
+            app:layout_constraintTop_toTopOf="@+id/SetHourID" />
+
+        <ImageView
+            android:id="@+id/SetHourID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_ellipse" />
+
+        <TextView
+            android:id="@+id/RepeatID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="338dp"
+            android:layout_marginBottom="16dp"
+            android:lineHeight="19sp"
+            android:text="Repeat"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/daysRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/daysRecyclerView"
+            android:layout_width="333dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/RingtoneText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/RepeatID"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatID">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/RingtoneText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="220dp"
+            android:lineHeight="19sp"
+            android:text="Ringtone"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/daysRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/daysRecyclerView" />
+
+        <ImageView
+            android:id="@+id/saveAlarmAddImageView"
+            android:layout_width="136dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/snoozeTextView"
+            app:srcCompat="@drawable/ic_savebutton" />
+
+        <TextView
+            android:id="@+id/vibrateTextView"
+            android:layout_width="64dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="20dp"
+            android:text="Vibrate"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="@+id/RingtoneText"
+            app:layout_constraintTop_toBottomOf="@+id/RingtoneText" />
+
+        <Switch
+            android:id="@+id/vibrateSwitchId"
+            android:layout_width="57dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="@+id/selectedRingtoneTextView"
+            app:layout_constraintTop_toBottomOf="@+id/selectedRingtoneTextView" />
+
+        <TextView
+            android:id="@+id/volumeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Volume"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/vibrateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/vibrateTextView" />
+
+        <SeekBar
+            android:id="@+id/volumeSeekBarId"
+            android:layout_width="97dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="@+id/vibrateSwitchId"
+            app:layout_constraintTop_toBottomOf="@+id/vibrateSwitchId" />
+
+        <TextView
+            android:id="@+id/snoozeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Snooze"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="@+id/volumeTextView"
+            app:layout_constraintTop_toBottomOf="@+id/volumeTextView" />
+
+        <Spinner
+            android:id="@+id/snoozeSpinnerId"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/volumeSeekBarId"
+            app:layout_constraintTop_toBottomOf="@+id/volumeSeekBarId" />
+
+        <TextView
+            android:id="@+id/selectedRingtoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Default"
+            android:textColor="#ffffff"
+            app:layout_constraintEnd_toEndOf="@+id/daysRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/daysRecyclerView" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="55dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="8dp"
+            android:editable="true"
+            android:gravity="center"
+            android:text="Tilte"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toTopOf="@+id/RepeatID"
+            app:layout_constraintEnd_toEndOf="@+id/SetHourID"
+            app:layout_constraintStart_toStartOf="@+id/SetHourID"
+            app:layout_constraintTop_toBottomOf="@+id/SetHourID" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>
