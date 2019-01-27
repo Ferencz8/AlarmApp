@@ -1,6 +1,5 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui.AddEditAlarm;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -21,17 +21,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import countingsheep.alarm.AlarmApplication;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
-import countingsheep.alarm.core.datainterfaces.AlarmRepository;
+import countingsheep.alarm.ui.AlarmLaunch.AlarmLaunchHandler;
+import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.core.domain.AlarmModel;
-import countingsheep.alarm.dataaccess.AlarmDatabase;
-import countingsheep.alarm.dataaccess.entities.Alarm;
-import countingsheep.alarm.dataaccess.repositories.AlarmRepositoryImpl;
-import countingsheep.alarm.internaldi.components.ActivityComponent;
-import countingsheep.alarm.internaldi.modules.ActivityModule;
 
 public class AddAlarmActivity extends AppCompatActivity {
 
@@ -43,11 +38,16 @@ public class AddAlarmActivity extends AppCompatActivity {
     private ImageView saveImageView;
     private Spinner snoozeSpinner;
     private Integer snoozes[] = {1, 5, 10, 15, 30};
+    private EditText hourView;
+    private EditText minView;
+    private EditText titleView;
+    private boolean isEdit = false;
 
     @Inject
     AlarmRepository alarmRepository;
 
-
+    @Inject
+    AlarmLaunchHandler alarmLaunchHandler;
 
     private int seebBarProgress;
 
@@ -72,14 +72,26 @@ public class AddAlarmActivity extends AppCompatActivity {
         // Scroll RecyclerView a little to make later scroll take effect.
         recyclerView.scrollToPosition(1);
 
-        //AlarmDatabase alarmDatabase = Room.databaseBuilder(this, AlarmDatabase.class, "db_countingSheep").build();
-        //alarmRepository = new AlarmRepositoryImpl(alarmDatabase);
+        if(savedInstanceState!=null){
+            AlarmModel alarm = (AlarmModel) savedInstanceState.getSerializable("alarm");
+            if(alarm!=null){
+                isEdit = true;
+                hourView.setText(alarm.getHours());
+                minView.setText(alarm.getMinutes());
+                titleView.setText(alarm.getTitle());
+                vibrateSwitch.setChecked(alarm.isVobrateOn());
+                volumeSeekBar.setProgress(alarm.getVolume());
+            }
+        }
     }
 
 
 
     private void bindViews() {
 
+        hourView = findViewById(R.id.hourEditTextId);
+        minView = findViewById(R.id.minEditTextId);
+        titleView = findViewById(R.id.titleEditTextId);
         vibrateSwitch = (Switch)findViewById(R.id.vibrateSwitchId);
         volumeSeekBar = findViewById(R.id.volumeSeekBarId);
         volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -119,17 +131,32 @@ public class AddAlarmActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(AddAlarmActivity.class.getSimpleName(), String.valueOf( seebBarProgress));
 
+                //TODO needs validation
                 AlarmModel alarm = new AlarmModel();
-                alarm.volume = seebBarProgress;
-                alarm.minutes=15;
-                alarm.seconds=22;
-                alarm.isTurnedOn = true;
-                alarm.title = "Test";
+                alarm.setVolume(seebBarProgress);
+                alarm.setHours(Integer.parseInt(hourView.getText().toString()));
+                alarm.setMinutes(Integer.parseInt(minView.getText().toString()));
+                alarm.setTurnedOn(true);
+                alarm.setTitle(titleView.getText().toString());
 
-                Calendar calendar = Calendar.getInstance();
                 //SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
                 //alarm.setCreatedAt(calendar.getTime());
-                alarmRepository.insert(alarm);
+
+                if(isEdit){
+                    alarmRepository.update(alarm);
+                }
+                else{
+                    alarmRepository.insert(alarm);
+                }
+
+                //This is for testing
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, alarm.getHours());
+                calendar.set(Calendar.MINUTE, alarm.getMinutes());
+
+
+                alarmLaunchHandler.registerAlarm(calendar.getTimeInMillis());
 
                 Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
                 startActivity(intent);

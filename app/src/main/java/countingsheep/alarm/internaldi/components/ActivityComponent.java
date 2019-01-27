@@ -1,19 +1,14 @@
 package countingsheep.alarm.internaldi.components;
 
-import android.app.Activity;
-
-import com.facebook.core.Core;
-
 import javax.inject.Singleton;
 
 import countingsheep.alarm.MainActivity;
-import countingsheep.alarm.activities.AddAlarmActivity;
-import countingsheep.alarm.activities.AlarmListActivity;
-import countingsheep.alarm.activities.LoginActivity;
+import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.AlarmList.AlarmListActivity;
+import countingsheep.alarm.ui.LoginActivity;
 import countingsheep.alarm.internaldi.modules.ActivityModule;
 import countingsheep.alarm.internaldi.modules.CoreModule;
 import countingsheep.alarm.internaldi.modules.DataAccessModule;
-import dagger.Component;
 import dagger.Subcomponent;
 
 

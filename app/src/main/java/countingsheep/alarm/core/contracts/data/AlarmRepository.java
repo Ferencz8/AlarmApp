@@ -1,4 +1,4 @@
-package countingsheep.alarm.core.datainterfaces;
+package countingsheep.alarm.core.contracts.data;
 
 import java.util.List;
 

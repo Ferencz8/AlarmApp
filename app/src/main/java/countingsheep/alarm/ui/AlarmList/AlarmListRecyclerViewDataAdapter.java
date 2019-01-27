@@ -1,5 +1,8 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui.AlarmList;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +11,17 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import countingsheep.alarm.R;
+import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.core.domain.AlarmModel;
 
 public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmListRecyclerViewHolder> {
 
     private List<AlarmModel> viewItemList;
+    private Activity activity;
 
-    public AlarmListRecyclerViewDataAdapter(List<AlarmModel> viewItemList) {
+    public AlarmListRecyclerViewDataAdapter(Activity activity, List<AlarmModel> viewItemList) {
         this.viewItemList = viewItemList;
+        this.activity = activity;
     }
 
     @Override
@@ -36,17 +42,17 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     public void onBindViewHolder(final AlarmListRecyclerViewHolder holder, int position) {
         if(viewItemList!=null) {
             // Get car item dto in list.
-            AlarmModel viewItem = viewItemList.get(position);
+            final AlarmModel viewItem = viewItemList.get(position);
 
             if(viewItem != null) {
                 // Set car item title.
-                holder.getTitleView().setText(viewItem.title);
-                holder.getHourView().setText(viewItem.minutes + ":" + viewItem.seconds);
+                holder.getTitleView().setText(viewItem.getTitle());
+                holder.getHourView().setText(viewItem.getHours() + ":" + viewItem.getMinutes());
                 holder.getRepeatDaysView().setText("Default");
                 holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);
 
-                if (viewItem.isTurnedOn){
+                if (viewItem.isTurnedOn()){
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
                     holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
                 }
@@ -54,6 +60,21 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
                     holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
                 }
+
+                View.OnClickListener onClickListener = new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(activity, AddAlarmActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("alarm", viewItem);
+                        intent.putExtras(bundle);
+                        activity.startActivity(intent);
+                    }
+                };
+
+                holder.getOnBackgroundImageView().setOnClickListener(onClickListener);
+                holder.getOffBackgroundImageView().setOnClickListener(onClickListener);
 
                 holder.getOnOffImageView().setOnClickListener(new View.OnClickListener() {
                     @Override

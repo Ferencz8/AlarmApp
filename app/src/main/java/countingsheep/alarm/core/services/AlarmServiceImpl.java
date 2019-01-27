@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import countingsheep.alarm.core.domain.AlarmModel;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
-import countingsheep.alarm.core.datainterfaces.AlarmRepository;
+import countingsheep.alarm.core.contracts.data.AlarmRepository;
 
 @Singleton
 public class AlarmServiceImpl implements AlarmService {
@@ -47,7 +47,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void switchOnOf(int alarmId, boolean value) {
         AlarmModel alarmModel = this.alarmRepository.get(alarmId);
-        alarmModel.isTurnedOn = value;
+        alarmModel.setTurnedOn(value);
         this.alarmRepository.update(alarmModel);
     }
 }

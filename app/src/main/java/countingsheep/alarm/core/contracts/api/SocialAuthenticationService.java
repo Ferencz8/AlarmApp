@@ -1,4 +1,4 @@
-package countingsheep.alarm.core.datainterfaces;
+package countingsheep.alarm.core.contracts.api;
 
 import android.content.Intent;
 

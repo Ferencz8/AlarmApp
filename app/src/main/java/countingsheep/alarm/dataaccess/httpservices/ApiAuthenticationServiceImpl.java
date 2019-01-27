@@ -1,7 +1,6 @@
 package countingsheep.alarm.dataaccess.httpservices;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -17,7 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.domain.User;
-import countingsheep.alarm.core.datainterfaces.ApiAuthenticationService;
+import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
 import countingsheep.alarm.util.HttpRequester;
 
 @Singleton

@@ -1,18 +1,76 @@
 package countingsheep.alarm.core.domain;
 
-public class AlarmModel {
+import java.io.Serializable;
 
-    public int id;
+public class AlarmModel implements Serializable {
 
-    public int minutes;
+    private int id;
 
-    public int seconds;
+    private int hours;
 
-    public boolean isTurnedOn;
+    private int minutes;
 
-    public String title;
+    private boolean isTurnedOn;
 
-    public boolean isVobrateOn;
+    private String title;
 
-    public int volume;
+    private boolean isVobrateOn;
+
+    private int volume;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    public boolean isTurnedOn() {
+        return isTurnedOn;
+    }
+
+    public void setTurnedOn(boolean turnedOn) {
+        isTurnedOn = turnedOn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isVobrateOn() {
+        return isVobrateOn;
+    }
+
+    public void setVobrateOn(boolean vobrateOn) {
+        isVobrateOn = vobrateOn;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
 }

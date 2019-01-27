@@ -17,13 +17,13 @@ public class AlarmMapper {
 
     public AlarmModel mapToAlarmModel(Alarm entity) {
         AlarmModel alarm = new AlarmModel();
-        alarm.id = entity.getId();
-        alarm.isTurnedOn = entity.isTurnedOn();
-        alarm.isVobrateOn = entity.isVobrateOn();
-        alarm.minutes = entity.getMinutes();
-        alarm.seconds = entity.getSeconds();
-        alarm.title = entity.getTitle();
-        alarm.volume = entity.getVolume();
+        alarm.setId(entity.getId());
+        alarm.setTurnedOn(entity.isTurnedOn());
+        alarm.setVobrateOn(entity.isVobrateOn());
+        alarm.setHours(entity.getHours());
+        alarm.setMinutes(entity.getMinutes());
+        alarm.setTitle(entity.getTitle());
+        alarm.setVolume(entity.getVolume());
 
         return alarm;
     }
@@ -40,13 +40,13 @@ public class AlarmMapper {
 
     public Alarm mapToAlarmDb(AlarmModel model) {
         Alarm alarm = new Alarm();
-        alarm.setTitle(model.title);
-        alarm.setId(model.id);
-        alarm.setTurnedOn(model.isTurnedOn);
-        alarm.setVobrateOn(model.isVobrateOn);
-        alarm.setMinutes(model.minutes);
-        alarm.setSeconds(model.seconds);
-        alarm.setVolume(model.volume);
+        alarm.setTitle(model.getTitle());
+        alarm.setId(model.getId());
+        alarm.setTurnedOn(model.isTurnedOn());
+        alarm.setVobrateOn(model.isVobrateOn());
+        alarm.setMinutes(model.getMinutes());
+        alarm.setHours(model.getHours());
+        alarm.setVolume(model.getVolume());
 
         return alarm;
     }

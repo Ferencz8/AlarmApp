@@ -1,4 +1,4 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui.AddEditAlarm;
 
 public class AlarmDayRecyclerViewItem {
 

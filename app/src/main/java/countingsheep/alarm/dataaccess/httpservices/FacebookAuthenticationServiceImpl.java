@@ -26,8 +26,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.domain.User;
-import countingsheep.alarm.core.datainterfaces.SocialAuthenticationService;
-import countingsheep.alarm.core.datainterfaces.OnSocialLoginResult;
+import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
+import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 
 @Singleton
 public class FacebookAuthenticationServiceImpl implements SocialAuthenticationService {

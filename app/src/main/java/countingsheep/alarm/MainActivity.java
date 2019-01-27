@@ -14,10 +14,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import countingsheep.alarm.R;
-import countingsheep.alarm.activities.AddAlarmActivity;
-import countingsheep.alarm.activities.AlarmListRecyclerViewDataAdapter;
-import countingsheep.alarm.activities.LoginActivity;
+import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.AlarmList.AlarmListRecyclerViewDataAdapter;
 import countingsheep.alarm.core.domain.AlarmModel;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         }.execute();
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmListRecyclerViewDataAdapter(alarms);
+        adapter = new AlarmListRecyclerViewDataAdapter(this, alarms);
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 

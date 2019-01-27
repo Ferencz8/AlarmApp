@@ -1,6 +1,6 @@
 package countingsheep.alarm.core.services.interfaces;
 
-import countingsheep.alarm.core.datainterfaces.OnSocialLoginResult;
+import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 
 public interface AuthenticationService {
 

@@ -1,4 +1,4 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,23 +23,13 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;
 
-import countingsheep.alarm.AlarmApplication;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
-import countingsheep.alarm.core.datainterfaces.ApiAuthenticationService;
-import countingsheep.alarm.core.datainterfaces.OnSocialLoginResult;
-import countingsheep.alarm.core.services.AuthenticationServiceImpl;
-import countingsheep.alarm.core.datainterfaces.SocialAuthenticationService;
-import countingsheep.alarm.dataaccess.httpservices.ApiAuthenticationServiceImpl;
-import countingsheep.alarm.dataaccess.httpservices.FacebookAuthenticationServiceImpl;
-import countingsheep.alarm.internaldi.components.ActivityComponent;
-import countingsheep.alarm.internaldi.modules.ActivityModule;
-import countingsheep.alarm.internaldi.modules.CoreModule;
-import countingsheep.alarm.internaldi.modules.DataAccessModule;
-import countingsheep.alarm.internaldi.modules.DatabaseModule;
+import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
+import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,9 +1,9 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui.AlarmList;
 
 public class AlarmListRecyclerViewItem {
 
     private String title;
-    private String hour;
+    private String time;
     private String repeatDays;
     private int onOffimageResourceId;
     private int offBackgroundResourceId;
@@ -16,12 +16,12 @@ public class AlarmListRecyclerViewItem {
         this.offBackgroundResourceId = offBackgroundResourceId;
     }
 
-    public String getHour() {
-        return hour;
+    public String getTime() {
+        return time;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getRepeatDays() {

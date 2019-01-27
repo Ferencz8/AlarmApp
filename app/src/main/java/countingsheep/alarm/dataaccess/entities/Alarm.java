@@ -26,7 +26,7 @@ public class Alarm implements Serializable {
 
     private int minutes;
 
-    private int seconds;
+    private int hours;
 
     private boolean isTurnedOn;
 
@@ -68,12 +68,12 @@ public class Alarm implements Serializable {
         this.minutes = minutes;
     }
 
-    public int getSeconds() {
-        return seconds;
+    public int getHours() {
+        return hours;
     }
 
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+    public void setHours(int hours) {
+        this.hours = hours;
     }
 
     public boolean isTurnedOn() {

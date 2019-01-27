@@ -1,4 +1,4 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui.AlarmList;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +38,7 @@ public class AlarmListActivity extends AppCompatActivity
 
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmListRecyclerViewDataAdapter(alarms);
+        adapter = new AlarmListRecyclerViewDataAdapter(this, alarms);
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 

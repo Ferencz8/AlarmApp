@@ -2,7 +2,7 @@
 //
 //import javax.inject.Singleton;
 //
-//import countingsheep.alarm.activities.AddAlarmActivity;
+//import countingsheep.alarm.activities.AddEditAlarm.AddAlarmActivity;
 //import countingsheep.alarm.activities.LoginActivity;
 //import countingsheep.alarm.core.services.interfaces.AlarmService;
 //import countingsheep.alarm.core.services.interfaces.AuthenticationService;

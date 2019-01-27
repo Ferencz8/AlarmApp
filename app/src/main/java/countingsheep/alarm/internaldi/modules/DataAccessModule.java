@@ -1,16 +1,12 @@
 package countingsheep.alarm.internaldi.modules;
 
-import android.app.Activity;
-
 import javax.inject.Singleton;
 
-import countingsheep.alarm.core.datainterfaces.AlarmRepository;
-import countingsheep.alarm.core.datainterfaces.ApiAuthenticationService;
-import countingsheep.alarm.core.datainterfaces.SocialAuthenticationService;
-import countingsheep.alarm.dataaccess.AlarmDatabase;
+import countingsheep.alarm.core.contracts.data.AlarmRepository;
+import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
+import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.dataaccess.httpservices.ApiAuthenticationServiceImpl;
 import countingsheep.alarm.dataaccess.httpservices.FacebookAuthenticationServiceImpl;
-import countingsheep.alarm.dataaccess.mappers.AlarmMapper;
 import countingsheep.alarm.dataaccess.repositories.AlarmRepositoryImpl;
 import dagger.Module;
 import dagger.Provides;

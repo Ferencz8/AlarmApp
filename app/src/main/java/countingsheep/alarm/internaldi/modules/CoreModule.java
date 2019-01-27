@@ -1,11 +1,7 @@
 package countingsheep.alarm.internaldi.modules;
 
-import android.app.Activity;
-
 import javax.inject.Singleton;
 
-import countingsheep.alarm.core.datainterfaces.ApiAuthenticationService;
-import countingsheep.alarm.core.datainterfaces.SocialAuthenticationService;
 import countingsheep.alarm.core.services.AlarmServiceImpl;
 import countingsheep.alarm.core.services.AuthenticationServiceImpl;
 import countingsheep.alarm.core.services.interfaces.AlarmService;

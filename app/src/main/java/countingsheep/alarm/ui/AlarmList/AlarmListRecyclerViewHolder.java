@@ -1,11 +1,9 @@
-package countingsheep.alarm.activities;
+package countingsheep.alarm.ui.AlarmList;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import countingsheep.alarm.R;
 
@@ -16,7 +14,7 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
     private ImageView offBackgroundImageView = null;
     private ImageView onBackgroundImageView = null;
     private TextView repeatDaysView = null;
-    private TextView hourView = null;
+    private TextView timeView = null;
 
     private boolean isClicked = false;
 
@@ -28,7 +26,7 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
             titleView = (TextView)itemView.findViewById(R.id.alarmListTitleId);
             onOffImageView = (ImageView) itemView.findViewById(R.id.alarmListOnOffImageId);
             repeatDaysView = (TextView)itemView.findViewById(R.id.alarmListTimeRepeatId);
-            hourView = (TextView)itemView.findViewById(R.id.alarmListTimeId);
+            timeView = (TextView)itemView.findViewById(R.id.alarmListTimeId);
             offBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOffBackgroundmageViewId);
             onBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOnBackgroundmageViewId);
         }
@@ -83,10 +81,10 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
     }
 
     public TextView getHourView() {
-        return hourView;
+        return timeView;
     }
 
     public void setHourView(TextView hourView) {
-        this.hourView = hourView;
+        this.timeView = hourView;
     }
 }

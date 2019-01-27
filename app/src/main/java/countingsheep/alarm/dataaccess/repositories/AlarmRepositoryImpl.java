@@ -8,9 +8,8 @@ import javax.inject.Singleton;
 
 import countingsheep.alarm.core.domain.AlarmModel;
 import countingsheep.alarm.dataaccess.AlarmDatabase;
-import countingsheep.alarm.dataaccess.dao.AlarmDao;
 import countingsheep.alarm.dataaccess.entities.Alarm;
-import countingsheep.alarm.core.datainterfaces.AlarmRepository;
+import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.dataaccess.mappers.AlarmMapper;
 
 @Singleton
