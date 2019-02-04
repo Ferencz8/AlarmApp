@@ -2,16 +2,19 @@ package countingsheep.alarm.core.contracts.data;
 
 import java.util.List;
 
-
-import countingsheep.alarm.core.domain.AlarmModel;
+import countingsheep.alarm.dataaccess.entities.Alarm;
 
 public interface AlarmRepository {
 
-    void insert(AlarmModel alarm);
+    void insert(Alarm alarm);
 
-    void update(AlarmModel alarm);
+    void update(Alarm alarm);
 
-    AlarmModel get(int id);
+    Alarm get(int id);
 
-    List<AlarmModel> get();
+    List<Alarm> get();
+
+    List<Alarm> getAllUnsyced();
+
+    void markAlarmsSynced(List<Integer> alarmIds);
 }

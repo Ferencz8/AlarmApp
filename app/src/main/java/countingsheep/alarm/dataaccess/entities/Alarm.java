@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,17 +18,21 @@ public class Alarm implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "created_at")
+    @Expose
+    @ColumnInfo(name = "dateCreated")
     @TypeConverters({TimestampConverter.class})
-    private Date createdAt;
+    private Date dateCreated;
 
-    @ColumnInfo(name = "modified_at")
+    @Expose
+    @ColumnInfo(name = "dateModified")
     @TypeConverters({TimestampConverter.class})
-    private Date modifiedAt;
+    private Date dateModified;
 
+    @Expose
     private int minutes;
 
-    private int hours;
+    @Expose
+    private int hour;
 
     private boolean isTurnedOn;
 
@@ -36,6 +42,16 @@ public class Alarm implements Serializable {
 
     private int volume;
 
+    private boolean isSynced;
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
+    }
+
     public int getId() {
         return id;
     }
@@ -44,20 +60,20 @@ public class Alarm implements Serializable {
         this.id = id;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public Date getModifiedAt() {
-        return modifiedAt;
+    public Date getDateModified() {
+        return dateModified;
     }
 
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
     }
 
     public int getMinutes() {
@@ -68,12 +84,12 @@ public class Alarm implements Serializable {
         this.minutes = minutes;
     }
 
-    public int getHours() {
-        return hours;
+    public int getHour() {
+        return hour;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
+    public void setHour(int hour) {
+        this.hour = hour;
     }
 
     public boolean isTurnedOn() {

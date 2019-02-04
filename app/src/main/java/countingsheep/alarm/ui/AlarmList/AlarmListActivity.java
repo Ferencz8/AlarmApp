@@ -11,13 +11,13 @@ import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
-import countingsheep.alarm.core.domain.AlarmModel;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import countingsheep.alarm.dataaccess.entities.Alarm;
 
 public class AlarmListActivity extends AppCompatActivity
 {
     AlarmListRecyclerViewDataAdapter adapter;
-    List<AlarmModel> alarms;
+    List<Alarm> alarms;
 
     @Inject
     AlarmService alarmService;
@@ -45,6 +45,6 @@ public class AlarmListActivity extends AppCompatActivity
         // Scroll RecyclerView a little to make later scroll take effect.
         recyclerView.scrollToPosition(1);
 
-        List<AlarmModel> alarms = alarmService.getAll();
+        List<Alarm> alarms = alarmService.getAll();
     }
 }

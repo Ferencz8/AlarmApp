@@ -2,9 +2,15 @@ package countingsheep.alarm;
 
 import android.app.Application;
 
+import java.util.concurrent.TimeUnit;
+
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import countingsheep.alarm.internaldi.components.ApplicationComponent;
 import countingsheep.alarm.internaldi.components.DaggerApplicationComponent;
 import countingsheep.alarm.internaldi.modules.ApplicationModule;
+import countingsheep.alarm.ui.background.SyncerWorker;
 
 public class AlarmApplication extends Application {
 
@@ -15,7 +21,17 @@ public class AlarmApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.initializeInjector();
-        //this.applicationComponent.inject(this);
+
+
+        startSyncWorkJob();
+    }
+
+    private void startSyncWorkJob(){
+        final PeriodicWorkRequest periodicSyncWorkRequest = new PeriodicWorkRequest
+                .Builder(SyncerWorker.class, 24, TimeUnit.HOURS)
+                .addTag("periodic_sync_work")
+                .build();
+        WorkManager.getInstance().enqueue(periodicSyncWorkRequest);
     }
 
     private void initializeInjector() {

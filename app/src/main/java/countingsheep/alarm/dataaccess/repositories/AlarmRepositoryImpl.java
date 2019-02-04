@@ -6,52 +6,57 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import countingsheep.alarm.core.domain.AlarmModel;
 import countingsheep.alarm.dataaccess.AlarmDatabase;
 import countingsheep.alarm.dataaccess.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
-import countingsheep.alarm.dataaccess.mappers.AlarmMapper;
 
 @Singleton
 public class AlarmRepositoryImpl implements AlarmRepository {
 
     private AlarmDatabase alarmDatabase;
-    private AlarmMapper alarmMapper;
 
     @Inject
-    public AlarmRepositoryImpl(AlarmDatabase alarmDatabase, AlarmMapper alarmMapper) {
+    public AlarmRepositoryImpl(AlarmDatabase alarmDatabase) {
         this.alarmDatabase = alarmDatabase;
-        this.alarmMapper = alarmMapper;
     }
 
 
     @Override
-    public void insert(final AlarmModel alarm){
+    public void insert(final Alarm alarm){
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                Alarm alarmDb = alarmMapper.mapToAlarmDb(alarm);
-                alarmDatabase.alarmDao().insert(alarmDb);
+                alarmDatabase.alarmDao().insert(alarm);
                 return null;
             }
         }.execute();
     }
 
     @Override
-    public void update(AlarmModel alarm) {
-        alarmDatabase.alarmDao().update(alarmMapper.mapToAlarmDb(alarm));
+    public void update(Alarm alarm) {
+        alarmDatabase.alarmDao().update(alarm);
     }
 
 
     @Override
-    public AlarmModel get(int id) {
-        return alarmMapper.mapToAlarmModel(alarmDatabase.alarmDao().getById(id));
+    public Alarm get(int id) {
+        return alarmDatabase.alarmDao().getById(id);
     }
 
 
     @Override
-    public List<AlarmModel> get() {
+    public List<Alarm> get() {
 
-        return alarmMapper.mapToAlarmModel(alarmDatabase.alarmDao().getAll());
+        return alarmDatabase.alarmDao().getAll();
+    }
+
+    @Override
+    public List<Alarm> getAllUnsyced() {
+        return alarmDatabase.alarmDao().getUnSynced();
+    }
+
+    @Override
+    public void markAlarmsSynced(List<Integer> alarmIds) {
+        alarmDatabase.alarmDao().markAlarmsSynced(alarmIds);
     }
 }

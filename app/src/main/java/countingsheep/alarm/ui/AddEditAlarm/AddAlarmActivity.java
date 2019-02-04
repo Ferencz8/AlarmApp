@@ -24,9 +24,9 @@ import javax.inject.Inject;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
+import countingsheep.alarm.dataaccess.entities.Alarm;
 import countingsheep.alarm.ui.AlarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
-import countingsheep.alarm.core.domain.AlarmModel;
 
 public class AddAlarmActivity extends AppCompatActivity {
 
@@ -73,10 +73,10 @@ public class AddAlarmActivity extends AppCompatActivity {
         recyclerView.scrollToPosition(1);
 
         if(savedInstanceState!=null){
-            AlarmModel alarm = (AlarmModel) savedInstanceState.getSerializable("alarm");
+            Alarm alarm = (Alarm) savedInstanceState.getSerializable("alarm");
             if(alarm!=null){
                 isEdit = true;
-                hourView.setText(alarm.getHours());
+                hourView.setText(alarm.getHour());
                 minView.setText(alarm.getMinutes());
                 titleView.setText(alarm.getTitle());
                 vibrateSwitch.setChecked(alarm.isVobrateOn());
@@ -132,15 +132,15 @@ public class AddAlarmActivity extends AppCompatActivity {
                 Log.d(AddAlarmActivity.class.getSimpleName(), String.valueOf( seebBarProgress));
 
                 //TODO needs validation
-                AlarmModel alarm = new AlarmModel();
+                Alarm alarm = new Alarm();
                 alarm.setVolume(seebBarProgress);
-                alarm.setHours(Integer.parseInt(hourView.getText().toString()));
+                alarm.setHour(Integer.parseInt(hourView.getText().toString()));
                 alarm.setMinutes(Integer.parseInt(minView.getText().toString()));
                 alarm.setTurnedOn(true);
                 alarm.setTitle(titleView.getText().toString());
 
                 //SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
-                //alarm.setCreatedAt(calendar.getTime());
+                //alarm.setDateCreated(calendar.getTime());
 
                 if(isEdit){
                     alarmRepository.update(alarm);
@@ -152,7 +152,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 //This is for testing
 
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, alarm.getHours());
+                calendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
                 calendar.set(Calendar.MINUTE, alarm.getMinutes());
 
 

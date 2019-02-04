@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import countingsheep.alarm.R;
+import countingsheep.alarm.dataaccess.entities.Alarm;
 import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
-import countingsheep.alarm.core.domain.AlarmModel;
 
 public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmListRecyclerViewHolder> {
 
-    private List<AlarmModel> viewItemList;
+    private List<Alarm> viewItemList;
     private Activity activity;
 
-    public AlarmListRecyclerViewDataAdapter(Activity activity, List<AlarmModel> viewItemList) {
+    public AlarmListRecyclerViewDataAdapter(Activity activity, List<Alarm> viewItemList) {
         this.viewItemList = viewItemList;
         this.activity = activity;
     }
@@ -42,12 +42,12 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     public void onBindViewHolder(final AlarmListRecyclerViewHolder holder, int position) {
         if(viewItemList!=null) {
             // Get car item dto in list.
-            final AlarmModel viewItem = viewItemList.get(position);
+            final Alarm viewItem = viewItemList.get(position);
 
             if(viewItem != null) {
                 // Set car item title.
                 holder.getTitleView().setText(viewItem.getTitle());
-                holder.getHourView().setText(viewItem.getHours() + ":" + viewItem.getMinutes());
+                holder.getHourView().setText(viewItem.getHour() + ":" + viewItem.getMinutes());
                 holder.getRepeatDaysView().setText("Default");
                 holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);

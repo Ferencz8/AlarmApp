@@ -2,19 +2,25 @@ package countingsheep.alarm.core.services.interfaces;
 
 import java.util.List;
 
-import countingsheep.alarm.core.domain.AlarmModel;
+import countingsheep.alarm.dataaccess.entities.Alarm;
 
 public interface AlarmService {
 
-    void add(AlarmModel alarm);
+    void add(Alarm alarm);
 
     boolean delete(int alarmId);
 
-    boolean update(AlarmModel alarm);
+    boolean update(Alarm alarm);
 
-    AlarmModel get(int alarmId);
+    Alarm get(int alarmId);
 
-    List<AlarmModel> getAll();
+    List<Alarm> getAll();
+
+    List<Alarm> getAllUnSynced();
+
+    boolean markSyncedRange(List<Alarm> alarms);
+
+    boolean markSynced(Alarm alarm);
 
     void switchOnOf(int alarmId, boolean value);
 }

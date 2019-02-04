@@ -8,25 +8,35 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import countingsheep.alarm.dataaccess.apiinterfaces.AlarmAPI;
+import countingsheep.alarm.dataaccess.apiinterfaces.UserWrappedEntity;
+import countingsheep.alarm.dataaccess.entities.Alarm;
 import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.AlarmList.AlarmListRecyclerViewDataAdapter;
-import countingsheep.alarm.core.domain.AlarmModel;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity
 {
     AlarmListRecyclerViewDataAdapter adapter;
-    List<AlarmModel> alarms;
+    List<Alarm> alarms;
     ImageView addAlarm;
 
     @Inject
     AlarmService alarmService;
+
+    @Inject
+    Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,4 +86,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+
 }
