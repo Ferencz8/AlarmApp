@@ -15,4 +15,8 @@ public interface MessageRepository {
     List<Message> get();
 
     Message getNotSeen();
+
+    List<Message> getAllUnsynced(boolean seenValue);
+
+    void markMessagesSynced(List<Integer> messageIds);
 }

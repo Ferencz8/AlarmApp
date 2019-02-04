@@ -30,6 +30,16 @@ public class Message implements Serializable {
     @TypeConverters({TimestampConverter.class})
     private Date seenAt;
 
+    private boolean isSynced;
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
+    }
+
     public int getId() {
         return id;
     }

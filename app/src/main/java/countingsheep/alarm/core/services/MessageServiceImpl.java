@@ -1,6 +1,8 @@
 package countingsheep.alarm.core.services;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,5 +49,29 @@ public class MessageServiceImpl  implements MessageService {
         Message message = this.messageRepository.get(messageId);
         message.setShared(true);
         this.messageRepository.update(message);
+    }
+
+    @Override
+    public List<Message> getAllUnsynced() {
+        //TODO:: implement everything using try catch + logging
+        return this.messageRepository.getAllUnsynced(true);
+    }
+
+    @Override
+    public boolean markSyncedRange(List<Message> unsyncedMessages) {
+        try {
+
+            List<Integer> messageIds = new ArrayList<>();
+            for (Message message: unsyncedMessages) {
+                messageIds.add(message.getId());
+            }
+
+            this.messageRepository.markMessagesSynced(messageIds);
+
+            return true;
+        } catch (Exception exception) {
+            //TODO:: add logging
+            return false;
+        }
     }
 }

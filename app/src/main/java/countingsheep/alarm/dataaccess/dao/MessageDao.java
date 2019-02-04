@@ -18,4 +18,10 @@ public interface MessageDao extends BaseDao<Message>{
 
     @Query("SELECT * FROM Message WHERE id =:messageId")
     Message getById(int messageId);
+
+    @Query("SELECT * FROM Message WHERE isSeen = 1 AND isSynced =:seenValue")
+    List<Message> getAllUnsynced(boolean seenValue);
+
+    @Query("UPDATE Alarm SET IsSynced = 1, DateModified = DATETIME('now') WHERE id IN (:messageIds)")
+    void markMessagesSynced(List<Integer> messageIds);
 }

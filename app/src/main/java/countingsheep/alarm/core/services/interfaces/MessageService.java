@@ -1,5 +1,7 @@
 package countingsheep.alarm.core.services.interfaces;
 
+import java.util.List;
+
 import countingsheep.alarm.dataaccess.entities.Message;
 
 public interface MessageService {
@@ -11,4 +13,8 @@ public interface MessageService {
     void markMessageLiked(int messageId);
 
     void markMessageShared(int messageId);
+
+    List<Message> getAllUnsynced();
+
+    boolean markSyncedRange(List<Message> unsyncedMessages);
 }

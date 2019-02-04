@@ -46,4 +46,14 @@ public class MessageRepositoryImpl implements MessageRepository {
     public Message getNotSeen() {
         return dao.getNotSeen();
     }
+
+    @Override
+    public List<Message> getAllUnsynced(boolean seenValue) {
+        return dao.getAllUnsynced(seenValue);
+    }
+
+    @Override
+    public void markMessagesSynced(List<Integer> messageIds) {
+        dao.markMessagesSynced(messageIds);
+    }
 }
