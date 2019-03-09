@@ -91,27 +91,29 @@ public class LoginActivity extends AppCompatActivity {
                 if (!checkBox.isChecked()) {
                     Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
                 } else {
-
-                    authenticationService.socialLogin(new OnSocialLoginResult() {
-
-                        @Override
-                        public void onSuccess(User user) {
-                            Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
-
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-
-                        @Override
-                        public void onCancel() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-                            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    //TODO: remove on production
+                   Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                   startActivity(intent);
+//                    authenticationService.socialLogin(new OnSocialLoginResult() {
+//
+//                        @Override
+//                        public void onSuccess(User user) {
+//                            Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
+//
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                        }
+//
+//                        @Override
+//                        public void onCancel() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception exception) {
+//                            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
+//                        }
+//                    });
                 }
             }
         });
