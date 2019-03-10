@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui.AlarmLaunch;
+package countingsheep.alarm.ui.alarmLaunch;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

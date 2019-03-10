@@ -1,7 +1,5 @@
 package countingsheep.alarm.core.services.interfaces;
 
-import countingsheep.alarm.dataaccess.entities.Monetization;
-
 public interface MonetizationService {
 
     //adds a new means of monetization

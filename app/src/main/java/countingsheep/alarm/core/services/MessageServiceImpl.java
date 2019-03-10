@@ -1,6 +1,5 @@
 package countingsheep.alarm.core.services;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import javax.inject.Singleton;
 
 import countingsheep.alarm.core.contracts.data.MessageRepository;
 import countingsheep.alarm.core.services.interfaces.MessageService;
-import countingsheep.alarm.dataaccess.entities.Message;
+import countingsheep.alarm.db.entities.Message;
 
 @Singleton
 public class MessageServiceImpl  implements MessageService {

@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui.AddEditAlarm;
+package countingsheep.alarm.ui.addEditAlarm;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

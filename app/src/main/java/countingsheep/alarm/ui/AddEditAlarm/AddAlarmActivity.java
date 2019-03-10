@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui.AddEditAlarm;
+package countingsheep.alarm.ui.addEditAlarm;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,8 +24,8 @@ import javax.inject.Inject;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
-import countingsheep.alarm.dataaccess.entities.Alarm;
-import countingsheep.alarm.ui.AlarmLaunch.AlarmLaunchHandler;
+import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 
 public class AddAlarmActivity extends AppCompatActivity {

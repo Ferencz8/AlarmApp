@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui.AlarmList;
+package countingsheep.alarm.ui.alarmList;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -2,7 +2,7 @@ package countingsheep.alarm.core.contracts.data;
 
 import java.util.List;
 
-import countingsheep.alarm.dataaccess.entities.AlarmReaction;
+import countingsheep.alarm.db.entities.AlarmReaction;
 
 public interface AlarmReactionRepository {
 

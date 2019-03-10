@@ -2,15 +2,13 @@ package countingsheep.alarm.core.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
-import countingsheep.alarm.dataaccess.entities.Alarm;
+import countingsheep.alarm.db.entities.Alarm;
 
 @Singleton
 public class AlarmServiceImpl implements AlarmService {

@@ -22,7 +22,7 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".ui.AddEditAlarm.AddAlarmActivity">
+        <activity android:name=".ui.addEditAlarm.AddAlarmActivity">
 
         </activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"
@@ -43,8 +43,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".ui.AlarmLaunch.AlarmReceiver" />
-        <activity android:name=".ui.AlarmLaunch.AlarmLaunchActivity">
+        <receiver android:name=".ui.alarmLaunch.AlarmReceiver" />
+        <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity">
 
         </activity>
 

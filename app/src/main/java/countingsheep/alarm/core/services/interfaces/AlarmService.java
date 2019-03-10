@@ -2,7 +2,7 @@ package countingsheep.alarm.core.services.interfaces;
 
 import java.util.List;
 
-import countingsheep.alarm.dataaccess.entities.Alarm;
+import countingsheep.alarm.db.entities.Alarm;
 
 public interface AlarmService {
 

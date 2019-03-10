@@ -5,9 +5,9 @@ import javax.inject.Singleton;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
-import countingsheep.alarm.dataaccess.httpservices.ApiAuthenticationServiceImpl;
-import countingsheep.alarm.dataaccess.httpservices.FacebookAuthenticationServiceImpl;
-import countingsheep.alarm.dataaccess.repositories.AlarmRepositoryImpl;
+import countingsheep.alarm.network.httpservices.ApiAuthenticationServiceImpl;
+import countingsheep.alarm.network.httpservices.FacebookAuthenticationServiceImpl;
+import countingsheep.alarm.db.repositories.AlarmRepositoryImpl;
 import dagger.Module;
 import dagger.Provides;
 
@@ -20,12 +20,6 @@ public class DataAccessModule {
         return alarmRepository;
     }
 
-//    @Provides
-//    @Singleton
-//    AlarmRepository providesAlarmRepository(AlarmDatabase alarmDatabase) {
-//        return new AlarmRepositoryImpl(alarmDatabase, new AlarmMapper());
-//    }
-
     @Provides
     @Singleton
     SocialAuthenticationService providesSocialAuthenticationService(FacebookAuthenticationServiceImpl facebookAuthenticationService){
@@ -37,16 +31,4 @@ public class DataAccessModule {
     ApiAuthenticationService providesApiAuthenticationService(ApiAuthenticationServiceImpl apiAuthenticationService){
         return apiAuthenticationService;
     }
-
-//    @Provides
-//    @Singleton
-//    SocialAuthenticationService providesSocialAuthenticationService(Activity activity){
-//        return new FacebookAuthenticationServiceImpl(activity);
-//    }
-
-//    @Provides
-//    @Singleton
-//    ApiAuthenticationService providesApiAuthenticationService(Activity activity){
-//        return new ApiAuthenticationServiceImpl(activity);
-//    }
 }

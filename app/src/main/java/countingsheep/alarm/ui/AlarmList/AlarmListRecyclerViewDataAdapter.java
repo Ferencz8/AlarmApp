@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui.AlarmList;
+package countingsheep.alarm.ui.alarmList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import countingsheep.alarm.R;
-import countingsheep.alarm.dataaccess.entities.Alarm;
-import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 
 public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmListRecyclerViewHolder> {
 

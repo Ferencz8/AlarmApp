@@ -1,91 +1,61 @@
 package countingsheep.alarm;
 
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.view.MenuItem;
 
 import javax.inject.Inject;
 
-import countingsheep.alarm.dataaccess.apiinterfaces.AlarmAPI;
-import countingsheep.alarm.dataaccess.apiinterfaces.UserWrappedEntity;
-import countingsheep.alarm.dataaccess.entities.Alarm;
-import countingsheep.alarm.ui.AddEditAlarm.AddAlarmActivity;
-import countingsheep.alarm.ui.AlarmList.AlarmListRecyclerViewDataAdapter;
-import countingsheep.alarm.core.services.interfaces.AlarmService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import countingsheep.alarm.core.contracts.infrastructure.EMailService;
+import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 
 public class MainActivity extends AppCompatActivity
 {
-    AlarmListRecyclerViewDataAdapter adapter;
-    List<Alarm> alarms;
-    ImageView addAlarm;
 
-    @Inject
-    AlarmService alarmService;
-
-    @Inject
-    Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        alarms = new ArrayList<>();
-        super.onCreate(savedInstanceState);
 
-        Injector.getActivityComponent(this).inject(this);
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        final RecyclerView recyclerView = findViewById(R.id.alarmListRecyclerView);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        // Set layout manager.
-        recyclerView.setLayoutManager(mLayoutManager);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment selectedFragment = null;
+                        switch (item.getItemId()) {
+                            case R.id.action_item1:
+                                selectedFragment = AlarmsFragment.newInstance();
+                                break;
+                            case R.id.action_item2:
 
-                alarms.addAll(alarmService.getAll());
+                                selectedFragment = AlarmsFragment.newInstance();
+                                break;
+                            case R.id.action_item3:
+                                selectedFragment = AlarmsFragment.newInstance();
+                                break;
+                        }
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, selectedFragment);
+                        transaction.commit();
+                        return true;
+                    }
+                });
 
-                return null;
-            }
+        //Manually displaying the first fragment - one time only
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, AlarmsFragment.newInstance());
+        transaction.commit();
 
-            @Override
-            protected void onPostExecute(Void voids) {
-
-                adapter.notifyDataSetChanged();
-            }
-
-        }.execute();
-
-        // Create car recycler view data adapter with car item list.
-        adapter = new AlarmListRecyclerViewDataAdapter(this, alarms);
-        // Set data adapter.
-        recyclerView.setAdapter(adapter);
-
-        // Scroll RecyclerView a little to make later scroll take effect.
-        recyclerView.scrollToPosition(1);
-        addAlarm = (ImageView) findViewById(R.id.addAlarmButtonId);
-        addAlarm.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddAlarmActivity.class);
-                startActivity(intent);
-            }
-        });
+        //Used to select an item programmatically
+        //bottomNavigationView.getMenu().getItem(2).setChecked(true);
     }
-
-
 }

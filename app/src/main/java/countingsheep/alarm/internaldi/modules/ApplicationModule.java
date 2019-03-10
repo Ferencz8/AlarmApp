@@ -1,6 +1,5 @@
 package countingsheep.alarm.internaldi.modules;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -10,7 +9,6 @@ import com.google.gson.GsonBuilder;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.AlarmApplication;
-import countingsheep.alarm.dataaccess.SharedPreferencesContainer;
 import countingsheep.alarm.util.Constants;
 import dagger.Module;
 import dagger.Provides;

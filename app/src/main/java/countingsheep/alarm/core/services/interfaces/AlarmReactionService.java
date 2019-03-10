@@ -1,7 +1,6 @@
 package countingsheep.alarm.core.services.interfaces;
 
-import countingsheep.alarm.dataaccess.entities.AlarmReaction;
-import countingsheep.alarm.dataaccess.entities.Message;
+import countingsheep.alarm.db.entities.Message;
 
 public interface AlarmReactionService {
 

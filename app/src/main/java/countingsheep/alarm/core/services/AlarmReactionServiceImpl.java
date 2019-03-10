@@ -8,8 +8,8 @@ import javax.inject.Singleton;
 import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
-import countingsheep.alarm.dataaccess.entities.AlarmReaction;
-import countingsheep.alarm.dataaccess.entities.Message;
+import countingsheep.alarm.db.entities.AlarmReaction;
+import countingsheep.alarm.db.entities.Message;
 
 @Singleton
 public class AlarmReactionServiceImpl implements AlarmReactionService {

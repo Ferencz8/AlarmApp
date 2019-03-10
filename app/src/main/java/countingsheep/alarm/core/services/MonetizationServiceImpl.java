@@ -4,8 +4,7 @@ import android.content.SharedPreferences;
 
 import countingsheep.alarm.core.contracts.data.MonetizationRepository;
 import countingsheep.alarm.core.services.interfaces.MonetizationService;
-import countingsheep.alarm.dataaccess.entities.AlarmReaction;
-import countingsheep.alarm.dataaccess.entities.Monetization;
+import countingsheep.alarm.db.entities.Monetization;
 
 public class MonetizationServiceImpl implements MonetizationService {
 

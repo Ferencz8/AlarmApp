@@ -28,6 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void socialLogin(final OnSocialLoginResult onResult) {
 
         this.socialAuthenticationService.registerCallback(onResult);
+
         //this.socialAuthenticationService.registerCallback(remotelyRegisterUser());
 
         this.socialAuthenticationService.login();

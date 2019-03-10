@@ -9,15 +9,11 @@ import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = {DataAccessModule.class})
+@Module(includes = {DataAccessModule.class,
+                    InfrastructureModule.class
+})
 public class CoreModule {
 
-    //    @Provides
-//    @Singleton
-//    AuthenticationService providesAuthenticationService(SocialAuthenticationService socialAuthenticationService,
-//                                                        ApiAuthenticationService apiAuthenticationService){
-//        return new AuthenticationServiceImpl(socialAuthenticationService, apiAuthenticationService);
-//    }
     @Provides
     @Singleton
     AuthenticationService providesAuthenticationService(AuthenticationServiceImpl authenticationService) {

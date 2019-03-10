@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_background"
     tools:context=".MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+
+
+    <!--<android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_alarm_list" />
-
-
-    <ImageView
-        android:id="@+id/addAlarmButtonId"
+    </android.support.design.widget.AppBarLayout>-->
+    <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="15dp"
-        app:srcCompat="@drawable/ic_floatingactionbutton" />
+        android:layout_height="662dp"
+        android:layout_above="@+id/navigation"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
-</android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorDarkBlue"
+        app:itemIconTint="@color/bottom_menu_state_list"
+        app:itemTextColor="@color/bottom_menu_state_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/frame_layout"
+        app:layout_constraintStart_toStartOf="@+id/frame_layout"
+        app:menu="@menu/bottom_navigation_items" />
+</RelativeLayout>

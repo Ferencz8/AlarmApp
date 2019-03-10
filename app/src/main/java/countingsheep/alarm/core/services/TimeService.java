@@ -1,15 +1,15 @@
 package countingsheep.alarm.core.services;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+
+import android.text.TextUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,5 +33,23 @@ public class TimeService {
             date = dateTime.toDate();
         }
         return date;
+    }
+
+
+    public Date getDateFromString(String dateAsString){
+        //String dtStart = "2010-10-15T09:27:37Z";
+        //"yyyy-MM-dd'T'HH:mm:ss'Z'"
+        if (TextUtils.isEmpty(dateAsString)) {
+            return null; // or break, continue, throw
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            Date date = format.parse(dateAsString);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

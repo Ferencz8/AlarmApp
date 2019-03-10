@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui.AlarmList;
+package countingsheep.alarm.ui.alarmList;
 
 public class AlarmListRecyclerViewItem {
 
