@@ -24,9 +24,9 @@ import javax.inject.Inject;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
-import countingsheep.alarm.core.contracts.data.AlarmRepository;
 
 public class AddAlarmActivity extends AppCompatActivity {
 
@@ -44,7 +44,7 @@ public class AddAlarmActivity extends AppCompatActivity {
     private boolean isEdit = false;
 
     @Inject
-    AlarmRepository alarmRepository;
+    AlarmService alarmService;
 
     @Inject
     AlarmLaunchHandler alarmLaunchHandler;
@@ -139,14 +139,12 @@ public class AddAlarmActivity extends AppCompatActivity {
                 alarm.setTurnedOn(true);
                 alarm.setTitle(titleView.getText().toString());
 
-                //SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
-                //alarm.setDateCreated(calendar.getTime());
 
                 if(isEdit){
-                    alarmRepository.update(alarm);
+                    alarmService.update(alarm);
                 }
                 else{
-                    alarmRepository.insert(alarm);
+                    alarmService.add(alarm);
                 }
 
                 //This is for testing

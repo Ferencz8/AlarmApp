@@ -25,7 +25,12 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void add(Alarm alarm) {
-        alarmRepository.insert(alarm);
+        try {
+            alarmRepository.insert(alarm);
+        }
+        catch (Exception exception){
+            //TODO:: add logging
+        }
     }
 
     @Override
@@ -35,7 +40,16 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public boolean update(Alarm alarm) {
-        return false;
+
+        boolean result = true;
+        try{
+            alarmRepository.update(alarm);
+        }
+        catch(Exception exception){
+            //TODO:: add logging
+            result = false;
+        }
+        return result;
     }
 
     @Override
