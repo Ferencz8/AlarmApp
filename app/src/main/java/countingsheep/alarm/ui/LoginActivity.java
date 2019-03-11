@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         termsText1.setTypeface(custom_font);
         termsText.setTypeface(bold_font);
-
     }
 
     @Override
