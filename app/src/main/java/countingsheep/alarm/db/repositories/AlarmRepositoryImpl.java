@@ -1,6 +1,8 @@
 package countingsheep.alarm.db.repositories;
 
 import android.os.AsyncTask;
+
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,18 +25,51 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
     @Override
     public void insert(final Alarm alarm){
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                alarmDatabase.alarmDao().insert(alarm);
-                return null;
-            }
-        }.execute();
+        new InsertAlarmTask(alarmDatabase, alarm).execute();
+    }
+
+    /**
+     * Why? https://stackoverflow.com/questions/44309241/warning-this-asynctask-class-should-be-static-or-leaks-might-occur
+     */
+    static class InsertAlarmTask extends AsyncTask<Void, Void, Void>{
+
+        private WeakReference<AlarmDatabase> alarmDatabaseWeakReference;
+        private Alarm alarm;
+
+        public InsertAlarmTask(AlarmDatabase alarmDatabase,
+                               Alarm alarm) {
+            this.alarmDatabaseWeakReference = new WeakReference<>(alarmDatabase);
+            this.alarm = alarm;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            alarmDatabaseWeakReference.get().alarmDao().insert(alarm);
+            return null;
+        }
     }
 
     @Override
     public void update(Alarm alarm) {
-        alarmDatabase.alarmDao().update(alarm);
+        new UpdateAlarmTask(alarmDatabase, alarm).execute();
+    }
+
+    static class UpdateAlarmTask extends AsyncTask<Void, Void, Void>{
+
+        private WeakReference<AlarmDatabase> alarmDatabaseWeakReference;
+        private Alarm alarm;
+
+        public UpdateAlarmTask(AlarmDatabase alarmDatabase,
+                               Alarm alarm) {
+            this.alarmDatabaseWeakReference = new WeakReference<>(alarmDatabase);
+            this.alarm = alarm;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            alarmDatabaseWeakReference.get().alarmDao().update(alarm);
+            return null;
+        }
     }
 
 

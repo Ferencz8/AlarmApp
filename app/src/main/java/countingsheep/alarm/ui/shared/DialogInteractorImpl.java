@@ -3,6 +3,7 @@ package countingsheep.alarm.ui.shared;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ public class DialogInteractorImpl implements DialogInteractor {
 
     /**
      * Displays an alert dialog using the specified parameters with the possibility to react with OK/Cancel or not.
+     *
      * @param title
      * @param message
      * @param onReaction
@@ -43,8 +45,7 @@ public class DialogInteractorImpl implements DialogInteractor {
 
                     onReaction.onPositive();
                 }
-            })
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     onReaction.onNegative();
@@ -60,16 +61,31 @@ public class DialogInteractorImpl implements DialogInteractor {
 
 
     /**
-     * Displays a time picker dialog
+     * Displays a time picker dialog, with default hour & minutes
      * @param onTimeSetListener
+     * @param hour
+     * @param minutes
      */
     public void displayTimePickerDialog(TimePickerDialog.OnTimeSetListener onTimeSetListener){
 
         int defaultHour = 7;
-        int defaultMinutes=5;
+        int defaultMinutes = 5;
+
+        this.displayTimePickerDialog(onTimeSetListener, defaultHour, defaultMinutes);
+    }
+
+
+    /**
+     * Displays a time picker dialog, with specified hour & minutes
+     * @param onTimeSetListener
+     * @param hour
+     * @param minutes
+     */
+    public void displayTimePickerDialog(TimePickerDialog.OnTimeSetListener onTimeSetListener, int hour, int minutes) {
+
 
         //TODO:: add a theme
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this.activity, onTimeSetListener, defaultHour, defaultMinutes, true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this.activity, onTimeSetListener, hour, minutes, true);
         timePickerDialog.setCanceledOnTouchOutside(false);
         timePickerDialog.show();
     }
