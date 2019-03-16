@@ -168,6 +168,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 item.setText(day);
                 daysList.add(item);
             }
+            adapter.set(daysList);
         }
 
         saveImageView = findViewById(R.id.saveAlarmAddImageView);
