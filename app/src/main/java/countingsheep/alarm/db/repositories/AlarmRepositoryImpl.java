@@ -29,6 +29,8 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     }
 
     /**
+     * This task is used to perform async the Insert of an alarm operation.
+     * It needs to be stored in a separate static class, which uses WekReferences not to have memory leaks
      * Why? https://stackoverflow.com/questions/44309241/warning-this-asynctask-class-should-be-static-or-leaks-might-occur
      */
     static class InsertAlarmTask extends AsyncTask<Void, Void, Void>{
