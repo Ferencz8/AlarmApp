@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
@@ -78,18 +79,13 @@ public class AddAlarmActivity extends AppCompatActivity {
         alarm = getAlarmFromIntent();
         if (alarm != null) {
 
-            try {
                 isEdit = true;
-                String time  = StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : "+ StringFormatter.getFormattedTimeDigits(alarm.getMinutes());
+                String time  = this.getFormattedTime(alarm.getHour(), alarm.getMinutes());
                 timeView.setText(time);
                 titleView.setText(alarm.getTitle());
                 vibrateSwitch.setChecked(alarm.isVobrateOn());
                 volumeSeekBar.setProgress(alarm.getVolume());
-            }
-            catch(Exception exception){
-                //log
-                dialogInteractor.displayDialog("Time Conversion Failed", "Please retry!", null);
-            }
+
         } else {
             alarm = new Alarm();
         }
@@ -135,7 +131,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         alarm.setHour(hourOfDay);
                         alarm.setMinutes(minute);
-                        String time = hourOfDay + ":" + minute;
+                        String time = getFormattedTime(hourOfDay, minute);
                         timeView.setText(time);
                     }
                 }, alarm.getHour(), alarm.getMinutes());
@@ -178,6 +174,20 @@ public class AddAlarmActivity extends AppCompatActivity {
         saveImageView.setOnClickListener(getSaveAlarmClickListener());
     }
 
+    private String getFormattedTime(int hourOfDay, int minute){
+
+        String time = "";
+        try {
+            time = StringFormatter.getFormattedTimeDigits(hourOfDay) + " : " + StringFormatter.getFormattedTimeDigits(minute);
+
+        }catch(Exception exception){
+            //log
+            dialogInteractor.displayDialog("Time Conversion Failed", "Please retry!", null);
+        }
+
+        return time;
+    }
+
     private View.OnClickListener getSaveAlarmClickListener(){
         return new View.OnClickListener() {
             @Override
@@ -193,20 +203,29 @@ public class AddAlarmActivity extends AppCompatActivity {
                     alarm.setTitle(titleView.getText().toString());
                 }
 
-                if (isEdit) {
-                    alarmService.update(alarm);
-                } else {
-                    alarmService.add(alarm);
-                }
 
                 //This is for testing
 
-                Calendar calendar = Calendar.getInstance();
+                final Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
                 calendar.set(Calendar.MINUTE, alarm.getMinutes());
+                calendar.set(Calendar.SECOND, 0);
 
+                if (isEdit) {
+                    alarmService.update(alarm);
 
-                alarmLaunchHandler.registerAlarm(calendar.getTimeInMillis());
+                    alarmLaunchHandler.cancelAlarm(alarm.getId());
+
+                    alarmLaunchHandler.registerAlarm(alarm.getId(), calendar.getTimeInMillis());
+                } else {
+                    alarmService.add(alarm, new OnAsyncResponse<Long>() {
+                        @Override
+                        public void processResponse(Long response) {
+
+                            alarmLaunchHandler.registerAlarm(response.intValue(), calendar.getTimeInMillis());
+                        }
+                    });
+                }
 
                 Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
                 startActivity(intent);

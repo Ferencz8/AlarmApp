@@ -3,7 +3,6 @@ package countingsheep.alarm.ui.shared;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
 import javax.inject.Inject;

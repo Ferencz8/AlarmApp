@@ -8,9 +8,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bolts.Task;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
+import countingsheep.alarm.db.repositories.tasks.alarm.InsertAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.UpdateAlarmTask;
 
 @Singleton
 public class AlarmRepositoryImpl implements AlarmRepository {
@@ -28,50 +32,14 @@ public class AlarmRepositoryImpl implements AlarmRepository {
         new InsertAlarmTask(alarmDatabase, alarm).execute();
     }
 
-    /**
-     * This task is used to perform async the Insert of an alarm operation.
-     * It needs to be stored in a separate static class, which uses WekReferences not to have memory leaks
-     * Why? https://stackoverflow.com/questions/44309241/warning-this-asynctask-class-should-be-static-or-leaks-might-occur
-     */
-    static class InsertAlarmTask extends AsyncTask<Void, Void, Void>{
-
-        private WeakReference<AlarmDatabase> alarmDatabaseWeakReference;
-        private Alarm alarm;
-
-        public InsertAlarmTask(AlarmDatabase alarmDatabase,
-                               Alarm alarm) {
-            this.alarmDatabaseWeakReference = new WeakReference<>(alarmDatabase);
-            this.alarm = alarm;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            alarmDatabaseWeakReference.get().alarmDao().insert(alarm);
-            return null;
-        }
+    @Override
+    public void insert(final Alarm alarm, OnAsyncResponse<Long> onAsyncResponse){
+        new InsertAlarmTask(alarmDatabase, alarm, onAsyncResponse).execute();
     }
 
     @Override
     public void update(Alarm alarm) {
         new UpdateAlarmTask(alarmDatabase, alarm).execute();
-    }
-
-    static class UpdateAlarmTask extends AsyncTask<Void, Void, Void>{
-
-        private WeakReference<AlarmDatabase> alarmDatabaseWeakReference;
-        private Alarm alarm;
-
-        public UpdateAlarmTask(AlarmDatabase alarmDatabase,
-                               Alarm alarm) {
-            this.alarmDatabaseWeakReference = new WeakReference<>(alarmDatabase);
-            this.alarm = alarm;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            alarmDatabaseWeakReference.get().alarmDao().update(alarm);
-            return null;
-        }
     }
 
 

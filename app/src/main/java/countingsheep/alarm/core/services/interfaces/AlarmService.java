@@ -2,11 +2,14 @@ package countingsheep.alarm.core.services.interfaces;
 
 import java.util.List;
 
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.entities.Alarm;
 
 public interface AlarmService {
 
     void add(Alarm alarm);
+
+    void add(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse);
 
     boolean delete(int alarmId);
 

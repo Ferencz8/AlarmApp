@@ -9,7 +9,7 @@ import android.arch.persistence.room.Update;
 public interface BaseDao<T> {
 
     @Insert
-    void insert (T entity);
+    long insert (T entity);
 
     @Update
     void update(T entity);

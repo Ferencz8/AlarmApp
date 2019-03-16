@@ -10,11 +10,11 @@ public class StringFormatter {
      *  E.g. 22 -> 22, 7 -> 07, 0 -> 00
      * @param value
      * @return
-     * @throws Exception if the given value is not a time value. It should be between 0 and 24
+     * @throws Exception if the given value is not a time value. It should be between 0 and 59
      */
     public  static String getFormattedTimeDigits(int value) throws Exception {
-        if(value < 0 || value >24)
-            throw new Exception("The given value is not a time value. It should be between 0 and 24");
+        if(value < 0 || value >59)
+            throw new Exception("The given value is not a time value. It should be between 0 and 59");
 
         String time = "";
         if(value < 10)

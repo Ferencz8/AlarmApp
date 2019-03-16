@@ -8,6 +8,8 @@ public interface AlarmRepository {
 
     void insert(Alarm alarm);
 
+    void insert(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse);
+
     void update(Alarm alarm);
 
     Alarm get(int id);

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.db.entities.Alarm;
@@ -27,6 +28,16 @@ public class AlarmServiceImpl implements AlarmService {
     public void add(Alarm alarm) {
         try {
             alarmRepository.insert(alarm);
+        }
+        catch (Exception exception){
+            //TODO:: add logging
+        }
+    }
+
+    @Override
+    public void add(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse) {
+        try {
+            alarmRepository.insert(alarm, onAsyncResponse);
         }
         catch (Exception exception){
             //TODO:: add logging
