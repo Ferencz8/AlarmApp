@@ -74,6 +74,11 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    public void getAll(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+        this.alarmRepository.get(onAsyncResponse);
+    }
+
+    @Override
     public List<Alarm> getAllUnSynced() {
         return this.alarmRepository.getAllUnsyced();
     }

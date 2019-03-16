@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
@@ -90,24 +91,14 @@ public class AlarmsFragment extends Fragment {
         return view;
     }
 
-
-
     private void initAlarms(){
-        new AsyncTask<Void, Void, Void>() {
+
+        alarmService.getAll(new OnAsyncResponse<List<Alarm>>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-
-                alarms.addAll(alarmService.getAll());
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void voids) {
-
+            public void processResponse(List<Alarm> response) {
+                alarms.addAll(response);
                 adapter.notifyDataSetChanged();
             }
-
-        }.execute();
+        });
     }
 }

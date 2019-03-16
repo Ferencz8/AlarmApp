@@ -13,6 +13,7 @@ import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
+import countingsheep.alarm.db.repositories.tasks.alarm.GetAllAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.InsertAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.UpdateAlarmTask;
 
@@ -54,6 +55,13 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
         return alarmDatabase.alarmDao().getAll();
     }
+
+    @Override
+    public void get(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+
+        new GetAllAlarmTask(alarmDatabase.alarmDao(), onAsyncResponse).execute();
+    }
+
 
     @Override
     public List<Alarm> getAllUnsyced() {

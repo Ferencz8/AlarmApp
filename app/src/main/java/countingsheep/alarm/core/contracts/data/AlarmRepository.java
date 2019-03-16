@@ -16,6 +16,8 @@ public interface AlarmRepository {
 
     List<Alarm> get();
 
+    void get(OnAsyncResponse<List<Alarm>> onAsyncResponse);
+
     List<Alarm> getAllUnsyced();
 
     void markAlarmsSynced(List<Integer> alarmIds);

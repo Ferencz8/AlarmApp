@@ -19,6 +19,8 @@ public interface AlarmService {
 
     List<Alarm> getAll();
 
+    void getAll(OnAsyncResponse<List<Alarm>> onAsyncResponse);
+
     List<Alarm> getAllUnSynced();
 
     boolean markSyncedRange(List<Alarm> alarms);
