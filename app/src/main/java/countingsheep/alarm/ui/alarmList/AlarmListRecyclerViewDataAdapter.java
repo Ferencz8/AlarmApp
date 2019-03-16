@@ -13,15 +13,20 @@ import java.util.List;
 import countingsheep.alarm.R;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.shared.DialogInteractor;
+import countingsheep.alarm.util.StringFormatter;
 
 public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmListRecyclerViewHolder> {
 
     private List<Alarm> viewItemList;
     private Activity activity;
+    private DialogInteractor dialogInteractor;
 
-    public AlarmListRecyclerViewDataAdapter(Activity activity, List<Alarm> viewItemList) {
+    public AlarmListRecyclerViewDataAdapter(Activity activity, List<Alarm> viewItemList,
+                                            DialogInteractor dialogInteractor) {
         this.viewItemList = viewItemList;
         this.activity = activity;
+        this.dialogInteractor = dialogInteractor;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
             if(viewItem != null) {
                 // Set car item title.
                 holder.getTitleView().setText(viewItem.getTitle());
-                holder.getHourView().setText(viewItem.getHour() + ":" + viewItem.getMinutes());
+                holder.getHourView().setText(getFormattedTime(viewItem.getHour(),viewItem.getMinutes()));
                 holder.getRepeatDaysView().setText("Default");
                 holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);
@@ -96,6 +101,21 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
             }
         }
     }
+
+    private String getFormattedTime(int hourOfDay, int minute){
+
+        String time = "";
+        try {
+            time = StringFormatter.getFormattedTimeDigits(hourOfDay) + " : " + StringFormatter.getFormattedTimeDigits(minute);
+
+        }catch(Exception exception){
+            //log
+            dialogInteractor.displayDialog("Time Conversion Failed", "Please retry!", null);
+        }
+
+        return time;
+    }
+
 
     @Override
     public int getItemCount() {

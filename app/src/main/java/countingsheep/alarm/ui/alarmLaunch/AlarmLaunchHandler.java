@@ -27,7 +27,7 @@ public class AlarmLaunchHandler {
 
         PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMilis, alarmReceiverIntennt);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMilis, alarmReceiverIntennt);
     }
 
     /**
