@@ -150,57 +150,21 @@
             app:layout_constraintTop_toBottomOf="@+id/daysRecyclerView" />
 
         <TextView
-            android:id="@+id/minTextID"
+            android:id="@+id/timeTextID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:fontFamily="@font/roboto_light"
-            android:text=":"
+            android:text="07:05"
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="40sp"
-            app:layout_constraintBottom_toBottomOf="@+id/hourEditTextId"
-            app:layout_constraintEnd_toStartOf="@+id/minEditTextId"
-            app:layout_constraintStart_toEndOf="@+id/hourEditTextId"
-            app:layout_constraintTop_toTopOf="@+id/hourEditTextId"
-            app:layout_constraintVertical_bias="0.218" />
-
-        <EditText
-            android:id="@+id/hourEditTextId"
-            android:layout_width="79dp"
-            android:layout_height="83dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="3dp"
-            android:ems="10"
-            android:fontFamily="@font/roboto_light"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColor="#ffffff"
-            android:textSize="60sp"
             app:layout_constraintBottom_toBottomOf="@+id/SetHourID"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintEnd_toEndOf="@+id/SetHourID"
+            app:layout_constraintHorizontal_bias="0.513"
             app:layout_constraintStart_toStartOf="@+id/SetHourID"
             app:layout_constraintTop_toTopOf="@+id/SetHourID"
-            app:layout_constraintVertical_bias="0.59"
-            tools:text="07" />
-
-        <EditText
-            android:id="@+id/minEditTextId"
-            android:layout_width="75dp"
-            android:layout_height="83dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:fontFamily="@font/roboto_light"
-            android:inputType="number"
-            android:textColor="#ffffff"
-            android:textSize="60sp"
-            app:layout_constraintBottom_toBottomOf="@+id/hourEditTextId"
-            app:layout_constraintEnd_toEndOf="@+id/SetHourID"
-            app:layout_constraintStart_toEndOf="@+id/minTextID"
-            app:layout_constraintTop_toTopOf="@+id/hourEditTextId"
-            tools:text="25" />
+            app:layout_constraintVertical_bias="0.468" />
 
         <EditText
             android:id="@+id/titleEditTextId"

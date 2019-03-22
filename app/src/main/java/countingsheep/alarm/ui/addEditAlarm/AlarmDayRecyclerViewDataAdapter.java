@@ -15,7 +15,12 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
     private List<AlarmDayRecyclerViewItem> viewItemList;
 
     public AlarmDayRecyclerViewDataAdapter(List<AlarmDayRecyclerViewItem> viewItemList) {
+        this.set(viewItemList);
+    }
+
+    public void set(List<AlarmDayRecyclerViewItem>  viewItemList){
         this.viewItemList = viewItemList;
+        notifyDataSetChanged();
     }
 
     @Override

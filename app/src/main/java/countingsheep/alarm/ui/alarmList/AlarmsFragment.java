@@ -18,9 +18,11 @@ import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.shared.DialogInteractor;
 import retrofit2.Retrofit;
 
 public class AlarmsFragment extends Fragment {
@@ -37,6 +39,9 @@ public class AlarmsFragment extends Fragment {
 
     @Inject
     Retrofit retrofit;
+
+    @Inject
+    DialogInteractor dialogInteractor;
 
     public static AlarmsFragment newInstance() {
         AlarmsFragment fragment = new AlarmsFragment();
@@ -66,7 +71,7 @@ public class AlarmsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms);
+        adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms, dialogInteractor);
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 
@@ -86,24 +91,14 @@ public class AlarmsFragment extends Fragment {
         return view;
     }
 
-
-
     private void initAlarms(){
-        new AsyncTask<Void, Void, Void>() {
+
+        alarmService.getAll(new OnAsyncResponse<List<Alarm>>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-
-                alarms.addAll(alarmService.getAll());
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void voids) {
-
+            public void processResponse(List<Alarm> response) {
+                alarms.addAll(response);
                 adapter.notifyDataSetChanged();
             }
-
-        }.execute();
+        });
     }
 }

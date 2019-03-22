@@ -2,6 +2,7 @@ package countingsheep.alarm.db.repositories;
 
 import android.os.AsyncTask;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,30 +17,59 @@ import countingsheep.alarm.db.entities.AlarmReaction;
 @Singleton
 public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
 
-    private AlarmDatabase alarmDatabase;
     private AlarmReactionDao dao;
 
     @Inject
     public AlarmReactionRepositoryImpl(AlarmDatabase alarmDatabase) {
-        this.alarmDatabase = alarmDatabase;
-        this.dao = this.alarmDatabase.alarmReactionDao();
+        this.dao = alarmDatabase.alarmReactionDao();
     }
 
 
     @Override
     public void insert(final AlarmReaction alarmReaction){
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                dao.insert(alarmReaction);
-                return null;
-            }
-        }.execute();
+
+        new InsertAlarmReactionTask(dao, alarmReaction).execute();
+    }
+
+    static class InsertAlarmReactionTask extends AsyncTask<Void, Void, Void>{
+
+        private WeakReference<AlarmReactionDao> alarmReactionDaoWeakReference;
+        private AlarmReaction alarmReaction;
+
+        public InsertAlarmReactionTask(AlarmReactionDao alarmReactionDao,
+                                       AlarmReaction alarmReaction) {
+            this.alarmReactionDaoWeakReference = new WeakReference<>(alarmReactionDao);
+            this.alarmReaction = alarmReaction;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            alarmReactionDaoWeakReference.get().insert(alarmReaction);
+            return null;
+        }
     }
 
     @Override
     public void update(AlarmReaction alarmReaction) {
-        dao.update(alarmReaction);
+        new UpdateAlarmReactionTask(dao, alarmReaction).execute();
+    }
+
+    static class UpdateAlarmReactionTask extends AsyncTask<Void, Void, Void>{
+
+        private WeakReference<AlarmReactionDao> alarmReactionDaoWeakReference;
+        private AlarmReaction alarmReaction;
+
+        public UpdateAlarmReactionTask(AlarmReactionDao alarmReactionDao,
+                               AlarmReaction alarmReaction) {
+            this.alarmReactionDaoWeakReference = new WeakReference<>(alarmReactionDao);
+            this.alarmReaction = alarmReaction;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            alarmReactionDaoWeakReference.get().update(alarmReaction);
+            return null;
+        }
     }
 
 

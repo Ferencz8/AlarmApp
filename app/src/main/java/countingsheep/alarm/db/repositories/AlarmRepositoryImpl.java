@@ -1,14 +1,21 @@
 package countingsheep.alarm.db.repositories;
 
 import android.os.AsyncTask;
+
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bolts.Task;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
+import countingsheep.alarm.db.repositories.tasks.alarm.GetAllAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.InsertAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.UpdateAlarmTask;
 
 @Singleton
 public class AlarmRepositoryImpl implements AlarmRepository {
@@ -23,18 +30,17 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
     @Override
     public void insert(final Alarm alarm){
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                alarmDatabase.alarmDao().insert(alarm);
-                return null;
-            }
-        }.execute();
+        new InsertAlarmTask(alarmDatabase, alarm).execute();
+    }
+
+    @Override
+    public void insert(final Alarm alarm, OnAsyncResponse<Long> onAsyncResponse){
+        new InsertAlarmTask(alarmDatabase, alarm, onAsyncResponse).execute();
     }
 
     @Override
     public void update(Alarm alarm) {
-        alarmDatabase.alarmDao().update(alarm);
+        new UpdateAlarmTask(alarmDatabase, alarm).execute();
     }
 
 
@@ -49,6 +55,13 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
         return alarmDatabase.alarmDao().getAll();
     }
+
+    @Override
+    public void get(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+
+        new GetAllAlarmTask(alarmDatabase.alarmDao(), onAsyncResponse).execute();
+    }
+
 
     @Override
     public List<Alarm> getAllUnsyced() {

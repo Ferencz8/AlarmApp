@@ -18,6 +18,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+/**
+ * Why use this instead of AsynTask
+ * https://expertise.jetruby.com/android-workmanager-the-future-is-coming-2b4bdd188050
+ */
 public class SyncerWorker extends Worker {
 
     private Retrofit retrofit;

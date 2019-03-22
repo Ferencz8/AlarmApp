@@ -1,5 +1,8 @@
 package countingsheep.alarm.db.repositories;
 
+import android.os.AsyncTask;
+
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,23 +16,57 @@ import countingsheep.alarm.db.entities.Message;
 @Singleton
 public class MessageRepositoryImpl implements MessageRepository {
 
-    private AlarmDatabase alarmDatabase;
     private MessageDao dao;
 
     @Inject
     public MessageRepositoryImpl(AlarmDatabase alarmDatabase) {
-        this.alarmDatabase = alarmDatabase;
         this.dao = alarmDatabase.messageDao();
     }
 
     @Override
     public void insert(Message message) {
-        dao.insert(message);
+        new InsertMessageTask(dao, message).execute();
+    }
+
+    static class InsertMessageTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<MessageDao> messageDaoWeakReference;
+        private Message message;
+
+        public InsertMessageTask(MessageDao messageDao,
+                               Message message) {
+            this.messageDaoWeakReference = new WeakReference<>(messageDao);
+            this.message = message;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            messageDaoWeakReference.get().insert(message);
+            return null;
+        }
     }
 
     @Override
     public void update(Message message) {
-        dao.update(message);
+        new UpdateMessageTask(dao, message).execute();
+    }
+
+    static class UpdateMessageTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<MessageDao> messageDaoWeakReference;
+        private Message message;
+
+        public UpdateMessageTask(MessageDao messageDao,
+                                 Message message) {
+            this.messageDaoWeakReference = new WeakReference<>(messageDao);
+            this.message = message;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            messageDaoWeakReference.get().update(message);
+            return null;
+        }
     }
 
     @Override

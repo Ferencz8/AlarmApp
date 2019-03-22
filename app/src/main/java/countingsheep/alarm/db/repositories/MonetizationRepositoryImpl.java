@@ -3,6 +3,7 @@ package countingsheep.alarm.db.repositories;
 
 import android.os.AsyncTask;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,31 +17,58 @@ import countingsheep.alarm.db.entities.Monetization;
 @Singleton
 public class MonetizationRepositoryImpl implements MonetizationRepository {
 
-    private AlarmDatabase alarmDatabase;
     private MonetizationDao dao;
 
     @Inject
     public MonetizationRepositoryImpl(AlarmDatabase alarmDatabase) {
-        this.alarmDatabase = alarmDatabase;
         this.dao = alarmDatabase.monetizationDao();
     }
 
 
     @Override
     public void insert(final Monetization monetization){
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
+        new InsertMonetizationTask(this.dao, monetization).execute();
+    }
 
-                dao.insert(monetization);
-                return null;
-            }
-        }.execute();
+    static class InsertMonetizationTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<MonetizationDao> monetizationDaoWeakReference;
+        private Monetization monetization;
+
+        public InsertMonetizationTask(MonetizationDao monetizationDao,
+                                 Monetization monetization) {
+            this.monetizationDaoWeakReference = new WeakReference<>(monetizationDao);
+            this.monetization = monetization;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            monetizationDaoWeakReference.get().insert(monetization);
+            return null;
+        }
     }
 
     @Override
     public void update(Monetization monetization) {
-        dao.update(monetization);
+        new UpdateMonetizationTask(this.dao, monetization).execute();
+    }
+
+    static class UpdateMonetizationTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<MonetizationDao> monetizationDaoWeakReference;
+        private Monetization monetization;
+
+        public UpdateMonetizationTask(MonetizationDao monetizationDao,
+                                      Monetization monetization) {
+            this.monetizationDaoWeakReference = new WeakReference<>(monetizationDao);
+            this.monetization = monetization;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            monetizationDaoWeakReference.get().update(monetization);
+            return null;
+        }
     }
 
 

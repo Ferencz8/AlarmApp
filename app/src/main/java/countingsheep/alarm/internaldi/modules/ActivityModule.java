@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import javax.inject.Singleton;
 
+import countingsheep.alarm.ui.shared.DialogInteractor;
+import countingsheep.alarm.ui.shared.DialogInteractorImpl;
 import dagger.Module;
 import dagger.Provides;
 
@@ -22,5 +24,11 @@ public class ActivityModule {
     @Singleton
     Activity activity() {
         return this.activity;
+    }
+
+    @Provides
+    @Singleton
+    DialogInteractor providesDialogInteractor(DialogInteractorImpl dialogInteractor){
+        return dialogInteractor;
     }
 }
