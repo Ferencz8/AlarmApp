@@ -9,6 +9,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -31,12 +33,11 @@ import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView SignUpButton;
     CheckBox checkBox;
     TextView termsText;
-    TextView termsText1;
     Activity activity;
 
     @Inject
@@ -48,12 +49,20 @@ public class LoginActivity extends AppCompatActivity {
         SignUpButton = findViewById(R.id.SignUpID);
         checkBox = findViewById(R.id.checkBox);
         termsText = findViewById(R.id.Terms2);
-        termsText1 = findViewById(R.id.Terms1);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Regular.otf");
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
-        termsText1.setTypeface(custom_font);
-        termsText.setTypeface(bold_font);
+        //termsText.setTypeface(custom_font);
+
+        termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#00CBEB'>Terms of Service</font></b></p>"));
+
+    }
+
+    private static Spanned fromHtmlN(String data) {
+        Spanned result;
+        result = Html.fromHtml(data);
+        return result;
+
     }
 
     @Override
@@ -84,47 +93,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        SignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!checkBox.isChecked()) {
-                    Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
-                } else {
-                    //TODO: remove on production
-                   Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                   startActivity(intent);
-//                    authenticationService.socialLogin(new OnSocialLoginResult() {
-//
-//                        @Override
-//                        public void onSuccess(User user) {
-//                            Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
-//
-//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                            startActivity(intent);
-//                        }
-//
-//                        @Override
-//                        public void onCancel() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Exception exception) {
-//                            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-                }
-            }
-        });
-
-        termsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
-//                startActivity(intent);
-                Toast.makeText(activity, "This is a term", Toast.LENGTH_SHORT);
-            }
-        });
+        SignUpButton.setOnClickListener(this);
+        termsText.setOnClickListener(this);
     }
 
     @Override
@@ -151,5 +121,46 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("KeyHash", "error2");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.SignUpID:
+                if (!checkBox.isChecked()) {
+                    Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
+                } else {
+                    //TODO: remove on production
+                    Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
+                    startActivity(intent);
+//                    authenticationService.socialLogin(new OnSocialLoginResult() {
+//
+//                        @Override
+//                        public void onSuccess(User user) {
+//                            Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
+//
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                        }
+//
+//                        @Override
+//                        public void onCancel() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception exception) {
+//                            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+                }
+                break;
+            case R.id.Terms2:
+                Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
+                startActivity(intent);
+                //Toast.makeText(activity, "This is a term", Toast.LENGTH_SHORT);
+                break;
+        }
+
     }
 }

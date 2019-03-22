@@ -6,4 +6,5 @@
     <color name="colorDarkBlue">#14223B</color>
     <color name="colorMenuBottomDefault">#FFFFFF</color>
     <color name="colorMenuBottomChecked">#00F7C8</color>
+    <color name="colorTransparentWhite">#cccccc</color>
 </resources>
