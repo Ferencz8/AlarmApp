@@ -14,6 +14,8 @@ public interface AlarmRepository {
 
     Alarm get(int id);
 
+    void get(int id, OnAsyncResponse<Alarm> onAsyncResponse);
+
     List<Alarm> get();
 
     void get(OnAsyncResponse<List<Alarm>> onAsyncResponse);

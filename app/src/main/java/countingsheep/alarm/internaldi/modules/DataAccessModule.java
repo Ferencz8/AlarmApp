@@ -2,16 +2,20 @@ package countingsheep.alarm.internaldi.modules;
 
 import javax.inject.Singleton;
 
+import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
+import countingsheep.alarm.core.contracts.data.MessageRepository;
+import countingsheep.alarm.db.repositories.AlarmReactionRepositoryImpl;
+import countingsheep.alarm.db.repositories.MessageRepositoryImpl;
 import countingsheep.alarm.network.httpservices.ApiAuthenticationServiceImpl;
 import countingsheep.alarm.network.httpservices.FacebookAuthenticationServiceImpl;
 import countingsheep.alarm.db.repositories.AlarmRepositoryImpl;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = { ActivityModule.class, DatabaseModule.class})
+@Module(includes = { DatabaseModule.class})
 public class DataAccessModule {
 
     @Provides
@@ -22,13 +26,9 @@ public class DataAccessModule {
 
     @Provides
     @Singleton
-    SocialAuthenticationService providesSocialAuthenticationService(FacebookAuthenticationServiceImpl facebookAuthenticationService){
-        return facebookAuthenticationService;
-    }
+    AlarmReactionRepository providesAlarmReactionRepository(AlarmReactionRepositoryImpl alarmReactionRepository){return alarmReactionRepository;}
 
     @Provides
     @Singleton
-    ApiAuthenticationService providesApiAuthenticationService(ApiAuthenticationServiceImpl apiAuthenticationService){
-        return apiAuthenticationService;
-    }
+    MessageRepository providesMessageRepository(MessageRepositoryImpl messageRepository){return messageRepository;}
 }

@@ -1,6 +1,7 @@
 package countingsheep.alarm.internaldi.modules;
 
 import android.app.Activity;
+import android.content.Context;
 
 import javax.inject.Singleton;
 
@@ -25,6 +26,16 @@ public class ActivityModule {
     Activity activity() {
         return this.activity;
     }
+
+    /**
+     * Expose the context to dependents in the graph.
+     */
+    @Provides
+    @Singleton
+    Context context() {
+        return this.activity;
+    }
+
 
     @Provides
     @Singleton

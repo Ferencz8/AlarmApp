@@ -1,10 +1,14 @@
 package countingsheep.alarm.internaldi.components;
 
+import android.content.BroadcastReceiver;
+
 import javax.inject.Singleton;
 
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.internaldi.modules.InfrastructureModule;
+import countingsheep.alarm.internaldi.modules.NetworkModule;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchActivity;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.LoginActivity;
 import countingsheep.alarm.internaldi.modules.ActivityModule;
@@ -17,6 +21,7 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {
         ActivityModule.class,
         CoreModule.class,
+        NetworkModule.class,
         DataAccessModule.class,
         InfrastructureModule.class
 })
@@ -29,4 +34,6 @@ public interface ActivityComponent {
     void inject(AlarmsFragment alarmFragment);
 
     void inject(MainActivity mainActivity);
+
+    void inject(AlarmLaunchActivity alarmLaunchActivity);
 }

@@ -17,6 +17,8 @@ public interface AlarmService {
 
     Alarm get(int alarmId);
 
+    void get(int alarmId, OnAsyncResponse<Alarm> onAsyncResponse);
+
     List<Alarm> getAll();
 
     void getAll(OnAsyncResponse<List<Alarm>> onAsyncResponse);

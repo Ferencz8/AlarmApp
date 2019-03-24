@@ -42,7 +42,47 @@ public class Alarm implements Serializable {
 
     private int volume;
 
+    private String repeatDays;
+
+    private int snoozeAmount;
+
     private boolean isSynced;
+
+    private String ringtoneName;
+
+    private String ringtonePath;
+
+    public String getRingtoneName() {
+        return ringtoneName;
+    }
+
+    public void setRingtoneName(String ringtoneName) {
+        this.ringtoneName = ringtoneName;
+    }
+
+    public String getRingtonePath() {
+        return ringtonePath;
+    }
+
+    public void setRingtonePath(String ringtonePath) {
+        this.ringtonePath = ringtonePath;
+    }
+
+    public int getSnoozeAmount() {
+        return snoozeAmount;
+    }
+
+    public void setSnoozeAmount(int snoozeAmount) {
+        this.snoozeAmount = snoozeAmount;
+    }
+
+    public String getRepeatDays() {
+        return repeatDays;
+    }
+
+    public void setRepeatDays(String repeatDays) {
+        this.repeatDays = repeatDays;
+    }
 
     public boolean isSynced() {
         return isSynced;
