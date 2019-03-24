@@ -64,8 +64,24 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    public void get(int alarmId, OnAsyncResponse<Alarm> onAsyncResponse) {
+        try {
+            this.alarmRepository.get(alarmId, onAsyncResponse);
+        }
+        catch(Exception exception){
+            //TODO:: add logging
+        }
+    }
+
+    @Override
     public Alarm get(int alarmId) {
-        return this.alarmRepository.get(alarmId);
+        try {
+            return this.alarmRepository.get(alarmId);
+        }
+        catch(Exception exception){
+            //TODO:: add logging
+            return null;
+        }
     }
 
     @Override

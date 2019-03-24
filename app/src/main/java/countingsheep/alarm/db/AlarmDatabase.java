@@ -12,6 +12,7 @@ import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.db.entities.Monetization;
 
+
 @Database(entities = {
         Alarm.class,
         Message.class,

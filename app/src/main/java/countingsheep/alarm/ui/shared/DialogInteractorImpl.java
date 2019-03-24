@@ -36,8 +36,9 @@ public class DialogInteractorImpl implements DialogInteractor {
                 .setTitle(title)
                 .setMessage(message);
 
+        boolean hasInteraction = onReaction!=null;
 
-        if (onReaction != null) {
+        if (hasInteraction) {
             dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -53,7 +54,9 @@ public class DialogInteractorImpl implements DialogInteractor {
         }
 
         AlertDialog dialog = dialogBuilder.create();
-        dialog.setCanceledOnTouchOutside(false); // Does not allow clicks outside the alert dialog
+
+        dialog.setCanceledOnTouchOutside(!hasInteraction); // Does not allow clicks outside the alert dialog
+
         //dialog.setCancelable(false);//Prevents dismissing the dialog by pressing the BACK button
         dialog.show();
     }

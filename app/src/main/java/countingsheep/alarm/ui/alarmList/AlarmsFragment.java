@@ -56,8 +56,6 @@ public class AlarmsFragment extends Fragment {
         Injector.getActivityComponent(getActivity()).inject(AlarmsFragment.this);
 
         initAlarms();
-
-
     }
 
     @Override
@@ -72,6 +70,7 @@ public class AlarmsFragment extends Fragment {
 
         // Create car recycler view data adapter with car item list.
         adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms, dialogInteractor);
+
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 
