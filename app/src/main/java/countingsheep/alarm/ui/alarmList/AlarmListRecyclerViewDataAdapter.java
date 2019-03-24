@@ -53,7 +53,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                 // Set car item title.
                 holder.getTitleView().setText(viewItem.getTitle());
                 holder.getHourView().setText(getFormattedTime(viewItem.getHour(),viewItem.getMinutes()));
-                holder.getRepeatDaysView().setText("Default");
+                holder.getRepeatDaysView().setText(viewItem.getRepeatDays());
                 holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);
 

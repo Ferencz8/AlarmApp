@@ -57,6 +57,8 @@ public class AlarmLaunchHandler {
         // Pending intent to delay intent until specific calendar time
         PendingIntent pendingIntent = PendingIntent.getBroadcast
                 (context, requestCode, alarmReceiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        return pendingIntent;
     }
 
     /**
