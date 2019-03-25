@@ -46,7 +46,14 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public boolean delete(int alarmId) {
-        return false;
+        try {
+            alarmRepository.delete(alarmId);
+            return true;
+        }
+        catch(Exception exception){
+
+            return false;
+        }
     }
 
     @Override

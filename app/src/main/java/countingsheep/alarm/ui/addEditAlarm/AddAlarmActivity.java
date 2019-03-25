@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
 import com.kevalpatel.ringtonepicker.RingtonePickerListener;
@@ -330,6 +331,11 @@ public class AddAlarmActivity extends AppCompatActivity {
                 Log.d(AddAlarmActivity.class.getSimpleName(), String.valueOf(seebBarProgress));
 
                 //TODO needs validation
+
+                if(TextUtils.isEmpty(selectedRingtoneTextView.getText()) || selectedRingtoneTextView.getText().equals("None")){
+                    Toast.makeText(AddAlarmActivity.this, "Please select a Ringtone", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 alarm.setVobrateOn(vibrateSwitch.isChecked());

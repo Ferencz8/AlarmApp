@@ -12,6 +12,7 @@ import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmReactionDao;
 import countingsheep.alarm.db.entities.AlarmReaction;
+import countingsheep.alarm.db.repositories.tasks.alarmReaction.InsertAlarmReactionTask;
 
 
 @Singleton
@@ -31,23 +32,6 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
         new InsertAlarmReactionTask(dao, alarmReaction).execute();
     }
 
-    static class InsertAlarmReactionTask extends AsyncTask<Void, Void, Void>{
-
-        private WeakReference<AlarmReactionDao> alarmReactionDaoWeakReference;
-        private AlarmReaction alarmReaction;
-
-        public InsertAlarmReactionTask(AlarmReactionDao alarmReactionDao,
-                                       AlarmReaction alarmReaction) {
-            this.alarmReactionDaoWeakReference = new WeakReference<>(alarmReactionDao);
-            this.alarmReaction = alarmReaction;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            alarmReactionDaoWeakReference.get().insert(alarmReaction);
-            return null;
-        }
-    }
 
     @Override
     public void update(AlarmReaction alarmReaction) {

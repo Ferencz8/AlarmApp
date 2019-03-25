@@ -1,5 +1,6 @@
 package countingsheep.alarm.core.services.interfaces;
 
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.entities.Message;
 
 public interface AlarmReactionService {
@@ -8,5 +9,5 @@ public interface AlarmReactionService {
     HateMessage/Snooze monetization type is chosen or null if the $/Snooze; in which case it will
     also attempt to withdraw the currently chosen amount of $/Snooze specified
     */
-    Message add(int alarmId, boolean isSnooze);
+    void add(int alarmId, boolean isSnooze, OnAsyncResponse<Message> messageOnAsyncResponse);
 }

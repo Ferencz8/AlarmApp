@@ -15,6 +15,11 @@ import countingsheep.alarm.util.TimestampConverter;
 @Entity
 public class Alarm implements Serializable {
 
+    public Alarm() {
+        this.setVobrateOn(true);
+        this.setVolume(100);
+    }
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 

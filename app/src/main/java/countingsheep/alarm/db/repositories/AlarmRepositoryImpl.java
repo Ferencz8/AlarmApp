@@ -13,6 +13,7 @@ import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
+import countingsheep.alarm.db.repositories.tasks.alarm.DeleteAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.InsertAlarmTask;
@@ -42,6 +43,11 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     @Override
     public void update(Alarm alarm) {
         new UpdateAlarmTask(alarmDatabase, alarm).execute();
+    }
+
+    @Override
+    public void delete(int alarmId) {
+        new DeleteAlarmTask(alarmDatabase, alarmId).execute();
     }
 
 

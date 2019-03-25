@@ -6,6 +6,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,9 +30,40 @@ public class AlarmReaction implements Serializable {
     @TypeConverters({TimestampConverter.class})
     private Date reactedAt;
 
+    /**
+     * The current minutes of an alarm need to be stored here also, because the alarm's minutes can change
+     * and this record(alarm reaction) needs to store the exact point in time values
+     */
+    @Expose
+    private int currentMinutes;
+
+
+    /**
+     * The current hour of an alarm needs to be stored here also, because the alarm's hour can change
+     * and this record(alarm reaction) needs to store the exact point in time value
+     */
+    @Expose
+    private int currentHour;
+
     private int alarmId;
 
     private boolean isSnooze;
+
+    public int getCurrentMinutes() {
+        return currentMinutes;
+    }
+
+    public void setCurrentMinutes(int currentMinutes) {
+        this.currentMinutes = currentMinutes;
+    }
+
+    public int getCurrentHour() {
+        return currentHour;
+    }
+
+    public void setCurrentHour(int currentHour) {
+        this.currentHour = currentHour;
+    }
 
     public int getId() {
         return id;

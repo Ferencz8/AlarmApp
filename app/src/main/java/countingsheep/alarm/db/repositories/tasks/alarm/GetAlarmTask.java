@@ -1,6 +1,7 @@
 package countingsheep.alarm.db.repositories.tasks.alarm;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
@@ -21,19 +22,23 @@ public class GetAlarmTask extends AsyncTask<Integer, Void, Alarm> {
     @Override
     protected Alarm doInBackground(Integer... ids ) {
 
+        Log.d(GetAlarmTask.class.getSimpleName(), "Entering doInBackground");
         AlarmDao alarmDao = alarmDaoWeakReference.get();
         if (alarmDao == null || ids.length == 0)
             return null;
 
+        Log.d(GetAlarmTask.class.getSimpleName(), "Finished doInBackground");
         return alarmDao.getById(ids[0]);
     }
 
     @Override
     protected void onPostExecute(Alarm alarm) {
-
+        Log.d(GetAlarmTask.class.getSimpleName(), "Entering onPostExecute");
         OnAsyncResponse onAsyncResponse = this.onAsyncResponseWeakReference.get();
         if (onAsyncResponse != null) {
             onAsyncResponse.processResponse(alarm);
         }
+
+        Log.d(GetAlarmTask.class.getSimpleName(), "Finished onPostExecute");
     }
 }

@@ -21,4 +21,7 @@ public interface AlarmDao extends BaseDao<Alarm>{
 
     @Query("UPDATE Alarm SET IsSynced = 1, DateModified = DATETIME('now') WHERE id IN (:alarmIds)")
     void markAlarmsSynced(List<Integer> alarmIds);
+
+    @Query("DELETE FROM AlarmReaction WHERE AlarmReaction.id =:alarmId")
+    void delete(int alarmId);
 }

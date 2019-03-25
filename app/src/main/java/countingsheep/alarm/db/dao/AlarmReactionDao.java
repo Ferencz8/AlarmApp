@@ -3,6 +3,7 @@ package countingsheep.alarm.db.dao;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
+import java.util.Date;
 import java.util.List;
 
 import countingsheep.alarm.db.entities.AlarmReaction;

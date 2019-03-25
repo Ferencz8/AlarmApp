@@ -17,14 +17,18 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmLaunchActivity extends AppCompatActivity {
 
+    private boolean isProcessing = false;
     private Activity activity;
     private ImageView snoozeImageView;
     private ImageView awakeImageView;
@@ -46,6 +50,8 @@ public class AlarmLaunchActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        Injector.getActivityComponent(this).inject(this);
+
         extractParameters(savedInstanceState);
 
         //CHECK API LEVEL
@@ -61,21 +67,17 @@ public class AlarmLaunchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_launch);
 
         bindViews();
-
-        Toast.makeText(this, "Alarm has been launched", Toast.LENGTH_LONG).show();
     }
 
     private void extractParameters(Bundle savedInstanceState) {
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             alarmId = savedInstanceState.getInt("alarmId");
-        }
-        else{
+        } else {
             Bundle bundle = getIntent().getExtras();
-            if(bundle != null){
-                alarmId = 0;
-            }
-            else{
+            if (bundle != null) {
                 alarmId = bundle.getInt("alarmId");
+            } else {
+                alarmId = 0;
             }
         }
     }
@@ -85,13 +87,29 @@ public class AlarmLaunchActivity extends AppCompatActivity {
         snoozeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isProcessing)
+                    return;
+
+                isProcessing = true;
 
                 //register the snooze
-                alarmReactionService.add(alarmId, true);
+                alarmReactionService.add(alarmId, true, new OnAsyncResponse<Message>() {
+                    @Override
+                    public void processResponse(Message response) {
+                        sendStopPlayerEvent();
+
+                        isProcessing = false;
+                    }
+                });
 
                 //delays the alarm
-                Alarm alarmDb = alarmService.get(alarmId);
-                alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMilliseconds(alarmDb.getHour(), alarmDb.getSnoozeAmount()));
+                alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
+                    @Override
+                    public void processResponse(Alarm alarmDb) {
+
+                        alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMilliseconds(alarmDb.getHour(), alarmDb.getSnoozeAmount()));
+                    }
+                });
             }
         });
 
@@ -99,13 +117,27 @@ public class AlarmLaunchActivity extends AppCompatActivity {
         awakeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //register the awake
-                //alarmReactionService.add(alarmId, false);
+                if(!isProcessing)
+                    return;
 
-                Intent intent = new Intent(activity, AlarmReceiver.class);
-                intent.putExtra("stopPlayer", true);
-                sendBroadcast(intent);
+                isProcessing = true;
+
+                //register the awake
+                alarmReactionService.add(alarmId, false, new OnAsyncResponse<Message>() {
+                    @Override
+                    public void processResponse(Message response) {
+                        sendStopPlayerEvent();
+
+                        isProcessing = false;
+                    }
+                });
             }
         });
+    }
+
+    private void sendStopPlayerEvent() {
+        Intent intent = new Intent(activity, AlarmReceiver.class);
+        intent.putExtra("stopPlayer", true);
+        sendBroadcast(intent);
     }
 }
