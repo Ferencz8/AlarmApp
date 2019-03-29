@@ -7,4 +7,6 @@
     <color name="colorMenuBottomDefault">#FFFFFF</color>
     <color name="colorMenuBottomChecked">#00F7C8</color>
     <color name="colorTransparentWhite">#cccccc</color>
+    <color name="colorTransparentDarkGray">#40cccccc</color>
+    <color name="colorTransparentGray">#0Dcccccc</color>
 </resources>

@@ -1,5 +1,7 @@
 package countingsheep.alarm.ui.alarmList;
 
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,10 +13,11 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     private TextView titleView = null;
     private ImageView onOffImageView = null;
-    private ImageView offBackgroundImageView = null;
-    private ImageView onBackgroundImageView = null;
+    //private ImageView offBackgroundImageView = null;
+   // private ImageView onBackgroundImageView = null;
     private TextView repeatDaysView = null;
     private TextView timeView = null;
+    private ConstraintLayout alarmLayout = null;
 
     private boolean isClicked = false;
 
@@ -27,25 +30,34 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
             onOffImageView = (ImageView) itemView.findViewById(R.id.alarmListOnOffImageId);
             repeatDaysView = (TextView)itemView.findViewById(R.id.alarmListTimeRepeatId);
             timeView = (TextView)itemView.findViewById(R.id.alarmListTimeId);
-            offBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOffBackgroundmageViewId);
-            onBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOnBackgroundmageViewId);
+            alarmLayout = (ConstraintLayout) itemView.findViewById(R.id.alarmItemLayout);
+            //offBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOffBackgroundmageViewId);
+            //onBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOnBackgroundmageViewId);
         }
     }
 
-    public ImageView getOnBackgroundImageView() {
-        return onBackgroundImageView;
+//    public ImageView getOnBackgroundImageView() {
+//        return onBackgroundImageView;
+//    }
+//
+//    public void setOnBackgroundImageView(ImageView onBackgroundImageView) {
+//        this.onBackgroundImageView = onBackgroundImageView;
+//    }
+//
+//    public void setOffBackgroundImageView(ImageView offBackgroundImageView) {
+//        this.offBackgroundImageView = offBackgroundImageView;
+//    }
+//
+//    public ImageView getOffBackgroundImageView() {
+//        return offBackgroundImageView;
+//    }
+
+    public ConstraintLayout getAlarmLayout() {
+        return alarmLayout;
     }
 
-    public void setOnBackgroundImageView(ImageView onBackgroundImageView) {
-        this.onBackgroundImageView = onBackgroundImageView;
-    }
-
-    public void setOffBackgroundImageView(ImageView offBackgroundImageView) {
-        this.offBackgroundImageView = offBackgroundImageView;
-    }
-
-    public ImageView getOffBackgroundImageView() {
-        return offBackgroundImageView;
+    public void setAlarmLayout(ConstraintLayout alarmLayout) {
+        this.alarmLayout = alarmLayout;
     }
 
     public boolean isClicked() {
