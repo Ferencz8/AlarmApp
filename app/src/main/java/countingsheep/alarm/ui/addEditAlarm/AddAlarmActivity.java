@@ -438,19 +438,21 @@ public class AddAlarmActivity extends AppCompatActivity {
     private void createSnoozeDialog(){
         snoozeDialog = new Dialog(AddAlarmActivity.this);
         snoozeDialog.setContentView(R.layout.snooze_dialog);
+        snoozeDialog.setCancelable(false);
+        snoozeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         Window window = snoozeDialog.getWindow();
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
         window.setLayout((6 * width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
+
+        snoozeAdapter = new SnoozeAdapter(durations);
         snoozeRv = snoozeDialog.findViewById(R.id.snoozeRv);
         snoozeRv.setLayoutManager(new LinearLayoutManager(AddAlarmActivity.this));
-        snoozeAdapter = new SnoozeAdapter(durations);
         snoozeRv.setAdapter(snoozeAdapter);
         snoozeRv.setHasFixedSize(true);
-        snoozeDialog.setCancelable(false);
-        snoozeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         Button ok = (Button) snoozeDialog.findViewById(R.id.okButton);
         Button cancel = (Button) snoozeDialog.findViewById(R.id.cancelButton);
         ok.setOnClickListener(new View.OnClickListener() {
