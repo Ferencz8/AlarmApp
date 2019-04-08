@@ -55,15 +55,14 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                 holder.getTitleView().setText(viewItem.getTitle());
                 holder.getHourView().setText(getFormattedTime(viewItem.getHour(),viewItem.getMinutes()));
                 holder.getRepeatDaysView().setText(viewItem.getRepeatDays());
-                holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparentWhite, 0.7f));
+                holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparent, 0.7f));
                 //holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 //holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);
 
                 if (viewItem.isTurnedOn()){
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
                     //holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
-                }
-                else {
+                } else {
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
                     //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
                 }
@@ -80,6 +79,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                     }
                 };
 
+                holder.itemView.setOnClickListener(onClickListener);
                 //holder.getOnBackgroundImageView().setOnClickListener(onClickListener);
                 //holder.getOffBackgroundImageView().setOnClickListener(onClickListener);
 
@@ -91,13 +91,13 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                             holder.setClicked(false);
 
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
-                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparentWhite, 0.9f));
+                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparent, 0.9f));
                             //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
                         }
                         else {
                             holder.setClicked(true);
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
-                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparentWhite, 0.7f));
+                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparent, 0.7f));
                             //holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
                         }
                     }

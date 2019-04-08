@@ -19,7 +19,7 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
     private TextView timeView = null;
     private ConstraintLayout alarmLayout = null;
 
-    private boolean isClicked = false;
+    private boolean isClicked = true;
 
     public AlarmListRecyclerViewHolder(View itemView) {
         super(itemView);

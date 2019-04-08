@@ -1,9 +1,12 @@
 package countingsheep.alarm.ui.addEditAlarm;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +14,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -59,9 +68,14 @@ public class AddAlarmActivity extends AppCompatActivity {
     private ImageView saveImageView;
     private TextView selectedRingtoneTextView;
     private TextView timeView;
-    private Spinner snoozeSpinner;
-    private Integer snoozes[] = {1, 5, 10, 15, 30};
+    private TextView snoozeTv;
+    private TextView selectedSnooze;
+    private ArrayList<Integer> durations = new ArrayList<Integer>();
     private EditText titleView;
+    private Dialog snoozeDialog;
+    RecyclerView snoozeRv;
+    SnoozeAdapter snoozeAdapter;
+
     private boolean isEdit = false;
 
     @Inject
@@ -85,6 +99,11 @@ public class AddAlarmActivity extends AppCompatActivity {
         setupAlarm();
 
         bindViews();
+        durations.add(1);
+        durations.add(5);
+        durations.add(10);
+        durations.add(15);
+        durations.add(30);
     }
 
     private void setupAlarm() {
@@ -175,10 +194,21 @@ public class AddAlarmActivity extends AppCompatActivity {
 
             }
         });
-        snoozeSpinner = findViewById(R.id.snoozeSpinnerId);
-        ArrayAdapter<Integer> snoozesAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item, snoozes);
-        //snoozesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        snoozeSpinner.setAdapter(snoozesAdapter);
+        snoozeTv = (TextView) findViewById(R.id.snoozeTextView);
+        selectedSnooze = (TextView) findViewById(R.id.selectedSnooze);
+//        snoozeSpinner = findViewById(R.id.snoozeSpinnerId);
+//        ArrayAdapter<Integer> snoozesAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item, snoozes);
+//        //snoozesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        snoozeSpinner.setAdapter(snoozesAdapter);
+
+        createSnoozeDialog();
+
+        snoozeTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snoozeDialog.show();
+            }
+        });
         //bind week days
         if (daysList == null) {
             daysList = new ArrayList<>();
@@ -377,12 +407,71 @@ public class AddAlarmActivity extends AppCompatActivity {
     private int getSnoozeAmount() {
 
         try {
-            int snoozeAmount = (int) snoozeSpinner.getSelectedItem();
+            int snoozeAmount = getSnoozeAmountFromItem(snoozeAdapter.selectedItem);
             return snoozeAmount;
         } catch (ClassCastException castException) {
 
             dialogInteractor.displayDialog("Snooze converions", "Snooze value was not selected!", null);
             return 5;//this will be the dafult value for testing, until we implement a screen for snoozes
         }
+    }
+
+    private int getSnoozeAmountFromItem(int position){
+        switch (position){
+            case -1:
+                return 0;
+            case 0:
+                return 1;
+            case 1:
+                return 5;
+            case 2:
+                return 10;
+            case 3:
+                return 15;
+            case 4:
+                return 30;
+            default:
+                return 0;
+        }
+    }
+
+    private void createSnoozeDialog(){
+        snoozeDialog = new Dialog(AddAlarmActivity.this);
+        snoozeDialog.setContentView(R.layout.snooze_dialog);
+        Window window = snoozeDialog.getWindow();
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        window.setLayout((6 * width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);
+        snoozeRv = snoozeDialog.findViewById(R.id.snoozeRv);
+        snoozeRv.setLayoutManager(new LinearLayoutManager(AddAlarmActivity.this));
+        snoozeAdapter = new SnoozeAdapter(durations);
+        snoozeRv.setAdapter(snoozeAdapter);
+        snoozeRv.setHasFixedSize(true);
+        snoozeDialog.setCancelable(false);
+        snoozeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Button ok = (Button) snoozeDialog.findViewById(R.id.okButton);
+        Button cancel = (Button) snoozeDialog.findViewById(R.id.cancelButton);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snoozeDialog.dismiss();
+                if(getSnoozeAmountFromItem(snoozeAdapter.selectedItem) == 1){
+                    selectedSnooze.setText(String.valueOf(getSnoozeAmountFromItem(snoozeAdapter.selectedItem)) + " minute");
+                } else if(getSnoozeAmountFromItem(snoozeAdapter.selectedItem) > 1){
+                    selectedSnooze.setText(String.valueOf(getSnoozeAmountFromItem(snoozeAdapter.selectedItem)) + " minutes");
+                } else {
+                    selectedSnooze.setText("");
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snoozeDialog.dismiss();
+            }
+        });
     }
 }
