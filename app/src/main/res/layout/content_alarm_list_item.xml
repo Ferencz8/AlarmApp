@@ -46,21 +46,6 @@
         app:layout_constraintStart_toStartOf="@+id/alarmListTimeId"
         app:layout_constraintTop_toBottomOf="@+id/alarmListTimeId" />
 
-    <ImageView
-        android:id="@+id/alarmListOnOffImageId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/alarmListTitleId"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/alarmListOnBackgroundmageViewId"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="@+id/alarmListOffBackgroundmageViewId"
-        app:layout_constraintTop_toTopOf="@+id/alarmListOnBackgroundmageViewId"
-        app:srcCompat="@drawable/ic_sheepon" />
 
     <ImageView
         android:id="@+id/alarmListOffBackgroundmageViewId"
@@ -93,5 +78,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_alarms_rectangle_alarm_on" />
+
+    <ImageView
+        android:id="@+id/alarmListOnOffImageId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarmListTitleId"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/alarmListOnBackgroundmageViewId"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="@+id/alarmListOffBackgroundmageViewId"
+        app:layout_constraintTop_toTopOf="@+id/alarmListOnBackgroundmageViewId"
+        app:srcCompat="@drawable/ic_sheepon" />
 
 </android.support.constraint.ConstraintLayout>

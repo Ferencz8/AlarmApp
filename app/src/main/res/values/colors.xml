@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574b</color>
+    <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#d81b60</color>
     <color name="colorDarkBlue">#14223B</color>
     <color name="colorMenuBottomDefault">#FFFFFF</color>
     <color name="colorMenuBottomChecked">#00F7C8</color>
-    <color name="colorTransparentWhite">#cccccc</color>
+    <color name="colorTransparent">#00cccccc</color>
+    <color name="colorTransparentDarkGray">#40cccccc</color>
+    <color name="colorTransparentGray">#0Dcccccc</color>
 </resources>

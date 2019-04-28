@@ -19,8 +19,6 @@ import countingsheep.alarm.ui.adapters.SliderAdapter;
 
 public class OnBoardingActivity extends FragmentActivity implements View.OnClickListener {
 
-    private static final int NUM_OF_PAGES  = 3;
-
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
     private LinearLayout sliderDots;
@@ -61,13 +59,13 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
-            dots[i].setTextColor(getResources().getColor(R.color.colorTransparentWhite));
+            dots[i].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
             sliderDots.addView(dots[i]);
         }
 
         if(dots.length > 0){
-            dots[position].setTextColor(getResources().getColor(R.color.colorMenuBottomDefault));
+            dots[position].setTextColor(getResources().getColor(R.color.colorPrimary));
         }
     }
 
