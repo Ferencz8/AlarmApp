@@ -87,7 +87,7 @@ public class AlarmLaunchActivity extends AppCompatActivity {
         snoozeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isProcessing)
+                if(isProcessing)
                     return;
 
                 isProcessing = true;
@@ -117,7 +117,7 @@ public class AlarmLaunchActivity extends AppCompatActivity {
         awakeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isProcessing)
+                if(isProcessing)
                     return;
 
                 isProcessing = true;

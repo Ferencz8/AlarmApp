@@ -67,6 +67,6 @@ public class AlarmLaunchHandler {
      * @return
      */
     private boolean isTimeInThePast(long millis){
-        return System.currentTimeMillis() > millis;
+        return Calendar.getInstance().getTimeInMillis() > millis;
     }
 }

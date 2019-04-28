@@ -2,6 +2,9 @@ package countingsheep.alarm.core.services;
 
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -55,17 +58,34 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
                 onAsyncResponse.processResponse(null);
             }
         });
+    }
 
-//        //todo check type of monetization
-//        if(this.sharedPreferences.getInt("MonetizationType", 0) == 0) {
-//            //case hate
-//            return this.messageService.getUnseenMessage();
-//
-//        }
-//        else {
+    @Override
+    public List<AlarmReaction> getAllUnsynced() {
+        try{
+            return this.alarmReactionRepository.getAllUnsynced();
+        }
+        catch (Exception e){
+            //TODO:: log
+            return null;
+        }
+    }
 
-            //case $$
-//            return null;
-//        }
+    @Override
+    public boolean markSyncedRange(List<AlarmReaction> unsyncedAlarmsReactions) {
+        try {
+
+            List<Integer> alarmReactionIds = new ArrayList<>();
+            for (AlarmReaction alarmReaction: unsyncedAlarmsReactions) {
+                alarmReactionIds.add(alarmReaction.getId());
+            }
+
+            this.alarmReactionRepository.markAlarmsSynced(alarmReactionIds);
+
+            return true;
+        } catch (Exception exception) {
+            //TODO:: add logging
+            return false;
+        }
     }
 }

@@ -30,4 +30,8 @@ public interface AlarmService {
     boolean markSynced(Alarm alarm);
 
     void switchOnOf(int alarmId, boolean value);
+
+    List<Alarm> getOnOrOff(boolean state);
+
+    void getOnOrOff(OnAsyncResponse<List<Alarm>> onAsyncResponse, boolean state);
 }

@@ -5,4 +5,6 @@ import countingsheep.alarm.core.domain.User;
 public interface ApiAuthenticationService {
 
     void register(User user);
+
+    void register(User user, OnSocialLoginResult onSocialLoginResult);
 }

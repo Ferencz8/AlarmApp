@@ -13,6 +13,7 @@ import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmReactionDao;
 import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.InsertAlarmReactionTask;
+import countingsheep.alarm.db.repositories.tasks.alarmReaction.MarkSyncedAlarmReactionTask;
 
 
 @Singleton
@@ -27,7 +28,7 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
 
 
     @Override
-    public void insert(final AlarmReaction alarmReaction){
+    public void insert(final AlarmReaction alarmReaction) {
 
         new InsertAlarmReactionTask(dao, alarmReaction).execute();
     }
@@ -38,13 +39,13 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
         new UpdateAlarmReactionTask(dao, alarmReaction).execute();
     }
 
-    static class UpdateAlarmReactionTask extends AsyncTask<Void, Void, Void>{
+    static class UpdateAlarmReactionTask extends AsyncTask<Void, Void, Void> {
 
         private WeakReference<AlarmReactionDao> alarmReactionDaoWeakReference;
         private AlarmReaction alarmReaction;
 
         public UpdateAlarmReactionTask(AlarmReactionDao alarmReactionDao,
-                               AlarmReaction alarmReaction) {
+                                       AlarmReaction alarmReaction) {
             this.alarmReactionDaoWeakReference = new WeakReference<>(alarmReactionDao);
             this.alarmReaction = alarmReaction;
         }
@@ -67,5 +68,15 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
     public List<AlarmReaction> get() {
 
         return dao.getAll();
+    }
+
+    public List<AlarmReaction> getAllUnsynced() {
+
+        return dao.getAllUnSynced();
+    }
+
+    @Override
+    public void markAlarmsSynced(List<Integer> alarmReactionIds) {
+        new MarkSyncedAlarmReactionTask(dao, alarmReactionIds).execute();
     }
 }

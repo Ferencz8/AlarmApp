@@ -37,6 +37,7 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void add(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse) {
         try {
+            alarm.setDateCreated(timeService.getUTCDateNow());
             alarmRepository.insert(alarm, onAsyncResponse);
         }
         catch (Exception exception){
@@ -61,6 +62,8 @@ public class AlarmServiceImpl implements AlarmService {
 
         boolean result = true;
         try{
+            alarm.setDateModified(timeService.getUTCDateNow());
+            alarm.setSynced(false);//this way a new alarm will be added on Server
             alarmRepository.update(alarm);
         }
         catch(Exception exception){
@@ -144,5 +147,27 @@ public class AlarmServiceImpl implements AlarmService {
         Alarm alarmModel = this.alarmRepository.get(alarmId);
         alarmModel.setTurnedOn(value);
         this.alarmRepository.update(alarmModel);
+    }
+
+    @Override
+    public List<Alarm> getOnOrOff(boolean state) {
+        try{
+
+            return this.alarmRepository.getOnOrOffAlarms(state);
+        }
+        catch(Exception exception){
+            return null;
+        }
+    }
+
+    @Override
+    public void getOnOrOff(OnAsyncResponse<List<Alarm>> onAsyncResponse, boolean state) {
+        try{
+
+            this.alarmRepository.getOnOrOffAlarms(onAsyncResponse, state);
+        }
+        catch(Exception exception){
+
+        }
     }
 }

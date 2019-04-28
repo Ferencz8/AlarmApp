@@ -6,6 +6,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
@@ -51,6 +52,31 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
+            }
+        });
+    }
+
+    @Override
+    public void register(User user, OnSocialLoginResult onSocialLoginResult) {
+
+        retrofit.create(UserAPI.class).register(user).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                try {
+                    int userId = Integer.parseInt(response.body());
+                    sharedPreferencesContainer.setCurrentUserId(userId);
+
+                    onSocialLoginResult.onSuccess(user);
+                } catch (NumberFormatException nfe) {
+                    Toast.makeText(activity, "Failed to connect to server!", Toast.LENGTH_LONG).show();
+                    onSocialLoginResult.onError(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                onSocialLoginResult.onError(null);
             }
         });
     }

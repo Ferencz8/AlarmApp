@@ -16,8 +16,10 @@ import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.db.repositories.tasks.alarm.DeleteAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.GetAllTurnedOnAlarmsTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.InsertAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.UpdateAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.UpdateSyncedAlarmTask;
 
 @Singleton
 public class AlarmRepositoryImpl implements AlarmRepository {
@@ -81,7 +83,18 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     }
 
     @Override
+    public List<Alarm> getOnOrOffAlarms(boolean state) {
+        return alarmDatabase.alarmDao().getOnOrOffAlarms();
+    }
+
+    @Override
+    public void getOnOrOffAlarms(OnAsyncResponse<List<Alarm>> onAsyncResponse, boolean state) {
+        //TODO:: state is not used
+        new GetAllTurnedOnAlarmsTask(alarmDatabase.alarmDao(), onAsyncResponse).execute();
+    }
+
+    @Override
     public void markAlarmsSynced(List<Integer> alarmIds) {
-        alarmDatabase.alarmDao().markAlarmsSynced(alarmIds);
+        new UpdateSyncedAlarmTask(alarmDatabase, alarmIds).execute();
     }
 }

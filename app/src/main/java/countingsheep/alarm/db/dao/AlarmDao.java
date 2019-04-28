@@ -19,6 +19,9 @@ public interface AlarmDao extends BaseDao<Alarm>{
     @Query("SELECT * FROM Alarm WHERE isSynced =0")
     List<Alarm> getUnSynced();
 
+    @Query("SELECT * FROM Alarm WHERE isTurnedOn =1")
+    List<Alarm> getOnOrOffAlarms();
+
     @Query("UPDATE Alarm SET IsSynced = 1, DateModified = DATETIME('now') WHERE id IN (:alarmIds)")
     void markAlarmsSynced(List<Integer> alarmIds);
 

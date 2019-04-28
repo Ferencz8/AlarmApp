@@ -72,9 +72,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Injector.getActivityComponent(this).inject(this);
 
+        if(socialAuthenticationService.isUserLoggedIn()){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
         setContentView(R.layout.activity_login);
         activity = this;
-        //printKeyHash();
+        printKeyHash();
         bindViews();
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
         final Drawable drawableOff = getDrawable(R.drawable.ic_checked_box);
@@ -131,28 +136,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
                 } else {
                     //TODO: remove on production
-                    Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
-                    startActivity(intent);
-//                    authenticationService.socialLogin(new OnSocialLoginResult() {
-//
-//                        @Override
-//                        public void onSuccess(User user) {
-//                            Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
-//
-//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                            startActivity(intent);
-//                        }
-//
-//                        @Override
-//                        public void onCancel() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Exception exception) {
-//                            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
+//                    Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
+//                    startActivity(intent);
+                    authenticationService.socialLogin(new OnSocialLoginResult() {
+
+                        @Override
+                        public void onSuccess(User user) {
+                            Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
+
+                            Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
                 break;
             case R.id.Terms2:

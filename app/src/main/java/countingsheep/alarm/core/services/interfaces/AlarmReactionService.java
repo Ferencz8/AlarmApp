@@ -1,6 +1,9 @@
 package countingsheep.alarm.core.services.interfaces;
 
+import java.util.List;
+
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.entities.Message;
 
 public interface AlarmReactionService {
@@ -10,4 +13,8 @@ public interface AlarmReactionService {
     also attempt to withdraw the currently chosen amount of $/Snooze specified
     */
     void add(int alarmId, boolean isSnooze, OnAsyncResponse<Message> messageOnAsyncResponse);
+
+    List<AlarmReaction> getAllUnsynced();
+
+    boolean markSyncedRange(List<AlarmReaction> unsyncedAlarmsReactions);
 }

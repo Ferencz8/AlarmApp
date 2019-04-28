@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import countingsheep.alarm.internaldi.modules.ActivityModule;
 import countingsheep.alarm.internaldi.modules.ApplicationModule;
 import countingsheep.alarm.internaldi.modules.BroadcastReceiverModule;
+import countingsheep.alarm.internaldi.modules.ServiceModule;
 import dagger.Component;
 
 
@@ -19,4 +20,5 @@ public interface ApplicationComponent {
 
     ActivityComponent newActivityComponent(ActivityModule activityModule);
 
+    ServiceComponent newServiceComponent(ServiceModule serviceModule);
 }

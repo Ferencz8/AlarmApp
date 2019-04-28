@@ -22,6 +22,7 @@ import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import retrofit2.Retrofit;
 
@@ -42,6 +43,9 @@ public class AlarmsFragment extends Fragment {
 
     @Inject
     DialogInteractor dialogInteractor;
+
+    @Inject
+    AlarmLaunchHandler alarmLaunchHandler;
 
     public static AlarmsFragment newInstance() {
         AlarmsFragment fragment = new AlarmsFragment();
@@ -69,7 +73,7 @@ public class AlarmsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms, dialogInteractor);
+        adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms, dialogInteractor, alarmLaunchHandler);
 
         // Set data adapter.
         recyclerView.setAdapter(adapter);

@@ -29,10 +29,12 @@ import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 import countingsheep.alarm.core.services.TimeService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
 
 @Singleton
 public class FacebookAuthenticationServiceImpl implements SocialAuthenticationService {
 
+    private SharedPreferencesContainer sharedPreferencesContainer;
     private Activity activity;
     private TimeService timeService;
     private List<OnSocialLoginResult> callbacks;
@@ -42,10 +44,12 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
 
 
     @Inject
-    public FacebookAuthenticationServiceImpl(Activity activity, TimeService timeService) {
+    public FacebookAuthenticationServiceImpl(Activity activity, TimeService timeService,
+                                             SharedPreferencesContainer sharedPreferencesContainer) {
         this.activity = activity;
         this.timeService = timeService;
         this.callbacks = new ArrayList<OnSocialLoginResult>();
+        this.sharedPreferencesContainer = sharedPreferencesContainer;
     }
 
 
@@ -54,14 +58,18 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
         this.callbacks.add(onResult);
     }
 
+    public boolean isUserLoggedIn(){
+        return AccessToken.getCurrentAccessToken() != null;
+    }
+
     @Override
     public void login() {
 
         for (final OnSocialLoginResult onResult : this.callbacks) {
             //if there is a stored login result token
-            if (AccessToken.getCurrentAccessToken() != null) {
-                Log.d("progress", "progress");
-                requestEmail(onResult, AccessToken.getCurrentAccessToken());
+            if (this.isUserLoggedIn()) {
+
+                onResult.onSuccess(null);
             } else {//if not, then a login is made and with the result the email details are requested
                 callbackManager = CallbackManager.Factory.create();
 
@@ -101,7 +109,7 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
                 Log.d("response: ", response.toString());
                 try {
                     User loggedInUser = extractUser(object);
-
+                    //TODO:: store locally the user details ??
                     onResult.onSuccess(loggedInUser);
 
                 } catch (MalformedURLException e) {

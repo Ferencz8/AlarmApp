@@ -13,4 +13,8 @@ public interface AlarmReactionRepository {
     AlarmReaction get(int id);
 
     List<AlarmReaction> get();
+
+    List<AlarmReaction> getAllUnsynced();
+
+    void markAlarmsSynced(List<Integer> alarmReactionIds);
 }

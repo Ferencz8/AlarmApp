@@ -13,4 +13,6 @@ public interface SocialAuthenticationService {
     void logout();
 
     void onActivityResult(int requestCode, int resultCode, Intent data);
+
+    boolean isUserLoggedIn();
 }

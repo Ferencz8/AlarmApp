@@ -13,6 +13,7 @@ public class SharedPreferencesContainer {
     private final static String UserId = "UserId";
     private final static String MonetizationType = "MonetizationType";
     private final static String MonetizationCost = "MonetizationCost";
+    private final static String BootReceivedPermissionOnSpecialDevices = "BootReceivedPermissionOnSpecialDevices";
 
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
@@ -39,6 +40,14 @@ public class SharedPreferencesContainer {
         changePreferenceValue(MonetizationCost, monetizationCost);
     }
 
+    public boolean getBootReceivedOnSpecialDevices(){
+        return  this.sharedPreferences.getBoolean(BootReceivedPermissionOnSpecialDevices, false);
+    }
+
+    public void setBootReceivedOnSpecialDevices(){
+        changePreferenceValue(BootReceivedPermissionOnSpecialDevices, true);
+    }
+
     private <T> void changePreferenceValue(String key, T value){
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         if(value instanceof Integer){
@@ -46,6 +55,9 @@ public class SharedPreferencesContainer {
         }
         else if(value instanceof String){
             editor.putString(key, (String)value);
+        }
+        else if(value instanceof Boolean){
+            editor.putBoolean(key, (Boolean) value);
         }
 
         editor.apply();

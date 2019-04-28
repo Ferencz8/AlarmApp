@@ -33,6 +33,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.e("In receiver", "Yay!");
 
+        Injector.getBroadcastReceiverComponent(context).inject(this);
+
         initalize(context, intent);
 
         int alarmId = intent.getExtras().getInt("alarmId");
@@ -72,8 +74,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             this.context = context;
             ringtonePlayer = new AlarmRingtonePlayer(context);
             vibrator = new AlarmVibrator(context);
-
-            Injector.getBroadcastReceiverComponent(context).inject(this);
         }
         else{//the alarm is already running
             ringtonePlayer.stop();

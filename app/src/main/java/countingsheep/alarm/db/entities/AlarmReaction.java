@@ -28,6 +28,7 @@ public class AlarmReaction implements Serializable {
 
     @ColumnInfo(name = "reactedAt")
     @TypeConverters({TimestampConverter.class})
+    @Expose
     private Date reactedAt;
 
     /**
@@ -45,9 +46,21 @@ public class AlarmReaction implements Serializable {
     @Expose
     private int currentHour;
 
+    @Expose
     private int alarmId;
 
+    @Expose
     private boolean isSnooze;
+
+    private boolean isSynced;
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
+    }
 
     public int getCurrentMinutes() {
         return currentMinutes;

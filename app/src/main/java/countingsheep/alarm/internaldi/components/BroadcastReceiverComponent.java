@@ -6,6 +6,7 @@ import countingsheep.alarm.internaldi.modules.BroadcastReceiverModule;
 import countingsheep.alarm.internaldi.modules.CoreModule;
 import countingsheep.alarm.internaldi.modules.DataAccessModule;
 import countingsheep.alarm.ui.alarmLaunch.AlarmReceiver;
+import countingsheep.alarm.ui.alarmLaunch.RecreateAlarmsAtBootReceiver;
 import dagger.Subcomponent;
 
 
@@ -19,4 +20,6 @@ import dagger.Subcomponent;
 public interface BroadcastReceiverComponent {
 
     void inject(AlarmReceiver alarmReceiver);
+
+    void inject(RecreateAlarmsAtBootReceiver recreateAlarmsAtBootReceiver);
 }

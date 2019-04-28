@@ -13,20 +13,24 @@ import java.util.List;
 import countingsheep.alarm.R;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
+import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.StringFormatter;
+import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmListRecyclerViewHolder> {
 
     private List<Alarm> viewItemList;
     private Activity activity;
     private DialogInteractor dialogInteractor;
+    private AlarmLaunchHandler alarmLaunchHandler;
 
     public AlarmListRecyclerViewDataAdapter(Activity activity, List<Alarm> viewItemList,
-                                            DialogInteractor dialogInteractor) {
+                                            DialogInteractor dialogInteractor, AlarmLaunchHandler alarmLaunchHandler) {
         this.viewItemList = viewItemList;
         this.activity = activity;
         this.dialogInteractor = dialogInteractor;
+        this.alarmLaunchHandler = alarmLaunchHandler;
     }
 
     @Override
@@ -90,11 +94,15 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
 
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
                             holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
+
+                            changeAlarmState(false, viewItem.getId(), 0);
                         }
                         else {
                             holder.setClicked(true);
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
                             holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
+
+                            changeAlarmState(true, viewItem.getId(), TimeHelper.getTimeInMilliseconds(viewItem.getHour(), viewItem.getMinutes()));
                         }
                     }
                 });
@@ -116,6 +124,18 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
         return time;
     }
 
+    /**
+     * Used to turn on/off the alarm. If it is on the alarm is registered, otherwise it gets canceled.
+     * @param state
+     */
+    private void changeAlarmState(boolean state, int alarmId, long triggerAtMillis){
+        if(state){
+            this.alarmLaunchHandler.registerAlarm(alarmId, triggerAtMillis);
+        }
+        else {
+            this.alarmLaunchHandler.cancelAlarm(alarmId);
+        }
+    }
 
     @Override
     public int getItemCount() {

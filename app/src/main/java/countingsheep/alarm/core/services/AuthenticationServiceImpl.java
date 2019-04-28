@@ -10,39 +10,51 @@ import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
+import countingsheep.alarm.db.SharedPreferencesContainer;
 
 @Singleton
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private SocialAuthenticationService socialAuthenticationService;
     private ApiAuthenticationService apiAuthenticationService;
+    private SharedPreferencesContainer sharedPreferencesContainer;
+    private static final int UserDoesNotExist = 0;
 
     @Inject
     public AuthenticationServiceImpl(SocialAuthenticationService socialAuthenticationService,
-                                     ApiAuthenticationService apiAuthenticationService) {
+                                     ApiAuthenticationService apiAuthenticationService,
+                                     SharedPreferencesContainer sharedPreferencesContainer) {
         this.socialAuthenticationService = socialAuthenticationService;
         this.apiAuthenticationService = apiAuthenticationService;
+        this.sharedPreferencesContainer = sharedPreferencesContainer;
     }
 
     @Override
     public void socialLogin(final OnSocialLoginResult onResult) {
 
-        this.socialAuthenticationService.registerCallback(onResult);
+        if(sharedPreferencesContainer.getCurrentUserId()==UserDoesNotExist){
 
-        //this.socialAuthenticationService.registerCallback(remotelyRegisterUser());
+            //if this is the 1st time the client authenticates,the remote  server register is a MUST
+            this.socialAuthenticationService.registerCallback(remotelyRegisterUser(onResult));
+        }
+        else
+        {
+            //otherwise Facebook login is enough
+            this.socialAuthenticationService.registerCallback(onResult);
+        }
 
         this.socialAuthenticationService.login();
     }
 
     @NonNull
-    private OnSocialLoginResult remotelyRegisterUser() {
+    private OnSocialLoginResult remotelyRegisterUser(final OnSocialLoginResult onResult) {
         return new OnSocialLoginResult(){
 
             @Override
             public void onSuccess(User user) {
 
                 //todo maybe do on a thread async
-                apiAuthenticationService.register(user);
+                apiAuthenticationService.register(user, onResult);
             }
 
             @Override
