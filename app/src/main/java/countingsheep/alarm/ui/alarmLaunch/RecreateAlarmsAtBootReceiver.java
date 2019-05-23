@@ -1,12 +1,8 @@
 package countingsheep.alarm.ui.alarmLaunch;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,7 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
-import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;

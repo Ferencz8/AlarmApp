@@ -1,0 +1,1 @@
+keytool -exportcert -alias test -keystore D:\Programming\GitHub\androidkeystore2 | C:\Users\Feri\Downloads\openssl-0.9.8e_X64\bin\openssl.exe sha1 -binary | C:\Users\Feri\Downloads\openssl-0.9.8e_X64\bin\openssl.exe base64

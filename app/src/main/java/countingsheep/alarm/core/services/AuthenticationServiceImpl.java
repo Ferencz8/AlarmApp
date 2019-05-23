@@ -1,12 +1,13 @@
 package countingsheep.alarm.core.services;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
+import countingsheep.alarm.core.domain.UserRegistration;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;

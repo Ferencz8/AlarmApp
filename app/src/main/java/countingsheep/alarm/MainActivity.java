@@ -3,34 +3,23 @@ package countingsheep.alarm;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
-import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
-import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
-import countingsheep.alarm.db.entities.Alarm;
-import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
-import countingsheep.alarm.ui.alarmLaunch.RecreateAlarmsAtBootReceiver;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
-import countingsheep.alarm.util.TimeHelper;
 
 public class MainActivity extends AppCompatActivity {
 

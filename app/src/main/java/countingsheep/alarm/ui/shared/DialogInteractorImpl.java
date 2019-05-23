@@ -3,7 +3,8 @@ package countingsheep.alarm.ui.shared;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+import countingsheep.alarm.R;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -55,8 +56,11 @@ public class DialogInteractorImpl implements DialogInteractor {
 
         AlertDialog dialog = dialogBuilder.create();
 
+        if(dialog.getWindow()!=null) {
+            dialog.getWindow().setBackgroundDrawableResource(R.color.colorTransparent);
+        }
         dialog.setCanceledOnTouchOutside(!hasInteraction); // Does not allow clicks outside the alert dialog
-
+        dialog.setC
         //dialog.setCancelable(false);//Prevents dismissing the dialog by pressing the BACK button
         dialog.show();
     }

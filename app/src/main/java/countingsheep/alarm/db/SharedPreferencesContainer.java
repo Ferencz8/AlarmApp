@@ -14,11 +14,28 @@ public class SharedPreferencesContainer {
     private final static String MonetizationType = "MonetizationType";
     private final static String MonetizationCost = "MonetizationCost";
     private final static String BootReceivedPermissionOnSpecialDevices = "BootReceivedPermissionOnSpecialDevices";
+    private final static String CustomerId = "CustomerId";
+    private final static String Token = "Token";
+    private final static String DefaultSnoozePrice="DefaultSnoozePrice";
+    private final static String FreeCredits="FreeCredits";
+
 
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
     }
+
+    public int getDefaultSnoozePrice(){return this.sharedPreferences.getInt(DefaultSnoozePrice, 0);}
+
+    public void setDefaultSnoozePrice(int price){changePreferenceValue(DefaultSnoozePrice, price);}
+
+    public String getToken(){return this.sharedPreferences.getString(Token, "");}
+
+    public void setToken(String token){changePreferenceValue(Token, token);}
+
+    public String getCustomerId(){return this.sharedPreferences.getString(CustomerId, null);}
+
+    public void setCustomerId(String customerId){changePreferenceValue(CustomerId, customerId);}
 
     public int getCurrentUserId(){
         return this.sharedPreferences.getInt(UserId, 0);
@@ -26,6 +43,14 @@ public class SharedPreferencesContainer {
 
     public void setCurrentUserId(int currentUserId) {
         changePreferenceValue(UserId, currentUserId);
+    }
+
+    public int getFreeCredits(){
+        return this.sharedPreferences.getInt(FreeCredits, 0);
+    }
+
+    public void setFreeCredits(int amount) {
+        changePreferenceValue(FreeCredits, amount);
     }
 
     public int getMonetizationType(){return this.sharedPreferences.getInt(MonetizationType, 0);}
