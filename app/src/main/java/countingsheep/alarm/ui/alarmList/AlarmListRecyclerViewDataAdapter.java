@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import countingsheep.alarm.R;
@@ -18,6 +23,7 @@ import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
+
 
 public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmListRecyclerViewHolder> {
 
@@ -159,5 +165,14 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
         int b = Color.blue(color);
         newColor = Color.argb(alpha, r, g, b);
         return newColor;
+    }
+
+    public void remove(int position) {
+        Alarm item = viewItemList.get(position);
+        if (viewItemList.contains(item)) {
+            viewItemList.remove(position);
+            notifyItemRemoved(position);
+            notifyDataSetChanged();
+        }
     }
 }

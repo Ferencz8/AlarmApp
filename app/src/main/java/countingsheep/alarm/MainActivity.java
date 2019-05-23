@@ -1,5 +1,6 @@
 package countingsheep.alarm;
 
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -10,27 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
-import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
-import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
-import countingsheep.alarm.db.entities.Alarm;
-import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
-import countingsheep.alarm.ui.alarmLaunch.RecreateAlarmsAtBootReceiver;
+import countingsheep.alarm.ui.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
-import countingsheep.alarm.util.TimeHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = AlarmsFragment.newInstance();
                                 titleTextView.setText(R.string.counting_sheep);
                                 backBtn.setVisibility(View.GONE);
+                                headerBar.setVisibility(View.VISIBLE);
                                 break;
                             case R.id.action_item2:
+                                headerBar.setVisibility(View.VISIBLE);
                                 selectedFragment = AlarmsFragment.newInstance();
                                 break;
                             case R.id.action_item3:
-                                selectedFragment = AlarmsFragment.newInstance();
+                                headerBar.setVisibility(View.GONE);
+                                selectedFragment = SettingsFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -91,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         Injector.getActivityComponent(this).inject(this);
 
         askBootPermission();
+
+        showRemovePopup();
     }
 
     private void bindViews() {
@@ -128,5 +124,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void showRemovePopup(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.remove_alarm_popup);
+        TextView yes = dialog.findViewById(R.id.yes_text);
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

@@ -9,4 +9,5 @@
     <color name="colorTransparent">#00cccccc</color>
     <color name="colorTransparentDarkGray">#40cccccc</color>
     <color name="colorTransparentGray">#0Dcccccc</color>
+    <color name="popup_background_color">#496291</color>
 </resources>
