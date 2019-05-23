@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="countingsheep.alarm">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -65,6 +66,7 @@
         </receiver>
 
         <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity" />
+        <!--<activity android:name=".ui.card.CardActivity" />-->
         <!--<service android:name=".ui.alarmLaunch.AlarmBootService"/>-->
     </application>
 

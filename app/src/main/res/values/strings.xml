@@ -101,5 +101,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="creditsText">Because we love you, we give you 5$ credits in order for you to validate that our app is gonna make you more productive</string>
     <string name="action_settings">Settings</string>
 </resources>

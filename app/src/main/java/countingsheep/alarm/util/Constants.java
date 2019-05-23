@@ -7,6 +7,8 @@ public class Constants {
 
     public final static String PrefFileName = "countingSheepPref";
 
-    //public final static String BASE_URL = "http://35.180.181.141";
-    public final static String BASE_URL = "http://13f5c2f0.ngrok.io";
+    public final static String BASE_URL = "http://35.180.181.141";
+    //public final static String BASE_URL = "http://ce9f45b8.ngrok.io";
+
+    public final static int PaymentRequestCode = 22;
 }

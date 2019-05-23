@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmReactionDao;
 import countingsheep.alarm.db.entities.AlarmReaction;
@@ -31,6 +32,11 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
     public void insert(final AlarmReaction alarmReaction) {
 
         new InsertAlarmReactionTask(dao, alarmReaction).execute();
+    }
+
+    @Override
+    public void insert(AlarmReaction alarmReaction, OnAsyncResponse<Long> onAsyncResponse) {
+        new InsertAlarmReactionTask(dao, alarmReaction, onAsyncResponse).execute();
     }
 
 

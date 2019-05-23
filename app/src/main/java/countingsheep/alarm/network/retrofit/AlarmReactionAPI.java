@@ -9,10 +9,10 @@ public interface AlarmReactionAPI {
 
 
     //@POST("/alarm/api/alarm")
-    @POST("/api/alarmreaction")
+    @POST("/alarm/api/alarmreaction")
     Call<String> addAlarm(@Body UserWrappedEntity<AlarmReaction> wrappedAlarmReaction);
 
     //@POST("/alarm/api/alarm/addmany")
-    @POST("/api/alarmreaction/addmany")
+    @POST("/alarm/api/alarmreaction/addmany")
     Call<String> addAlarmReactionRange(@Body UserWrappedEntities<AlarmReaction> wrappedAlarmReactions);
 }

@@ -1,20 +1,21 @@
 package countingsheep.alarm.db.entities;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import countingsheep.alarm.util.TimestampConverter;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
-import static android.arch.persistence.room.ForeignKey.SET_NULL;
+import static androidx.room.ForeignKey.CASCADE;
+import static androidx.room.ForeignKey.SET_NULL;
 
 @Entity(foreignKeys = @ForeignKey(entity = Alarm.class,
         parentColumns = "id",
@@ -23,6 +24,8 @@ import static android.arch.persistence.room.ForeignKey.SET_NULL;
         onUpdate = CASCADE))
 public class AlarmReaction implements Serializable {
 
+    @SerializedName("deviceAlarmReactionId")
+    @Expose
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -46,6 +49,7 @@ public class AlarmReaction implements Serializable {
     @Expose
     private int currentHour;
 
+    @SerializedName("deviceAlarmId")
     @Expose
     private int alarmId;
 
@@ -53,6 +57,16 @@ public class AlarmReaction implements Serializable {
     private boolean isSnooze;
 
     private boolean isSynced;
+
+    private boolean isPaymentRequested;
+
+    public boolean isPaymentRequested() {
+        return isPaymentRequested;
+    }
+
+    public void setPaymentRequested(boolean paymentRequested) {
+        isPaymentRequested = paymentRequested;
+    }
 
     public boolean isSynced() {
         return isSynced;

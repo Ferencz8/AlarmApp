@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -20,6 +22,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.braintreepayments.api.dropin.DropInActivity;
+import com.braintreepayments.api.dropin.DropInRequest;
+import com.braintreepayments.api.dropin.DropInResult;
+import com.braintreepayments.cardform.view.CardForm;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,10 +36,14 @@ import javax.inject.Inject;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
-import countingsheep.alarm.core.domain.User;
-import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
+import countingsheep.alarm.core.domain.User;
+import countingsheep.alarm.core.domain.UserRegistration;
+import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
+import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,6 +56,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     SocialAuthenticationService socialAuthenticationService;
     @Inject
     AuthenticationService authenticationService;
+
+    @Inject
+    Retrofit retrofit;
+
+    @Inject
+    BraintreePaymentInteractor braintreePaymentInteractor;
+
+    @Inject
+    SharedPreferencesContainer sharedPreferencesContainer;
 
     private void bindViews() {
         SignUpButton = findViewById(R.id.SignUpID);
@@ -72,13 +93,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Injector.getActivityComponent(this).inject(this);
 
-        if(socialAuthenticationService.isUserLoggedIn()){
+        activity = this;
+
+        if (socialAuthenticationService.isUserLoggedIn()) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
 
         setContentView(R.layout.activity_login);
-        activity = this;
         printKeyHash();
         bindViews();
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
@@ -105,6 +127,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        braintreePaymentInteractor.onActivityResult(requestCode, resultCode,data);
+
         socialAuthenticationService.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -130,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.SignUpID:
                 if (!checkBox.isChecked()) {
                     Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
@@ -138,14 +163,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //TODO: remove on production
 //                    Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
 //                    startActivity(intent);
+
                     authenticationService.socialLogin(new OnSocialLoginResult() {
 
                         @Override
                         public void onSuccess(User user) {
                             Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
 
-                            Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
-                            startActivity(intent);
+                            if(sharedPreferencesContainer.getCustomerId()!=null && !sharedPreferencesContainer.getCustomerId().equals("")){
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+
+                                Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
+                                startActivity(intent);
+                            }
                         }
 
                         @Override
@@ -166,6 +199,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //Toast.makeText(activity, "This is a term", Toast.LENGTH_SHORT);
                 break;
         }
+
+    }
+
+
+    private void registerCustomer() {
+
+       // braintreePaymentInteractor.displayPaymentMethods();
+
+//        BraintreeFragment mBraintreeFragment = null;
+
+//        mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
+//            @Override
+//            public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
+//                String nonce =  paymentMethodNonce.getNonce();
+//            }
+//        });
+        //temp
+
+//        Intent intent =  new Intent(LoginActivity.this, CardActivity.class);
+//        startActivity(intent);
 
     }
 }

@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
+import countingsheep.alarm.core.domain.UserRegistration;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.network.retrofit.UserAPI;
 import retrofit2.Call;
@@ -35,13 +36,16 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
     @Override
     public void register(User user) {
 
-        retrofit.create(UserAPI.class).register(user).enqueue(new Callback<String>() {
+        retrofit.create(UserAPI.class).register(user).enqueue(new Callback<UserRegistration>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<UserRegistration> call, Response<UserRegistration> response) {
 
                 try {
-                    int userId = Integer.parseInt(response.body());
-                    sharedPreferencesContainer.setCurrentUserId(userId);
+                    UserRegistration registeredUser = response.body();
+                    if(registeredUser!=null) {
+                        sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
+                        sharedPreferencesContainer.setCurrentUserId(registeredUser.getUserId());
+                    }
 
                 } catch (NumberFormatException nfe) {
                     Toast.makeText(activity, "Failed to connect to server!", Toast.LENGTH_LONG).show();
@@ -50,7 +54,7 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<UserRegistration> call, Throwable t) {
 
             }
         });
@@ -59,15 +63,18 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
     @Override
     public void register(User user, OnSocialLoginResult onSocialLoginResult) {
 
-        retrofit.create(UserAPI.class).register(user).enqueue(new Callback<String>() {
+        retrofit.create(UserAPI.class).register(user).enqueue(new Callback<UserRegistration>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<UserRegistration> call, Response<UserRegistration> response) {
 
                 try {
-                    int userId = Integer.parseInt(response.body());
-                    sharedPreferencesContainer.setCurrentUserId(userId);
+                    UserRegistration registeredUser = response.body();
+                    if(registeredUser!=null) {
+                        sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
+                        sharedPreferencesContainer.setCurrentUserId(registeredUser.getUserId());
 
-                    onSocialLoginResult.onSuccess(user);
+                        onSocialLoginResult.onSuccess(user);
+                    }
                 } catch (NumberFormatException nfe) {
                     Toast.makeText(activity, "Failed to connect to server!", Toast.LENGTH_LONG).show();
                     onSocialLoginResult.onError(null);
@@ -75,7 +82,7 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<UserRegistration> call, Throwable t) {
                 onSocialLoginResult.onError(null);
             }
         });

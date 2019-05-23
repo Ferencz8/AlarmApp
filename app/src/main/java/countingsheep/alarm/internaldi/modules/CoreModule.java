@@ -6,10 +6,12 @@ import countingsheep.alarm.core.services.AlarmReactionServiceImpl;
 import countingsheep.alarm.core.services.AlarmServiceImpl;
 import countingsheep.alarm.core.services.AuthenticationServiceImpl;
 import countingsheep.alarm.core.services.MessageServiceImpl;
+import countingsheep.alarm.core.services.PaymentServiceImpl;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
+import countingsheep.alarm.core.services.interfaces.PaymentService;
 import dagger.Module;
 import dagger.Provides;
 
@@ -35,4 +37,8 @@ public class CoreModule {
     @Provides
     @Singleton
     MessageService providesMessageService(MessageServiceImpl messageService){return messageService;}
+
+    @Provides
+    @Singleton
+    PaymentService providesPaymentService(PaymentServiceImpl paymentService){return paymentService;}
 }

@@ -1,21 +1,26 @@
 package countingsheep.alarm.ui;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
+import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.ui.adapters.SliderAdapter;
+import countingsheep.alarm.ui.freecredits.FreeCreditsActivity;
+import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
+import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
 
 public class OnBoardingActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -26,6 +31,10 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
     private Button slideBackBtn;
     private Button slideNextBtn;
     private int currentPage;
+    private boolean reachedPaymentSlide = false;
+
+    @Inject
+    BraintreePaymentInteractor braintreePaymentInteractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +42,8 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
         setContentView(R.layout.activity_on_boarding);
 
         bindViews();
+
+        Injector.getActivityComponent(this).inject(this);
 
         slideBackBtn.setVisibility(View.GONE);
         pagerAdapter = new SliderAdapter(OnBoardingActivity.this);
@@ -53,7 +64,7 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
     }
 
     public void addDotsIndicator(int position){
-        dots = new TextView[3];
+        dots = new TextView[4];
         sliderDots.removeAllViews();
         for(int i = 0; i < dots.length; i++){
             dots[i] = new TextView(this);
@@ -81,6 +92,12 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
             currentPage = i;
             if(viewPager.getCurrentItem() != 0){
                 slideBackBtn.setVisibility(View.VISIBLE);
+
+                if(viewPager.getCurrentItem() == pagerAdapter.getCount() - 1){
+                    slideBackBtn.setText("Not now");
+                    slideNextBtn.setText("Now");
+                    reachedPaymentSlide = true;
+                }
             } else {
                 slideBackBtn.setVisibility(View.GONE);
             }
@@ -96,9 +113,17 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.slideBackBtn:
+                if(reachedPaymentSlide){
+                    Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
+                    startActivity(intent);
+                }
                 viewPager.setCurrentItem(currentPage - 1);
                 break;
             case R.id.slideNextBtn:
+                if(reachedPaymentSlide) {
+                    displayPaymentDropIn();
+                }
+
                 if(viewPager.getCurrentItem() < pagerAdapter.getCount()- 1){
                     viewPager.setCurrentItem(currentPage+1);
                 } else if(viewPager.getCurrentItem() == pagerAdapter.getCount() - 1){
@@ -108,5 +133,30 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
 
                 break;
         }
+    }
+
+    private void displayPaymentDropIn() {
+        braintreePaymentInteractor.displayPaymentMethods(new OnPaymentInteractionResult() {
+            @Override
+            public void onSuccess() {
+                Intent intent = new Intent(OnBoardingActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCanceled() {
+                Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == Activity.RESULT_CANCELED){
+            Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
+            startActivity(intent);
+        }
+        braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
     }
 }
