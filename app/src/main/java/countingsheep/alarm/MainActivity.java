@@ -19,7 +19,7 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import countingsheep.alarm.db.SharedPreferencesContainer;
-import countingsheep.alarm.ui.SettingsFragment;
+import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 
@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout headerBar;
     TextView titleTextView;
     ImageView backBtn;
+    AlarmsFragment alarmsFragment;
+    SettingsFragment settingsFragment;
 
     @Inject
     DialogInteractor dialogInteractor;
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        alarmsFragment = AlarmsFragment.newInstance();
+        settingsFragment = SettingsFragment.newInstance();
 
         setContentView(R.layout.activity_main);
 
@@ -53,18 +58,18 @@ public class MainActivity extends AppCompatActivity {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.action_item1:
-                                selectedFragment = AlarmsFragment.newInstance();
+                                selectedFragment = alarmsFragment;
                                 titleTextView.setText(R.string.counting_sheep);
                                 backBtn.setVisibility(View.GONE);
                                 headerBar.setVisibility(View.VISIBLE);
                                 break;
-                            case R.id.action_item2:
-                                headerBar.setVisibility(View.VISIBLE);
-                                selectedFragment = AlarmsFragment.newInstance();
-                                break;
+//                            case R.id.action_item2:
+//                                headerBar.setVisibility(View.VISIBLE);
+//                                selectedFragment = alarmsFragment;
+//                                break;
                             case R.id.action_item3:
                                 headerBar.setVisibility(View.GONE);
-                                selectedFragment = SettingsFragment.newInstance();
+                                selectedFragment = settingsFragment;
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, AlarmsFragment.newInstance());
+        transaction.replace(R.id.frame_layout, alarmsFragment);
         transaction.commit();
 
         //Used to select an item programmatically
@@ -127,15 +132,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showRemovePopup(){
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.remove_alarm_popup);
-        TextView yes = dialog.findViewById(R.id.yes_text);
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        if(!this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
+            this.sharedPreferencesContainer.setPopopShowedRemoveAlarm();
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.remove_alarm_popup);
+            TextView yes = dialog.findViewById(R.id.yes_text);
+            yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
     }
 }

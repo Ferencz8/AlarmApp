@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui;
+package countingsheep.alarm.ui.settings;
 
 import android.app.Activity;
 import android.content.Intent;

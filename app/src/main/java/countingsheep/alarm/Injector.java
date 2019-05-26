@@ -1,7 +1,6 @@
 package countingsheep.alarm;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 
 import countingsheep.alarm.internaldi.components.ActivityComponent;

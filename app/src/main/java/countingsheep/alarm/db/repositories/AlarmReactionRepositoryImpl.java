@@ -30,7 +30,6 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
 
     @Override
     public void insert(final AlarmReaction alarmReaction) {
-
         new InsertAlarmReactionTask(dao, alarmReaction).execute();
     }
 

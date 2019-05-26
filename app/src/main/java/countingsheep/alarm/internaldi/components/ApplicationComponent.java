@@ -1,7 +1,6 @@
 package countingsheep.alarm.internaldi.components;
 
 
-import android.app.Application;
 
 import javax.inject.Singleton;
 

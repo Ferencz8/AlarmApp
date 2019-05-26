@@ -7,8 +7,10 @@ import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.core.contracts.api.ApiAuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.core.contracts.data.MessageRepository;
+import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.db.repositories.AlarmReactionRepositoryImpl;
 import countingsheep.alarm.db.repositories.MessageRepositoryImpl;
+import countingsheep.alarm.db.repositories.PaymentDetailsRepositoryImpl;
 import countingsheep.alarm.network.httpservices.ApiAuthenticationServiceImpl;
 import countingsheep.alarm.network.httpservices.FacebookAuthenticationServiceImpl;
 import countingsheep.alarm.db.repositories.AlarmRepositoryImpl;
@@ -31,4 +33,8 @@ public class DataAccessModule {
     @Provides
     @Singleton
     MessageRepository providesMessageRepository(MessageRepositoryImpl messageRepository){return messageRepository;}
+
+    @Provides
+    @Singleton
+    PaymentDetailsRepository providesPaymentDetailsRepository(PaymentDetailsRepositoryImpl paymentDetailsRepository){return paymentDetailsRepository;}
 }

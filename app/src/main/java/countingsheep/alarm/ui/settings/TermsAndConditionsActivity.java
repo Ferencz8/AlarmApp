@@ -1,4 +1,4 @@
-package countingsheep.alarm.ui;
+package countingsheep.alarm.ui.settings;
 
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintLayout;

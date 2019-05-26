@@ -14,7 +14,7 @@ import java.util.Date;
 import countingsheep.alarm.util.TimestampConverter;
 
 @Entity
-public class Alarm implements Serializable {
+public class Alarm implements Serializable, DbEntity {
 
     public Alarm() {
         this.setVobrateOn(true);
@@ -59,6 +59,8 @@ public class Alarm implements Serializable {
     private String ringtoneName;
 
     private String ringtonePath;
+
+    private boolean isDeleted;
 
     public String getRingtoneName() {
         return ringtoneName;
@@ -170,5 +172,13 @@ public class Alarm implements Serializable {
 
     public void setVolume(int volume) {
         this.volume = volume;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

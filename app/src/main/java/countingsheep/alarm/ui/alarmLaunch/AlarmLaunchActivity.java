@@ -86,9 +86,9 @@ public class AlarmLaunchActivity extends AppCompatActivity {
                 isProcessing = true;
 
                 //register the snooze
-                alarmReactionService.add(alarmId, true, new OnAsyncResponse<Message>() {
+                alarmReactionService.add(alarmId, true, new OnAsyncResponse<Void>() {
                     @Override
-                    public void processResponse(Message response) {
+                    public void processResponse(Void response) {
                         sendStopPlayerEvent();
 
                         isProcessing = false;
@@ -116,9 +116,9 @@ public class AlarmLaunchActivity extends AppCompatActivity {
                 isProcessing = true;
 
                 //register the awake
-                alarmReactionService.add(alarmId, false, new OnAsyncResponse<Message>() {
+                alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
                     @Override
-                    public void processResponse(Message response) {
+                    public void processResponse(Void response) {
                         sendStopPlayerEvent();
 
                         isProcessing = false;

@@ -39,7 +39,8 @@ public class ActivityModule {
 
     @Provides
     @Singleton
-    DialogInteractor providesDialogInteractor(DialogInteractorImpl dialogInteractor){
+    DialogInteractor providesDialogInteractor(DialogInteractorImpl dialogInteractor) {
         return dialogInteractor;
     }
+
 }

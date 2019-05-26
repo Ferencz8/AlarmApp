@@ -168,11 +168,15 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     }
 
     public void remove(int position) {
-        Alarm item = viewItemList.get(position);
+        Alarm item = getAlarm(position);
         if (viewItemList.contains(item)) {
             viewItemList.remove(position);
             notifyItemRemoved(position);
             notifyDataSetChanged();
         }
+    }
+
+    public Alarm getAlarm(int position){
+        return viewItemList.get(position);
     }
 }

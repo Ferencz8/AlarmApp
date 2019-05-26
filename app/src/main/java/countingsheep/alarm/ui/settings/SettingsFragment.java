@@ -1,17 +1,24 @@
-package countingsheep.alarm.ui;
+package countingsheep.alarm.ui.settings;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.services.interfaces.AuthenticationService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
+import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
@@ -21,8 +28,20 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView termsAndConditions;
     private TextView feedback;
     private TextView onBoarding;
+    private TextView payment;
     private TextView alarmHistory;
     private TextView logout;
+    private TextView spentTextView;
+    private TextView cashTextView;
+
+    @Inject
+    AuthenticationService authenticationService;
+
+    @Inject
+    BraintreePaymentInteractor braintreePaymentInteractor;
+
+    @Inject
+    SharedPreferencesContainer sharedPreferencesContainer;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -33,7 +52,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       // Injector.getActivityComponent(getActivity()).inject(SettingsFragment.this);
+        Injector.getActivityComponent(getActivity()).inject(this);
     }
 
     @Nullable
@@ -44,10 +63,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         bindViews(view);
 
+        if(sharedPreferencesContainer.getFreeCredits()!=0){
+            this.spentTextView.setText(getString(R.string.creditsLeft));
+            this.cashTextView.setText(sharedPreferencesContainer.getFreeCredits() + " $");
+        }
+        else{
+            this.spentTextView.setText(getString(R.string.spent));
+            //TODO:: add real spent money
+        }
+
         return view;
     }
 
     private void bindViews(View view){
+        spentTextView = view.findViewById(R.id.spent);
+        cashTextView = view.findViewById(R.id.cash_text);
         userPhoto = view.findViewById(R.id.user_photo);
         username = view.findViewById(R.id.username);
         termsAndConditions = view.findViewById(R.id.terms_text);
@@ -56,10 +86,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         feedback.setOnClickListener(this);
         onBoarding = view.findViewById(R.id.onBoarding_text);
         onBoarding.setOnClickListener(this);
+        payment = view.findViewById(R.id.payment_text);
+        payment.setOnClickListener(this);
         alarmHistory = view.findViewById(R.id.history_text);
         alarmHistory.setOnClickListener(this);
         logout = view.findViewById(R.id.logout_text);
         logout.setOnClickListener(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        braintreePaymentInteractor.onActivityResult(requestCode, resultCode,data);
     }
 
 
@@ -81,7 +120,25 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.logout_text:
                 showLogoutPopup();
                 break;
+            case R.id.payment_text:
+                displayPayment();
+                break;
+            default: break;
         }
+    }
+
+    private void displayPayment() {
+        this.braintreePaymentInteractor.displayPaymentMethods(new OnPaymentInteractionResult() {
+            @Override
+            public void onSuccess() {
+                sharedPreferencesContainer.setFreeCredits(0);
+            }
+
+            @Override
+            public void onCanceled() {
+
+            }
+        });
     }
 
     private void showLogoutPopup(){
@@ -92,7 +149,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //TODO: Log out
+                authenticationService.socialLogout();
             }
         });
 

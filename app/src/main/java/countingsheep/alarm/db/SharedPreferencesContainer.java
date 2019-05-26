@@ -18,12 +18,19 @@ public class SharedPreferencesContainer {
     private final static String Token = "Token";
     private final static String DefaultSnoozePrice="DefaultSnoozePrice";
     private final static String FreeCredits="FreeCredits";
+    private final static String MoneySpentOnSnooze = "MoneySpentOnSnooze";
+
+    private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
 
 
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
     }
+
+    public void setPopopShowedRemoveAlarm(){ changePreferenceValue(Popup_ShowedRemoveAlarm, true); }
+
+    public boolean getPopopShowedRemoveAlarm(){ return this.sharedPreferences.getBoolean(Popup_ShowedRemoveAlarm, false); }
 
     public int getDefaultSnoozePrice(){return this.sharedPreferences.getInt(DefaultSnoozePrice, 0);}
 
@@ -37,12 +44,19 @@ public class SharedPreferencesContainer {
 
     public void setCustomerId(String customerId){changePreferenceValue(CustomerId, customerId);}
 
+    public boolean doesCustomerExist(){ return getCustomerId()!=null;}
+
     public int getCurrentUserId(){
         return this.sharedPreferences.getInt(UserId, 0);
     }
 
     public void setCurrentUserId(int currentUserId) {
         changePreferenceValue(UserId, currentUserId);
+    }
+
+    public boolean doesUserIdExist(){
+        int UserDoesNotExistValue = 0;
+        return this.getCurrentUserId()!= UserDoesNotExistValue;
     }
 
     public int getFreeCredits(){
@@ -52,6 +66,10 @@ public class SharedPreferencesContainer {
     public void setFreeCredits(int amount) {
         changePreferenceValue(FreeCredits, amount);
     }
+
+    public int getMoneySpentOnSnooze(){ return this.sharedPreferences.getInt(MoneySpentOnSnooze, 0); }
+
+    public void setMoneySpentOnSnooze(int amount) { changePreferenceValue(MoneySpentOnSnooze, amount); }
 
     public int getMonetizationType(){return this.sharedPreferences.getInt(MonetizationType, 0);}
 

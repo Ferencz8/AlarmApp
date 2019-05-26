@@ -114,10 +114,13 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                    onResult.onError(e);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    onResult.onError(e);
                 } catch (Exception e){
                     e.printStackTrace();
+                    onResult.onError(e);
                 }
             }
         });

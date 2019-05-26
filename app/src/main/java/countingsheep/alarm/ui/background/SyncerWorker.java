@@ -9,14 +9,19 @@ import javax.inject.Inject;
 
 import androidx.work.Worker;
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.AlarmReaction;
+import countingsheep.alarm.db.entities.PaymentDetails;
+import countingsheep.alarm.db.entities.PaymentStatus;
 import countingsheep.alarm.network.retrofit.AlarmAPI;
 import countingsheep.alarm.network.retrofit.AlarmReactionAPI;
 import countingsheep.alarm.network.retrofit.MessageAPI;
+import countingsheep.alarm.network.retrofit.PaymentAPI;
 import countingsheep.alarm.network.retrofit.UserWrappedEntities;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.Message;
@@ -48,6 +53,9 @@ public class SyncerWorker extends Worker {
     @Inject()
     SharedPreferencesContainer sharedPreferencesContainer;
 
+    @Inject()
+    PaymentDetailsRepository paymentDetailsRepository;
+
 
     @NonNull
     @Override
@@ -63,6 +71,9 @@ public class SyncerWorker extends Worker {
             syncAlarms();
 
             syncAlarmReactions();
+
+            //TODO:: maybe move in the future to a separate worker?
+            updatePaymentStatus();
 
             return WorkerResult.SUCCESS;
         }
@@ -142,6 +153,35 @@ public class SyncerWorker extends Worker {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 //TODO: log
+            }
+        });
+    }
+
+    private void updatePaymentStatus(){
+
+        this.paymentDetailsRepository.getAll(PaymentStatus.Requested, new OnAsyncResponse<List<PaymentDetails>>() {
+            @Override
+            public void processResponse(List<PaymentDetails> response) {
+
+                for (PaymentDetails paymentDetail: response) {
+                    try {
+                        retrofit.create(PaymentAPI.class).getPaymentStatus(paymentDetail.getTransactionId()).enqueue(new Callback<PaymentStatus>() {
+                            @Override
+                            public void onResponse(Call<PaymentStatus> call, Response<PaymentStatus> response) {
+                                paymentDetail.setPaymentStatus(response.body());
+                                paymentDetailsRepository.update(paymentDetail);
+                            }
+
+                            @Override
+                            public void onFailure(Call<PaymentStatus> call, Throwable t) {
+                                //TODO: log
+                            }
+                        });
+                    }
+                    catch(Exception ex){
+                        //TODO: log
+                    }
+                }
             }
         });
     }

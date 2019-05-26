@@ -60,7 +60,7 @@ public class DialogInteractorImpl implements DialogInteractor {
             dialog.getWindow().setBackgroundDrawableResource(R.color.colorTransparent);
         }
         dialog.setCanceledOnTouchOutside(!hasInteraction); // Does not allow clicks outside the alert dialog
-        dialog.setC
+
         //dialog.setCancelable(false);//Prevents dismissing the dialog by pressing the BACK button
         dialog.show();
     }
@@ -69,8 +69,6 @@ public class DialogInteractorImpl implements DialogInteractor {
     /**
      * Displays a time picker dialog, with default hour & minutes
      * @param onTimeSetListener
-     * @param hour
-     * @param minutes
      */
     public void displayTimePickerDialog(TimePickerDialog.OnTimeSetListener onTimeSetListener){
 

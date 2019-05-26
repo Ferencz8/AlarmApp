@@ -33,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void socialLogin(final OnSocialLoginResult onResult) {
 
-        if(sharedPreferencesContainer.getCurrentUserId()==UserDoesNotExist){
+        if(!sharedPreferencesContainer.doesUserIdExist()){
 
             //if this is the 1st time the client authenticates,the remote  server register is a MUST
             this.socialAuthenticationService.registerCallback(remotelyRegisterUser(onResult));
@@ -45,6 +45,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         this.socialAuthenticationService.login();
+    }
+
+    @Override
+    public void socialLogout() {
+        this.socialAuthenticationService.logout();
     }
 
     @NonNull
@@ -60,12 +65,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             @Override
             public void onCancel() {
-
+                onResult.onCancel();
             }
 
             @Override
             public void onError(Exception exception) {
-
+                onResult.onError(exception);
             }
         };
     }

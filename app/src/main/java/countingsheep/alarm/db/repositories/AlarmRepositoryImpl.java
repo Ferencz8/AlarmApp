@@ -1,19 +1,18 @@
 package countingsheep.alarm.db.repositories;
 
-import android.os.AsyncTask;
-
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import bolts.Task;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
+import countingsheep.alarm.db.dao.AlarmDao;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
-import countingsheep.alarm.db.repositories.tasks.alarm.DeleteAlarmTask;
+import countingsheep.alarm.db.entities.DbEntity;
+import countingsheep.alarm.db.repositories.tasks.alarm.DeleteLogicallyAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.GenericTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllTurnedOnAlarmsTask;
@@ -49,7 +48,7 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
     @Override
     public void delete(int alarmId) {
-        new DeleteAlarmTask(alarmDatabase, alarmId).execute();
+        new DeleteLogicallyAlarmTask(alarmDatabase, alarmId).execute();
     }
 
 
@@ -74,6 +73,22 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     public void get(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
 
         new GetAllAlarmTask(alarmDatabase.alarmDao(), onAsyncResponse).execute();
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public void getAllNotDeleted(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+        new GenericTask(alarmDatabase.alarmDao(), new GenericTask.OnTaskHandler<AlarmDao, List<Alarm>>() {
+            @Override
+            public List<Alarm> doInBackground(AlarmDao o) {
+                return o.getAllNotDeleted();
+            }
+
+            @Override
+            public void onPostExecute(List<Alarm> returnedValues) {
+                onAsyncResponse.processResponse(null);
+            }
+        });
     }
 
 

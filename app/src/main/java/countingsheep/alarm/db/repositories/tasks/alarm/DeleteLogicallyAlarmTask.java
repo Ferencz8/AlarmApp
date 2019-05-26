@@ -6,13 +6,13 @@ import java.lang.ref.WeakReference;
 
 import countingsheep.alarm.db.AlarmDatabase;
 
-public class DeleteAlarmTask extends AsyncTask<Void, Void, Void> {
+public class DeleteLogicallyAlarmTask extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<AlarmDatabase> alarmDatabaseWeakReference;
     private int alarmId;
 
-    public DeleteAlarmTask(AlarmDatabase alarmDatabase,
-                           int alarmId) {
+    public DeleteLogicallyAlarmTask(AlarmDatabase alarmDatabase,
+                                    int alarmId) {
         this.alarmDatabaseWeakReference = new WeakReference<>(alarmDatabase);
         this.alarmId = alarmId;
     }

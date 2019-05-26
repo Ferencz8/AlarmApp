@@ -1,13 +1,12 @@
 package countingsheep.alarm.internaldi.components;
 
-import android.content.BroadcastReceiver;
-
 import javax.inject.Singleton;
 
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.internaldi.modules.InfrastructureModule;
 import countingsheep.alarm.internaldi.modules.NetworkModule;
-import countingsheep.alarm.ui.OnBoardingActivity;
+import countingsheep.alarm.ui.settings.OnBoardingActivity;
+import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchActivity;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
@@ -34,9 +33,11 @@ public interface ActivityComponent {
 
     void inject(LoginActivity loginActivity);
 
-    void inject(AlarmsFragment alarmFragment);
-
     void inject(MainActivity mainActivity);
+
+    void inject(AlarmsFragment alarmsFragment);
+
+    void inject(SettingsFragment settingsFragment);
 
     void inject(AlarmLaunchActivity alarmLaunchActivity);
 

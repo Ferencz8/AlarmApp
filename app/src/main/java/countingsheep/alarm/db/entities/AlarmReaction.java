@@ -3,6 +3,7 @@ package countingsheep.alarm.db.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -21,7 +22,8 @@ import static androidx.room.ForeignKey.SET_NULL;
         parentColumns = "id",
         childColumns = "alarmId",
         onDelete = SET_NULL,
-        onUpdate = CASCADE))
+        onUpdate = CASCADE),
+        indices = {@Index("alarmId")})
 public class AlarmReaction implements Serializable {
 
     @SerializedName("deviceAlarmReactionId")
@@ -58,15 +60,9 @@ public class AlarmReaction implements Serializable {
 
     private boolean isSynced;
 
-    private boolean isPaymentRequested;
-
-    public boolean isPaymentRequested() {
-        return isPaymentRequested;
-    }
-
-    public void setPaymentRequested(boolean paymentRequested) {
-        isPaymentRequested = paymentRequested;
-    }
+    //used to determine whether an alarm reaction requires payment processing to be done
+    //For free credit alarms & awake reaction this is false, otherwise true
+    private boolean isPayable;
 
     public boolean isSynced() {
         return isSynced;
@@ -122,5 +118,13 @@ public class AlarmReaction implements Serializable {
 
     public void setSnooze(boolean snooze) {
         isSnooze = snooze;
+    }
+
+    public boolean isPayable() {
+        return isPayable;
+    }
+
+    public void setPayable(boolean payable) {
+        isPayable = payable;
     }
 }

@@ -6,22 +6,20 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Handler;
-import androidx.content.ContextCompat;
+import android.os.Bundle;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.helper.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -95,7 +93,7 @@ public class AlarmsFragment extends Fragment {
         setUpAnimationDecoratorHelper();
 
         addAlarm = (ImageView) view.findViewById(R.id.addAlarmButtonId);
-        addAlarm.setOnClickListener(new View.OnClickListener(){
+        addAlarm.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -107,14 +105,11 @@ public class AlarmsFragment extends Fragment {
         return view;
     }
 
-    private void initAlarms(){
+    private void initAlarms() {
 
-        alarmService.getAll(new OnAsyncResponse<List<Alarm>>() {
-            @Override
-            public void processResponse(List<Alarm> response) {
-                alarms.addAll(response);
-                adapter.notifyDataSetChanged();
-            }
+        alarmService.getAll(response -> {
+            alarms.addAll(response);
+            adapter.notifyDataSetChanged();
         });
     }
 
@@ -148,7 +143,9 @@ public class AlarmsFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                    adapter.remove(swipedPosition);
+                Alarm alarm = adapter.getAlarm(swipedPosition);
+                alarmService.delete(alarm.getId());
+                adapter.remove(swipedPosition);
             }
 
             @Override
@@ -172,7 +169,7 @@ public class AlarmsFragment extends Fragment {
 
                 int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
                 int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
                 int xMarkBottom = xMarkTop + intrinsicHeight;
                 xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
 

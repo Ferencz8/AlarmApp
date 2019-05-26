@@ -1,7 +1,5 @@
 package countingsheep.alarm.core.services;
 
-import android.content.SharedPreferences;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +10,15 @@ import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.PaymentService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.entities.Message;
+import countingsheep.alarm.db.entities.PaymentDetails;
+import countingsheep.alarm.db.entities.PaymentStatus;
 
 @Singleton
 public class AlarmReactionServiceImpl implements AlarmReactionService {
@@ -41,50 +42,51 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
         this.messageService = messageService;
         this.timeService = timeService;
         this.paymentService = paymentService;
+
         this.sharedPreferencesContainer = sharedPreferencesContainer;
     }
 
     @Override
-    public void add(final int alarmId, boolean isSnooze, final OnAsyncResponse<Message> onAsyncResponse) {
-        final AlarmReaction alarmReaction = new AlarmReaction();
+    public void add(final int alarmId, boolean isSnooze, final OnAsyncResponse<Void> onAsyncResponse) {
+        try {
+            final AlarmReaction alarmReaction = new AlarmReaction();
 
-        alarmReaction.setReactedAt(this.timeService.getUTCDateNow());
-        alarmReaction.setAlarmId(alarmId);
-        alarmReaction.setSnooze(isSnooze);
+            alarmReaction.setReactedAt(this.timeService.getUTCDateNow());
+            alarmReaction.setAlarmId(alarmId);
+            alarmReaction.setSnooze(isSnooze);
 
-        this.alarmRepository.get(alarmId, alarmAsResponse -> {
 
-            alarmReaction.setCurrentHour(alarmAsResponse.getHour());
-            alarmReaction.setCurrentMinutes(alarmAsResponse.getMinutes());
-            alarmReactionRepository.insert(alarmReaction, alarmReactionAsResponse -> {
+            this.alarmRepository.get(alarmId, alarmAsResponse -> {
 
-                if(isSnooze) {
+                alarmReaction.setCurrentHour(alarmAsResponse.getHour());
+                alarmReaction.setCurrentMinutes(alarmAsResponse.getMinutes());
+
+                if (isSnooze) {
                     int freeCreditsAmount = this.sharedPreferencesContainer.getFreeCredits();
 
-                    if(freeCreditsAmount > 0) {
+                    if (freeCreditsAmount > 0) {
                         this.sharedPreferencesContainer.setFreeCredits(--freeCreditsAmount);
+                    } else {
+                        alarmReaction.setPayable(true);
+                        alarmReactionRepository.insert(alarmReaction, dbAlarmReactionId ->
+                                requestSnoozePayment(dbAlarmReactionId.intValue())
+                        );
                     }
-                    else{
-                        requestSnoozePayment(alarmReactionAsResponse.intValue());
-                    }
+                } else {
+                    alarmReactionRepository.insert(alarmReaction);
                 }
             });
-        });
+        }
+        catch(Exception exception){
+            //TODO::LOG
+        }
+        finally {
+            onAsyncResponse.processResponse(null);
+        }
     }
 
     public void requestSnoozePayment(int alarmReactionId) {
-        paymentService.processPayment(alarmReactionId, new OnResult() {
-            @Override
-            public void onSuccess(Object result) {
-                AlarmReaction alarmReaction = alarmReactionRepository.get(alarmReactionId);
-                alarmReaction.setPaymentRequested(true);
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
+        paymentService.processPayment(alarmReactionId,null);
         //the alarm reaction id might not be on the server yet, in which case it needs to be added
         //verify if it exists on server using isSync
         //also verify before doing any server call if there is internet
@@ -93,10 +95,9 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
 
     @Override
     public List<AlarmReaction> getAllUnsynced() {
-        try{
+        try {
             return this.alarmReactionRepository.getAllUnsynced();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //TODO:: log
             return null;
         }
@@ -107,7 +108,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
         try {
 
             List<Integer> alarmReactionIds = new ArrayList<>();
-            for (AlarmReaction alarmReaction: unsyncedAlarmsReactions) {
+            for (AlarmReaction alarmReaction : unsyncedAlarmsReactions) {
                 alarmReactionIds.add(alarmReaction.getId());
             }
 

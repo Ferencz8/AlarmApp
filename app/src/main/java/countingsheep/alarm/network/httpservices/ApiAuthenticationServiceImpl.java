@@ -36,28 +36,7 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
     @Override
     public void register(User user) {
 
-        retrofit.create(UserAPI.class).register(user).enqueue(new Callback<UserRegistration>() {
-            @Override
-            public void onResponse(Call<UserRegistration> call, Response<UserRegistration> response) {
-
-                try {
-                    UserRegistration registeredUser = response.body();
-                    if(registeredUser!=null) {
-                        sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
-                        sharedPreferencesContainer.setCurrentUserId(registeredUser.getUserId());
-                    }
-
-                } catch (NumberFormatException nfe) {
-                    Toast.makeText(activity, "Failed to connect to server!", Toast.LENGTH_LONG).show();
-                    //TODO:: send a Server failed to connect error
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserRegistration> call, Throwable t) {
-
-            }
-        });
+        this.register(user, null);
     }
 
     @Override
@@ -72,18 +51,25 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
                     if(registeredUser!=null) {
                         sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
                         sharedPreferencesContainer.setCurrentUserId(registeredUser.getUserId());
+                        sharedPreferencesContainer.setMoneySpentOnSnooze(registeredUser.getMoneySpentOnSnooze());
 
-                        onSocialLoginResult.onSuccess(user);
+                        if(onSocialLoginResult!=null) {
+                            onSocialLoginResult.onSuccess(user);
+                        }
                     }
                 } catch (NumberFormatException nfe) {
                     Toast.makeText(activity, "Failed to connect to server!", Toast.LENGTH_LONG).show();
-                    onSocialLoginResult.onError(null);
+                    if(onSocialLoginResult!=null) {
+                        onSocialLoginResult.onError(null);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<UserRegistration> call, Throwable t) {
-                onSocialLoginResult.onError(null);
+                if(onSocialLoginResult!=null) {
+                    onSocialLoginResult.onError(null);
+                }
             }
         });
     }

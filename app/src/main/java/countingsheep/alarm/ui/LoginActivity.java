@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,33 +18,26 @@ import android.text.Spanned;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
-import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.cardform.view.CardForm;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import javax.inject.Inject;
-
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.api.OnSocialLoginResult;
 import countingsheep.alarm.core.domain.User;
-import countingsheep.alarm.core.domain.UserRegistration;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
-import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
+import countingsheep.alarm.ui.settings.OnBoardingActivity;
+import countingsheep.alarm.ui.settings.TermsAndConditionsActivity;
 import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -51,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     CheckBox checkBox;
     TextView termsText;
     Activity activity;
+    ProgressBar spinner;
 
     @Inject
     SocialAuthenticationService socialAuthenticationService;
@@ -61,29 +57,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Retrofit retrofit;
 
     @Inject
-    BraintreePaymentInteractor braintreePaymentInteractor;
-
-    @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
 
     private void bindViews() {
         SignUpButton = findViewById(R.id.SignUpID);
         checkBox = findViewById(R.id.checkBox);
         termsText = findViewById(R.id.Terms2);
+        spinner = findViewById(R.id.loadingCircle);
+        spinner.setVisibility(View.INVISIBLE);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Regular.otf");
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         //termsText.setTypeface(custom_font);
 
         termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#00CBEB'>Terms of Service</font></b></p>"));
-
     }
 
     private static Spanned fromHtmlN(String data) {
         Spanned result;
         result = Html.fromHtml(data);
         return result;
-
     }
 
     @Override
@@ -101,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         setContentView(R.layout.activity_login);
-        printKeyHash();
+        //printKeyHash();
         bindViews();
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
         final Drawable drawableOff = getDrawable(R.drawable.ic_checked_box);
@@ -128,8 +121,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        braintreePaymentInteractor.onActivityResult(requestCode, resultCode,data);
-
         socialAuthenticationService.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -141,7 +132,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-
             }
 
         } catch (PackageManager.NameNotFoundException e) {
@@ -164,6 +154,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                    Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
 //                    startActivity(intent);
 
+                    spinner.setVisibility(View.VISIBLE);
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     authenticationService.socialLogin(new OnSocialLoginResult() {
 
                         @Override
@@ -179,16 +172,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
                                 startActivity(intent);
                             }
+
+                            //TODO:: add here the stop loading bar logic
+                            spinner.setVisibility(View.INVISIBLE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }
 
                         @Override
                         public void onCancel() {
-
+                            spinner.setVisibility(View.INVISIBLE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }
 
                         @Override
                         public void onError(Exception exception) {
                             Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_LONG).show();
+                            spinner.setVisibility(View.INVISIBLE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }
                     });
                 }
@@ -199,26 +199,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //Toast.makeText(activity, "This is a term", Toast.LENGTH_SHORT);
                 break;
         }
-
-    }
-
-
-    private void registerCustomer() {
-
-       // braintreePaymentInteractor.displayPaymentMethods();
-
-//        BraintreeFragment mBraintreeFragment = null;
-
-//        mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
-//            @Override
-//            public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
-//                String nonce =  paymentMethodNonce.getNonce();
-//            }
-//        });
-        //temp
-
-//        Intent intent =  new Intent(LoginActivity.this, CardActivity.class);
-//        startActivity(intent);
-
     }
 }

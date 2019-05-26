@@ -10,6 +10,12 @@ public class UserRegistration {
     @Expose
     private String customerId;
 
+    @Expose
+    private String token;
+
+    @Expose
+    private int moneySpentOnSnooze;
+
     public int getUserId() {
         return userId;
     }
@@ -24,5 +30,21 @@ public class UserRegistration {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public int getMoneySpentOnSnooze() {
+        return moneySpentOnSnooze;
+    }
+
+    public void setMoneySpentOnSnooze(int moneySpentOnSnooze) {
+        this.moneySpentOnSnooze = moneySpentOnSnooze;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

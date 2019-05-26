@@ -101,7 +101,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void getAll(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
-        this.alarmRepository.get(onAsyncResponse);
+        this.alarmRepository.getAllNotDeleted(onAsyncResponse);
     }
 
     @Override

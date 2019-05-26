@@ -12,7 +12,6 @@ import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.db.SharedPreferencesContainer;
-import countingsheep.alarm.ui.OnBoardingActivity;
 
 public class FreeCreditsActivity extends AppCompatActivity {
 

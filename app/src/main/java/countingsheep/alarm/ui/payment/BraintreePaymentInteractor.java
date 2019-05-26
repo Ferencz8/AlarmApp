@@ -77,20 +77,22 @@ public class BraintreePaymentInteractor {
             //todo:: decide if it is a new customer/a new payent method/or none of the above
             String paymentMethodNonce = result.getPaymentMethodNonce().getNonce();
 
-            String customerId = this.sharedPreferencesContainer.getCustomerId();
-            if(customerId== null || customerId.isEmpty()){
-                addOrUpdatePaymentMethod(paymentMethodNonce, this.sharedPreferencesContainer.getCurrentUserId(), customerId);
-                //registerCustomer(paymentMethodNonce, this.sharedPreferencesContainer.getCurrentUserId());
+            if(!this.sharedPreferencesContainer.doesCustomerExist()){
+                registerCustomer(paymentMethodNonce, this.sharedPreferencesContainer.getCurrentUserId());
             }
             else {
-                addOrUpdatePaymentMethod(paymentMethodNonce, this.sharedPreferencesContainer.getCurrentUserId(), customerId);
+                addOrUpdatePaymentMethod(paymentMethodNonce, this.sharedPreferencesContainer.getCurrentUserId(), this.sharedPreferencesContainer.getCustomerId());
             }
 
-            this.onPaymentInteractionResult.onSuccess();
+            if(this.onPaymentInteractionResult!=null) {
+                this.onPaymentInteractionResult.onSuccess();
+            }
             // send paymentMethodNonce to your server
         } else if (resultCode == Activity.RESULT_CANCELED) {
             // canceled
-            this.onPaymentInteractionResult.onCanceled();
+            if(this.onPaymentInteractionResult!=null) {
+                this.onPaymentInteractionResult.onCanceled();
+            }
         } else {
             // an error occurred, checked the returned exception
             Exception exception = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);

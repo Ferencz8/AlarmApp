@@ -29,4 +29,6 @@ public interface AlarmRepository {
     void getOnOrOffAlarms(OnAsyncResponse<List<Alarm>> onAsyncResponse, boolean state);
 
     void markAlarmsSynced(List<Integer> alarmIds);
+
+    void getAllNotDeleted(OnAsyncResponse<List<Alarm>> onAsyncResponse);
 }

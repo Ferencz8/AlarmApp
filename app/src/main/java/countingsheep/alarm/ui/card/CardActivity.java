@@ -92,14 +92,14 @@
 //                                    public void onResponse(Call<Customer> call, Response<Customer> response) {
 //
 //                                        if (response.isSuccessful()) {
-//                                            Log.d("Yay", "Payment went smoothly");
+//                                            Log.d("Yay", "PaymentDetails went smoothly");
 //                                            tokenToPay = response.body().getToken();
 //                                        }
 //                                    }
 //
 //                                    @Override
 //                                    public void onFailure(Call<Customer> call, Throwable t) {
-//                                        Log.d("ERROR", "Payment Failed");
+//                                        Log.d("ERROR", "PaymentDetails Failed");
 //                                    }
 //                                });
 //                            }
@@ -156,13 +156,13 @@
 //            public void onResponse(Call<Void> call, Response<Void> response) {
 //
 //                if (response.isSuccessful()) {
-//                    Log.d("Yay", "Payment went smoothly");
+//                    Log.d("Yay", "PaymentDetails went smoothly");
 //                }
 //            }
 //
 //            @Override
 //            public void onFailure(Call<Void> call, Throwable t) {
-//                Log.d("ERROR", "Payment Failed");
+//                Log.d("ERROR", "PaymentDetails Failed");
 //            }
 //        });
 //    }

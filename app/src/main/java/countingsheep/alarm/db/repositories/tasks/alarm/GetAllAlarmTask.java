@@ -26,7 +26,7 @@ public class GetAllAlarmTask extends AsyncTask<Void, Void, List<Alarm>> {
         if(alarmDao==null)
             return null;
 
-        return    alarmDao.getAll();
+        return alarmDao.getAll();
     }
 
     @Override
