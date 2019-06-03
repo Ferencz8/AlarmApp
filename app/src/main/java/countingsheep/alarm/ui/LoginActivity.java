@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
                 } else {
                     //TODO: remove on production
-//                    Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                    startActivity(intent);
 
                     spinner.setVisibility(View.VISIBLE);

@@ -266,7 +266,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     this.showRingtonePicker(Uri.parse(alarm.getRingtonePath()));
                 } else {
-                    this.dialogInteractor.displayDialog("Permission Impact", "The permission needs to be granted in order for the app to be allowed to show ringtones", null);
+                    this.dialogInteractor.displayReactiveDialog("Permission Impact", "The permission needs to be granted in order for the app to be allowed to show ringtones", null);
                 }
                 return;
             }
@@ -345,7 +345,7 @@ public class AddAlarmActivity extends AppCompatActivity {
 
         } catch (Exception exception) {
             //log
-            dialogInteractor.displayDialog("Time Conversion Failed", "Please retry!", null);
+            dialogInteractor.displayReactiveDialog("Time Conversion Failed", "Please retry!", null);
         }
 
         return time;
@@ -408,7 +408,7 @@ public class AddAlarmActivity extends AppCompatActivity {
             return snoozeAmount;
         } catch (ClassCastException castException) {
 
-            dialogInteractor.displayDialog("Snooze converions", "Snooze value was not selected!", null);
+            dialogInteractor.displayReactiveDialog("Snooze converions", "Snooze value was not selected!", null);
             return 5;//this will be the dafult value for testing, until we implement a screen for snoozes
         }
     }

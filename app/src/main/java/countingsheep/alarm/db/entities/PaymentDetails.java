@@ -13,7 +13,7 @@ import countingsheep.alarm.util.PaymentStatusConverter;
 import countingsheep.alarm.util.TimestampConverter;
 
 @Entity
-public class PaymentDetails {
+public class PaymentDetails extends  DbEntity{
 
     @PrimaryKey(autoGenerate = true)
     private int id;

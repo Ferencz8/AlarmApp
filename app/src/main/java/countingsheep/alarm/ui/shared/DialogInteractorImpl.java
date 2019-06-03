@@ -1,8 +1,13 @@
 package countingsheep.alarm.ui.shared;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import countingsheep.alarm.R;
 
@@ -24,6 +29,31 @@ public class DialogInteractorImpl implements DialogInteractor {
         this.activity = activity;
     }
 
+    public void displayInfoDialog(int imageResourceId, String text){
+        this.displayInfoDialog(imageResourceId, text, null);
+    }
+
+    public void displayInfoDialog(int imageResourceId, String text, OnClick onClick){
+        Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.generic_popup);
+        ImageView popupImage = dialog.findViewById(R.id.popupImageView);
+        popupImage.setImageResource(imageResourceId);
+        TextView popupText = dialog.findViewById(R.id.popupTextId);
+        popupText.setText(text);
+
+        TextView okText = dialog.findViewById(R.id.ok_text);
+        okText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if(onClick!=null){
+                    onClick.doWork();
+                }
+            }
+        });
+        dialog.show();
+    }
+
     /**
      * Displays an alert dialog using the specified parameters with the possibility to react with OK/Cancel or not.
      *
@@ -32,7 +62,7 @@ public class DialogInteractorImpl implements DialogInteractor {
      * @param onReaction
      */
     @Override
-    public void displayDialog(String title, String message, final OnReaction onReaction) {
+    public void displayReactiveDialog(String title, String message, final OnReaction onReaction) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.activity)
                 .setTitle(title)
                 .setMessage(message);

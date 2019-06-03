@@ -4,5 +4,7 @@ public interface OnResult<T> {
 
     void onSuccess(T result);
 
-    void onFailure();
+    default void onFailure(){}
+
+    default void onFailure(String message){}
 }

@@ -146,8 +146,7 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
 
     private User extractUser(JSONObject object) throws MalformedURLException, JSONException {
         User user = new User();
-//        profilePictureURL = new URL("https://graph.facebook.com/"+object.getString("id")+"/picture?width=250&height=250");
-//        Log.d("response", profilePictureURL.toString());
+        user.profilePictureUrl = "https://graph.facebook.com/"+object.getString("id")+"/picture?width=250&height=250";
         user.firstName = object.optString("first_name", null);
         user.lastName = object.optString("last_name", null);
         user.email = object.optString("email", null);

@@ -26,4 +26,7 @@ public class User {
 
     @Expose
     public Date birthday;
+
+    @Expose
+    public  String profilePictureUrl;
 }

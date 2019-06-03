@@ -19,6 +19,9 @@ public class SharedPreferencesContainer {
     private final static String DefaultSnoozePrice="DefaultSnoozePrice";
     private final static String FreeCredits="FreeCredits";
     private final static String MoneySpentOnSnooze = "MoneySpentOnSnooze";
+    private final static String ProfilePictureUrl = "ProfilePictureUrl";
+    private final static String ProfilePicturePath = "ProfilePicturePath";
+    private final static String Fullname = "Fullname";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
 
@@ -36,6 +39,15 @@ public class SharedPreferencesContainer {
 
     public void setDefaultSnoozePrice(int price){changePreferenceValue(DefaultSnoozePrice, price);}
 
+    public boolean doesAllPaymentInformationExist(){
+        return doesTokenExist() && doesCustomerExist();
+    }
+
+    public boolean doesTokenExist(){
+        String token = getToken();
+        return token !=null && token !="";
+    }
+
     public String getToken(){return this.sharedPreferences.getString(Token, "");}
 
     public void setToken(String token){changePreferenceValue(Token, token);}
@@ -45,6 +57,31 @@ public class SharedPreferencesContainer {
     public void setCustomerId(String customerId){changePreferenceValue(CustomerId, customerId);}
 
     public boolean doesCustomerExist(){ return getCustomerId()!=null;}
+
+
+    public String getProfilePictureLocalPath() {
+        return this.sharedPreferences.getString(ProfilePicturePath, "");
+    }
+
+    public void setProfilePictureLocalPath(String profilePicturePath) {
+        changePreferenceValue(ProfilePicturePath, profilePicturePath);
+    }
+
+    public String getProfilePictureUrl() {
+        return this.sharedPreferences.getString(ProfilePictureUrl, "");
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        changePreferenceValue(ProfilePictureUrl, profilePictureUrl);
+    }
+
+    public String getFullname() {
+        return this.sharedPreferences.getString(Fullname, "");
+    }
+
+    public void setFullname(String fullname) {
+        changePreferenceValue(Fullname, fullname);
+    }
 
     public int getCurrentUserId(){
         return this.sharedPreferences.getInt(UserId, 0);
@@ -92,17 +129,17 @@ public class SharedPreferencesContainer {
     }
 
     private <T> void changePreferenceValue(String key, T value){
-        SharedPreferences.Editor editor = this.sharedPreferences.edit();
-        if(value instanceof Integer){
-            editor.putInt(key, (Integer)value);
-        }
-        else if(value instanceof String){
-            editor.putString(key, (String)value);
-        }
-        else if(value instanceof Boolean){
-            editor.putBoolean(key, (Boolean) value);
-        }
+        synchronized (this) {
+            SharedPreferences.Editor editor = this.sharedPreferences.edit();
+            if (value instanceof Integer) {
+                editor.putInt(key, (Integer) value);
+            } else if (value instanceof String) {
+                editor.putString(key, (String) value);
+            } else if (value instanceof Boolean) {
+                editor.putBoolean(key, (Boolean) value);
+            }
 
-        editor.apply();
+            editor.apply();
+        }
     }
 }

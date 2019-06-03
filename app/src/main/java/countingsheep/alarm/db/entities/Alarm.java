@@ -14,7 +14,7 @@ import java.util.Date;
 import countingsheep.alarm.util.TimestampConverter;
 
 @Entity
-public class Alarm implements Serializable, DbEntity {
+public class Alarm extends DbEntity implements Serializable {
 
     public Alarm() {
         this.setVobrateOn(true);

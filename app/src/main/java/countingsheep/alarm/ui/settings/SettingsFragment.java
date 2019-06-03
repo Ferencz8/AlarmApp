@@ -1,7 +1,10 @@
 package countingsheep.alarm.ui.settings;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +15,17 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.infrastructure.EMailServiceImpl;
+import countingsheep.alarm.network.tasks.ProfilePictureTask;
+import countingsheep.alarm.network.tasks.ProfilePictureTaskResponse;
 import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
 import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,6 +52,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
 
+    @Inject
+    EMailServiceImpl eMailService;
+
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
         return fragment;
@@ -63,11 +75,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         bindViews(view);
 
-        if(sharedPreferencesContainer.getFreeCredits()!=0){
+        if (sharedPreferencesContainer.getFreeCredits() != 0) {
             this.spentTextView.setText(getString(R.string.creditsLeft));
             this.cashTextView.setText(sharedPreferencesContainer.getFreeCredits() + " $");
-        }
-        else{
+        } else {
             this.spentTextView.setText(getString(R.string.spent));
             //TODO:: add real spent money
         }
@@ -75,11 +86,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void bindViews(View view){
+    private void bindViews(View view) {
         spentTextView = view.findViewById(R.id.spent);
         cashTextView = view.findViewById(R.id.cash_text);
         userPhoto = view.findViewById(R.id.user_photo);
+        loadProfilePicture();
         username = view.findViewById(R.id.username);
+        username.setText(this.sharedPreferencesContainer.getFullname());
         termsAndConditions = view.findViewById(R.id.terms_text);
         termsAndConditions.setOnClickListener(this);
         feedback = view.findViewById(R.id.feedback_text);
@@ -92,6 +105,60 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         alarmHistory.setOnClickListener(this);
         logout = view.findViewById(R.id.logout_text);
         logout.setOnClickListener(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    new ProfilePictureTask(this.getContext(), this.sharedPreferencesContainer.getProfilePictureUrl(), new ProfilePictureTaskResponse() {
+                        @Override
+                        public void OnImageAvailable(@NonNull String imagePath) {
+                            sharedPreferencesContainer.setProfilePictureLocalPath(imagePath);
+                            userPhoto.invalidate();
+                            userPhoto.setImageURI(Uri.parse(imagePath));
+                        }
+                    }).execute();
+                } else {
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    private void loadProfilePicture() {
+        if (this.sharedPreferencesContainer.getProfilePictureLocalPath() != "") {
+            userPhoto.setImageURI(Uri.parse(this.sharedPreferencesContainer.getProfilePictureLocalPath()));
+        } else {
+
+            if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this.getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        1);
+            }
+            else {
+
+                new ProfilePictureTask(this.getContext(), "https://graph.facebook.com/2092028077486336/picture?width=250&height=250", new ProfilePictureTaskResponse() {
+                    @Override
+                    public void OnImageAvailable(@NonNull String imagePath) {
+                        sharedPreferencesContainer.setProfilePictureLocalPath(imagePath);
+                        userPhoto.invalidate();
+                        userPhoto.setImageURI(Uri.parse(imagePath));
+                    }
+                }).execute();
+            }
+        }
     }
 
     @Override
@@ -110,6 +177,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.feedback_text:
+                this.eMailService.SendFeedbackEMail("");
                 break;
             case R.id.onBoarding_text:
                 Intent intent1 = new Intent(getActivity(), OnBoardingActivity.class);

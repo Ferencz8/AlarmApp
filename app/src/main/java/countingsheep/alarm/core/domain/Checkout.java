@@ -14,13 +14,24 @@ public class Checkout {
     private int alarmReactionId;
 
     @Expose
-    private int customerId;
+    private String customerId;
 
-    public int getCustomerId() {
+    @Expose
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

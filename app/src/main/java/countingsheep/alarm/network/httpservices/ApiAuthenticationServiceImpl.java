@@ -49,6 +49,8 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
                 try {
                     UserRegistration registeredUser = response.body();
                     if(registeredUser!=null) {
+                        sharedPreferencesContainer.setFullname(registeredUser.getFullname());
+                        sharedPreferencesContainer.setProfilePictureUrl(registeredUser.getProfilePictureUrl());
                         sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
                         sharedPreferencesContainer.setCurrentUserId(registeredUser.getUserId());
                         sharedPreferencesContainer.setMoneySpentOnSnooze(registeredUser.getMoneySpentOnSnooze());

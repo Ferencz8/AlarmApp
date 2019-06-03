@@ -7,11 +7,11 @@ import java.util.List;
 import countingsheep.alarm.db.dao.BaseDao;
 import countingsheep.alarm.db.entities.DbEntity;
 
-@SuppressWarnings("unchecked")
-public class GenericTask<TDao extends BaseDao, TReturn> extends AsyncTask<Void, Void, TReturn> {
+
+public class GetGenericTask<TDao extends BaseDao, TReturn extends DbEntity> extends AsyncTask<Void, Void, TReturn> {
 
 
-    public interface OnTaskHandler<TDao extends BaseDao, TReturn>{
+    public interface OnTaskHandler<TDao extends BaseDao, TReturn extends DbEntity>{
         TReturn doInBackground(TDao dao);
 
         void onPostExecute(TReturn returnedValues);
@@ -21,7 +21,7 @@ public class GenericTask<TDao extends BaseDao, TReturn> extends AsyncTask<Void, 
     private WeakReference<TDao> daoWeakReference;
     private WeakReference<OnTaskHandler<TDao, TReturn>> onTaskHandlerWeakReference;
 
-    public GenericTask(TDao dao, OnTaskHandler<TDao, TReturn> onTaskHandler) {
+    public GetGenericTask(TDao dao, OnTaskHandler<TDao, TReturn> onTaskHandler) {
         this.daoWeakReference = new WeakReference<>(dao);
         this.onTaskHandlerWeakReference = new WeakReference<>(onTaskHandler);
     }
@@ -33,14 +33,14 @@ public class GenericTask<TDao extends BaseDao, TReturn> extends AsyncTask<Void, 
         if(dao==null)
             return null;
 
-        OnTaskHandler onTaskHandler = this.onTaskHandlerWeakReference.get();
-        return (TReturn) onTaskHandler.doInBackground(dao);
+        OnTaskHandler<TDao, TReturn> onTaskHandler = this.onTaskHandlerWeakReference.get();
+        return onTaskHandler.doInBackground(dao);
     }
 
     @Override
     protected void onPostExecute(TReturn treturn) {
 
-        OnTaskHandler onTaskHandler = this.onTaskHandlerWeakReference.get();
+        OnTaskHandler<TDao, TReturn> onTaskHandler = this.onTaskHandlerWeakReference.get();
         if(onTaskHandler!=null) {
             onTaskHandler.onPostExecute(treturn);
         }

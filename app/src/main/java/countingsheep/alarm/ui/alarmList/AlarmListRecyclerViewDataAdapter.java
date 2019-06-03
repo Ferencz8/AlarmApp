@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import countingsheep.alarm.R;
@@ -128,7 +124,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
 
         }catch(Exception exception){
             //log
-            dialogInteractor.displayDialog("Time Conversion Failed", "Please retry!", null);
+            dialogInteractor.displayReactiveDialog("Time Conversion Failed", "Please retry!", null);
         }
 
         return time;

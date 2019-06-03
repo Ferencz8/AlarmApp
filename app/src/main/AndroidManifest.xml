@@ -66,6 +66,8 @@
         </receiver>
 
         <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity" />
+        <activity android:name=".ui.freecredits.FreeCreditsActivity" />
+
         <!--<activity android:name=".ui.card.CardActivity" />-->
         <!--<service android:name=".ui.alarmLaunch.AlarmBootService"/>-->
     </application>

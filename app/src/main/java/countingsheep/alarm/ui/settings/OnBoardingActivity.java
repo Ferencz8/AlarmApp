@@ -153,6 +153,8 @@ public class OnBoardingActivity extends FragmentActivity implements View.OnClick
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if(resultCode == Activity.RESULT_CANCELED){
             Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
             startActivity(intent);

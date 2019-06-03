@@ -27,8 +27,12 @@ import javax.inject.Inject;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.db.entities.PaymentDetails;
+import countingsheep.alarm.db.entities.PaymentStatus;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.ui.shared.DialogInteractor;
@@ -54,6 +58,12 @@ public class AlarmsFragment extends Fragment {
 
     @Inject
     AlarmLaunchHandler alarmLaunchHandler;
+
+    @Inject
+    SharedPreferencesContainer sharedPreferencesContainer;
+
+    @Inject
+    PaymentDetailsRepository paymentDetailsRepository;
 
     public static AlarmsFragment newInstance() {
         AlarmsFragment fragment = new AlarmsFragment();
@@ -93,16 +103,46 @@ public class AlarmsFragment extends Fragment {
         setUpAnimationDecoratorHelper();
 
         addAlarm = (ImageView) view.findViewById(R.id.addAlarmButtonId);
-        addAlarm.setOnClickListener(new View.OnClickListener() {
+        addAlarm.setOnClickListener(getAddAlarmOnClick());
+
+        return view;
+    }
+
+    private View.OnClickListener getAddAlarmOnClick() {
+        return new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getView().getContext(), AddAlarmActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        return view;
+                if(sharedPreferencesContainer.getFreeCredits() == 0 && !sharedPreferencesContainer.doesAllPaymentInformationExist()){
+
+                    dialogInteractor.displayInfoDialog(R.drawable.ic_icon_clock, "You have no more credits left. Please add a valid payment method.");
+                }
+                else{
+                    paymentDetailsRepository.getAll(PaymentStatus.Failed, new OnAsyncResponse<List<PaymentDetails>>() {
+                        @Override
+                        public void processResponse(List<PaymentDetails> response) {
+                            //TODO: add loading bar
+                            //TODO:: if slow then create a flag with existing failed payment statuses in shared pref, once the updatePaymentStatusJob runs and
+                            //only then use this logic
+                            if(response!=null && response.size() > 0){
+
+                                dialogInteractor.displayInfoDialog(R.drawable.ic_icon_clock, "First please pay the failed transactions!", () -> {
+
+//                                    Intent intent = new Intent(getView().getContext(), AlarmHistoryActivity.class);
+//                                    startActivity(intent);
+                                });
+                            }
+                            else {
+
+                                Intent intent = new Intent(getView().getContext(), AddAlarmActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                }
+            }
+        };
     }
 
     private void initAlarms() {

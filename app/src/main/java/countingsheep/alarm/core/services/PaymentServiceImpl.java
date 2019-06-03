@@ -55,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
             Checkout checkout = initializeCheckout(alarmReactionId);
 
             if (!this.networkInteractor.isNetworkAvailable()) {
-                InsertPaymentDetail(paymentDetails, PaymentStatus.Failed);
+                InsertPaymentDetail(paymentDetails, PaymentStatus.NotConnectedToInternetToPay);
                 if(onResult!=null) {
                     onResult.onFailure();
                 }
@@ -94,60 +94,59 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
 
-//    public void processFailedPayment(int alarmReactionId, OnResult<String> onResult){
-//        if (alarmReactionId == 0) return;
-//        try {
-//            if (!this.networkInteractor.isNetworkAvailable()) {
-//                onResult.onFailure();
-//            }
-//            else {
-//
-//                Checkout checkout = initializeCheckout(alarmReactionId);
-//
-//                this.paymentDetailsRepository.getForAlarmReactionId(alarmReactionId, new OnAsyncResponse<PaymentDetails>() {
-//                    @Override
-//                    public void processResponse(PaymentDetails response) {
-//                        if(response.getPaymentStatus() != PaymentStatus.Failed){
-//                            //TODO log -> FATAL ERROR
-//                        }
-//                        else{
-//
-//                        }
-//                    }
-//                });
-//
-//
-//                retrofit.create(PaymentAPI.class).checkout(checkout).enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//
-//                        if (response.isSuccessful()) {
-//                            Log.d(TAG, "PaymentDetails processed successfully");
-//
-//                            paymentDetails.setTransactionId(response.body());
-//                            InsertPaymentDetail(paymentDetails, PaymentStatus.Requested);
-//                            if (onResult != null) {
-//                                onResult.onSuccess(null);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//                        Log.d(TAG, "PaymentDetails processing Failed");
-//
-//                        InsertPaymentDetail(paymentDetails, PaymentStatus.Failed);
-//                        if (onResult != null) {
-//                            onResult.onFailure();
-//                        }
-//                    }
-//                });
-//            }
-//        } catch (Exception exception) {
-//            Log.e(TAG, "Failed to process payment with exception message" + exception.getMessage());
-//            InsertPaymentDetail(paymentDetails, PaymentStatus.Failed);
-//        }
-//    }
+    public void processFailedPayment(int alarmReactionId, OnResult<String> onResult){
+        if (alarmReactionId == 0) return;
+        try {
+            if (!this.networkInteractor.isNetworkAvailable()) {
+                onResult.onFailure("Network is not available!");
+            }
+            else {
+
+                this.paymentDetailsRepository.getForAlarmReactionId(alarmReactionId, new OnAsyncResponse<PaymentDetails>() {
+                    @Override
+                    public void processResponse(PaymentDetails paymentDetailsAsResponse) {
+                        if(paymentDetailsAsResponse.getPaymentStatus() == PaymentStatus.Failed ||
+                                paymentDetailsAsResponse.getPaymentStatus() == PaymentStatus.NotConnectedToInternetToPay){
+
+                            Checkout checkout = initializeCheckout(alarmReactionId, paymentDetailsAsResponse.getAmount());
+                            retrofit.create(PaymentAPI.class).checkout(checkout).enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+
+                                    if (response.isSuccessful()) {
+                                        Log.d(TAG, "PaymentDetails processed successfully");
+
+                                        paymentDetailsAsResponse.setTransactionId(response.body());
+                                        UpdatePaymentDetails(paymentDetailsAsResponse, PaymentStatus.Requested);
+                                        if(onResult!=null){
+                                            onResult.onSuccess(null);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Log.d(TAG, "PaymentDetails processing Failed");
+
+                                    UpdatePaymentDetails(paymentDetailsAsResponse, PaymentStatus.Failed);
+                                    if(onResult!=null) {
+                                        onResult.onFailure();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        } catch (Exception exception) {
+            Log.e(TAG, "Failed to retry process payment with exception message" + exception.getMessage());
+        }
+    }
+
+    private void UpdatePaymentDetails(PaymentDetails paymentDetails, PaymentStatus status) {
+        paymentDetails.setPaymentStatus(status);
+        paymentDetailsRepository.update(paymentDetails);
+    }
 
     private void InsertPaymentDetail(PaymentDetails paymentDetails, PaymentStatus status) {
         paymentDetails.setPaymentStatus(status);
@@ -155,10 +154,16 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private Checkout initializeCheckout(int alarmReactionId) {
+        return this.initializeCheckout(alarmReactionId, this.sharedPreferencesContainer.getDefaultSnoozePrice());
+    }
+
+    private Checkout initializeCheckout(int alarmReactionId, int amount) {
         Checkout checkout = new Checkout();
         checkout.setToken(this.sharedPreferencesContainer.getToken());
-        checkout.setPrice(this.sharedPreferencesContainer.getDefaultSnoozePrice());
+        checkout.setPrice(amount);
         checkout.setAlarmReactionId(alarmReactionId);
+        checkout.setUserId(this.sharedPreferencesContainer.getCurrentUserId());
+        checkout.setCustomerId(this.sharedPreferencesContainer.getCustomerId());
         return checkout;
     }
 

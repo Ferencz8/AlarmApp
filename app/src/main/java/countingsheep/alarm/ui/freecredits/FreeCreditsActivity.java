@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -16,6 +17,7 @@ import countingsheep.alarm.db.SharedPreferencesContainer;
 public class FreeCreditsActivity extends AppCompatActivity {
 
     ImageView gettingStarted;
+    TextView freeCreditsTxt;
 
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
@@ -27,13 +29,17 @@ public class FreeCreditsActivity extends AppCompatActivity {
 
         Injector.getActivityComponent(this).inject(this);
 
-        setFreeCredits();
 
+
+        freeCreditsTxt = findViewById(R.id.freecreditTxt);
         gettingStarted = findViewById(R.id.gettingStartedBtn);
 
         gettingStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                setFreeCredits();
+
                 Intent intent = new Intent(FreeCreditsActivity.this, MainActivity.class);
                 startActivity(intent);
             }

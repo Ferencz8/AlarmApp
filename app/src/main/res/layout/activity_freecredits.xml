@@ -28,7 +28,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily=""
-        android:text="TextView"
+        android:text="@string/creditsText"
         android:textAlignment="center"
         android:textColor="#ABFFEF"
         android:textSize="21sp"

@@ -16,6 +16,28 @@ public class UserRegistration {
     @Expose
     private int moneySpentOnSnooze;
 
+    @Expose
+    private String profilePictureUrl;
+
+    @Expose
+    private String fullname;
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
     public int getUserId() {
         return userId;
     }

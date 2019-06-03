@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         String manufacturer = "xiaomi";
         if (manufacturer.equalsIgnoreCase(android.os.Build.MANUFACTURER) && !sharedPreferencesContainer.getBootReceivedOnSpecialDevices()) {
 
-            this.dialogInteractor.displayDialog("Set Alarms Permission",
+            this.dialogInteractor.displayReactiveDialog("Set Alarms Permission",
                     "On some devices the alarms need to be restored if the phone is shut down/restarted. " +
                             "Grant the app the permission to auto-restart", new DialogInteractor.OnReaction() {
                         @Override
@@ -134,16 +134,18 @@ public class MainActivity extends AppCompatActivity {
     private void showRemovePopup(){
         if(!this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
             this.sharedPreferencesContainer.setPopopShowedRemoveAlarm();
-            Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.remove_alarm_popup);
-            TextView yes = dialog.findViewById(R.id.yes_text);
-            yes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
+
+            this.dialogInteractor.displayInfoDialog(R.drawable.remove_icon, "To delete alarm swipe");
+//            Dialog dialog = new Dialog(this);
+//            dialog.setContentView(R.layout.remove_alarm_popup);
+//            TextView yes = dialog.findViewById(R.id.yes_text);
+//            yes.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            dialog.show();
         }
     }
 }
