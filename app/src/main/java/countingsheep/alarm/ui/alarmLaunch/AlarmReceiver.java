@@ -76,6 +76,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             vibrator = new AlarmVibrator(context);
         }
         else{//the alarm is already running
+
+
             ringtonePlayer.stop();
             vibrator.stop();
             ringtonePlayer.cleanup();

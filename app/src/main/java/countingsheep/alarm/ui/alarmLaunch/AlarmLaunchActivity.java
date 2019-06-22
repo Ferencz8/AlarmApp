@@ -17,10 +17,11 @@ import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.Message;
+import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.TimeHelper;
 
-public class AlarmLaunchActivity extends AppCompatActivity {
+public class AlarmLaunchActivity extends BaseActivity {
 
     private boolean isProcessing = false;
     private Activity activity;

@@ -86,9 +86,9 @@ public class DialogInteractorImpl implements DialogInteractor {
 
         AlertDialog dialog = dialogBuilder.create();
 
-        if(dialog.getWindow()!=null) {
-            dialog.getWindow().setBackgroundDrawableResource(R.color.colorTransparent);
-        }
+//        if(dialog.getWindow()!=null) {
+//            dialog.getWindow().setBackgroundDrawableResource(R.color.colorTransparent);
+//        }
         dialog.setCanceledOnTouchOutside(!hasInteraction); // Does not allow clicks outside the alert dialog
 
         //dialog.setCancelable(false);//Prevents dismissing the dialog by pressing the BACK button

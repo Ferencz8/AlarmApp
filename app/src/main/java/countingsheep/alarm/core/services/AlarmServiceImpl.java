@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.db.entities.Alarm;
@@ -37,6 +38,8 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void add(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse) {
         try {
+            //TODO:: add logic to process failed payments
+
             alarm.setDateCreated(timeService.getUTCDateNow());
             alarmRepository.insert(alarm, onAsyncResponse);
         }
@@ -62,6 +65,9 @@ public class AlarmServiceImpl implements AlarmService {
 
         boolean result = true;
         try{
+
+            //TODO:: add logic to process failed payments
+
             alarm.setDateModified(timeService.getUTCDateNow());
             alarm.setSynced(false);//this way a new alarm will be added on Server
             alarmRepository.update(alarm);

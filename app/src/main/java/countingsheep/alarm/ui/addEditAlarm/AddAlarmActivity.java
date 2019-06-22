@@ -46,14 +46,19 @@ import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.db.entities.PaymentDetails;
+import countingsheep.alarm.db.entities.PaymentStatus;
+import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
+import countingsheep.alarm.ui.foreground.ProcessFailedPaymentsService;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 
-public class AddAlarmActivity extends AppCompatActivity {
+public class AddAlarmActivity extends BaseActivity {
 
     private Alarm alarm;
 
@@ -83,6 +88,9 @@ public class AddAlarmActivity extends AppCompatActivity {
 
     @Inject
     DialogInteractor dialogInteractor;
+
+    @Inject
+    PaymentDetailsRepository paymentDetailsRepository;
 
     private int seebBarProgress;
 
@@ -380,6 +388,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                 final long timeToStartAlarm = TimeHelper.getTimeInMilliseconds(alarm.getHour(), alarm.getMinutes());
 
                 if (isEdit) {
+
                     alarmService.update(alarm);
 
                     alarmLaunchHandler.cancelAlarm(alarm.getId());
@@ -395,10 +404,34 @@ public class AddAlarmActivity extends AppCompatActivity {
                     });
                 }
 
+                startProcessingFailedPayments();
+
                 Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         };
+    }
+
+    private void startProcessingFailedPayments() {
+
+        AppCompatActivity activityCompat = this;
+        paymentDetailsRepository.getAll(PaymentStatus.NotConnectedToInternetToPay, new OnAsyncResponse<List<PaymentDetails>>() {
+            @Override
+            public void processResponse(List<PaymentDetails> response) {
+                if(response!=null && response.size() > 0){
+
+                    int[] alarmReactionIds = new int[response.size()];
+                    int index = 0;
+                    for (PaymentDetails paymentDetails : response){
+                        alarmReactionIds[index++] = paymentDetails.getAlarmReactionId();
+                    }
+                    Intent serviceIntent = new Intent(activityCompat, ProcessFailedPaymentsService.class);
+                    serviceIntent.putExtra("AlarmReactionIds", alarmReactionIds);
+
+                    ContextCompat.startForegroundService(activityCompat, serviceIntent);
+                }
+            }
+        });
     }
 
     private int getSnoozeAmount() {

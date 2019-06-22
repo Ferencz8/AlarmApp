@@ -4,12 +4,16 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +23,18 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.ui.BaseActivity;
+import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
+import countingsheep.alarm.util.Constants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     ConstraintLayout headerBar;
     TextView titleTextView;
     ImageView backBtn;
-    AlarmsFragment alarmsFragment;
-    SettingsFragment settingsFragment;
 
     @Inject
     DialogInteractor dialogInteractor;
@@ -37,13 +42,11 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        alarmsFragment = AlarmsFragment.newInstance();
-        settingsFragment = SettingsFragment.newInstance();
 
         setContentView(R.layout.activity_main);
 
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.action_item1:
-                                selectedFragment = alarmsFragment;
+                                selectedFragment = AlarmsFragment.newInstance();
                                 titleTextView.setText(R.string.counting_sheep);
                                 backBtn.setVisibility(View.GONE);
                                 headerBar.setVisibility(View.VISIBLE);
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 //                                break;
                             case R.id.action_item3:
                                 headerBar.setVisibility(View.GONE);
-                                selectedFragment = settingsFragment;
+                                selectedFragment = SettingsFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, alarmsFragment);
+        transaction.replace(R.id.frame_layout, AlarmsFragment.newInstance());
         transaction.commit();
 
         //Used to select an item programmatically
@@ -131,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showRemovePopup(){
-        if(!this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
+    private void showRemovePopup() {
+        if (!this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
             this.sharedPreferencesContainer.setPopopShowedRemoveAlarm();
 
             this.dialogInteractor.displayInfoDialog(R.drawable.remove_icon, "To delete alarm swipe");
@@ -147,5 +150,19 @@ public class MainActivity extends AppCompatActivity {
 //            });
 //            dialog.show();
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.PaymentRequestCode) {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

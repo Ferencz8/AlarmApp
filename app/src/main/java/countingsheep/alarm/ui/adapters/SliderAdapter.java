@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import countingsheep.alarm.R;
 
 public class SliderAdapter extends PagerAdapter {
@@ -32,8 +34,11 @@ public class SliderAdapter extends PagerAdapter {
             "Give me all your money! Muhahaha"
     };
 
-    public SliderAdapter(Context context){
+    public SliderAdapter(Context context, boolean displayPayment){
         this.context = context;
+        if(!displayPayment){
+            slide_texts = Arrays.copyOf(slide_texts, slide_texts .length-1);
+        }
     }
 
     @Override

@@ -13,8 +13,9 @@ import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.ui.BaseActivity;
 
-public class FreeCreditsActivity extends AppCompatActivity {
+public class FreeCreditsActivity extends BaseActivity {
 
     ImageView gettingStarted;
     TextView freeCreditsTxt;
@@ -42,13 +43,16 @@ public class FreeCreditsActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(FreeCreditsActivity.this, MainActivity.class);
                 startActivity(intent);
+
+                finish();
             }
         });
     }
 
     private void setFreeCredits() {
-        if(this.sharedPreferencesContainer!=null){
+        if(this.sharedPreferencesContainer!=null && this.sharedPreferencesContainer.shouldGiveFreeCredits()){
             this.sharedPreferencesContainer.setFreeCredits(5);
+            this.sharedPreferencesContainer.allowFreeCredits(false);
         }
     }
 }

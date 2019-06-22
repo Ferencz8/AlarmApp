@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
@@ -28,6 +30,7 @@ import countingsheep.alarm.network.tasks.ProfilePictureTask;
 import countingsheep.alarm.network.tasks.ProfilePictureTaskResponse;
 import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
 import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
+import countingsheep.alarm.util.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
@@ -55,9 +58,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Inject
     EMailServiceImpl eMailService;
 
-    public static SettingsFragment newInstance() {
-        SettingsFragment fragment = new SettingsFragment();
-        return fragment;
+
+    private static SettingsFragment instance;
+    public static synchronized SettingsFragment newInstance() {
+        if (instance == null){
+            instance = new SettingsFragment();
+        }
+        return instance;
     }
 
     @Override
@@ -163,7 +170,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         braintreePaymentInteractor.onActivityResult(requestCode, resultCode,data);
     }
@@ -210,6 +217,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showLogoutPopup(){
+
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.logout_popup);
         TextView yes = dialog.findViewById(R.id.yes_textview);
@@ -218,6 +226,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 authenticationService.socialLogout();
+
+                dialog.dismiss();
+                //do this on logout button click
+                Intent intent = new Intent(Constants.LOG_OUT);
+                //send the broadcast to all activities who are listening
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
             }
         });
 

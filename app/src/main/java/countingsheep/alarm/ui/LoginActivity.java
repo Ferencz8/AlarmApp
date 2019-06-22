@@ -40,7 +40,7 @@ import countingsheep.alarm.ui.settings.OnBoardingActivity;
 import countingsheep.alarm.ui.settings.TermsAndConditionsActivity;
 import retrofit2.Retrofit;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     ImageView SignUpButton;
     CheckBox checkBox;
@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (socialAuthenticationService.isUserLoggedIn()) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
 
         setContentView(R.layout.activity_login);
@@ -163,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onSuccess(User user) {
                             Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
 
-                            if(sharedPreferencesContainer.getCustomerId()!=null && !sharedPreferencesContainer.getCustomerId().equals("")){
+                            if(sharedPreferencesContainer.getCustomerId()!=null && sharedPreferencesContainer.getCustomerId()!=""){
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }

@@ -83,10 +83,6 @@ public class BraintreePaymentInteractor {
             else {
                 addOrUpdatePaymentMethod(paymentMethodNonce, this.sharedPreferencesContainer.getCurrentUserId(), this.sharedPreferencesContainer.getCustomerId());
             }
-
-            if(this.onPaymentInteractionResult!=null) {
-                this.onPaymentInteractionResult.onSuccess();
-            }
             // send paymentMethodNonce to your server
         } else if (resultCode == Activity.RESULT_CANCELED) {
             // canceled
@@ -134,6 +130,12 @@ public class BraintreePaymentInteractor {
 
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Customer registered successfully");
+
+                    sharedPreferencesContainer.setCustomerId(response.body().getCustomerId());
+                    sharedPreferencesContainer.setToken(response.body().getToken());
+                    if(onPaymentInteractionResult!=null) {
+                        onPaymentInteractionResult.onSuccess();
+                    }
                 }
             }
 

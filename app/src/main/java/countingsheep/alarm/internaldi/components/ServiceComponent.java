@@ -8,6 +8,7 @@ import countingsheep.alarm.internaldi.modules.DataAccessModule;
 import countingsheep.alarm.internaldi.modules.ServiceModule;
 //import countingsheep.alarm.ui.alarmLaunch.AlarmBootService;
 import countingsheep.alarm.ui.background.SyncerWorker;
+import countingsheep.alarm.ui.foreground.ProcessFailedPaymentsService;
 import dagger.Subcomponent;
 
 @Singleton
@@ -22,4 +23,6 @@ public interface ServiceComponent {
     //void inject(AlarmBootService alarmBootService);
 
     void inject(SyncerWorker syncerWorker);
+
+    void inject(ProcessFailedPaymentsService processFailedPaymentsService);
 }

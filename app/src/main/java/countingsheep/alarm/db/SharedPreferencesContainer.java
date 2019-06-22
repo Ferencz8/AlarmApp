@@ -22,6 +22,8 @@ public class SharedPreferencesContainer {
     private final static String ProfilePictureUrl = "ProfilePictureUrl";
     private final static String ProfilePicturePath = "ProfilePicturePath";
     private final static String Fullname = "Fullname";
+    private final static String DisplayPaymentInOnBoarding = "DisplayPaymentInOnBoarding";
+    private final static String ShouldGiveFreeCredits = "ShouldGiveFreeCredits";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
 
@@ -38,6 +40,20 @@ public class SharedPreferencesContainer {
     public int getDefaultSnoozePrice(){return this.sharedPreferences.getInt(DefaultSnoozePrice, 0);}
 
     public void setDefaultSnoozePrice(int price){changePreferenceValue(DefaultSnoozePrice, price);}
+
+    public boolean getDisplayPaymentInOnBoarding(){
+        return this.sharedPreferences.getBoolean(DisplayPaymentInOnBoarding, false);
+    }
+    public void setDisplayPaymentInOnBoarding(boolean value){
+        changePreferenceValue(DisplayPaymentInOnBoarding, value);
+    }
+
+    public boolean shouldGiveFreeCredits(){
+        return this.sharedPreferences.getBoolean(ShouldGiveFreeCredits, false);
+    }
+    public void allowFreeCredits(boolean value){
+        changePreferenceValue(ShouldGiveFreeCredits, value);
+    }
 
     public boolean doesAllPaymentInformationExist(){
         return doesTokenExist() && doesCustomerExist();

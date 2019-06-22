@@ -65,8 +65,11 @@ public class AlarmsFragment extends Fragment {
     @Inject
     PaymentDetailsRepository paymentDetailsRepository;
 
-    public static AlarmsFragment newInstance() {
-        AlarmsFragment fragment = new AlarmsFragment();
+    private static AlarmsFragment fragment;
+    public static synchronized AlarmsFragment newInstance() {
+        if(fragment==null) {
+            fragment = new AlarmsFragment();
+        }
         return fragment;
     }
 
@@ -119,28 +122,32 @@ public class AlarmsFragment extends Fragment {
                     dialogInteractor.displayInfoDialog(R.drawable.ic_icon_clock, "You have no more credits left. Please add a valid payment method.");
                 }
                 else{
-                    paymentDetailsRepository.getAll(PaymentStatus.Failed, new OnAsyncResponse<List<PaymentDetails>>() {
-                        @Override
-                        public void processResponse(List<PaymentDetails> response) {
-                            //TODO: add loading bar
-                            //TODO:: if slow then create a flag with existing failed payment statuses in shared pref, once the updatePaymentStatusJob runs and
-                            //only then use this logic
-                            if(response!=null && response.size() > 0){
-
-                                dialogInteractor.displayInfoDialog(R.drawable.ic_icon_clock, "First please pay the failed transactions!", () -> {
-
-//                                    Intent intent = new Intent(getView().getContext(), AlarmHistoryActivity.class);
-//                                    startActivity(intent);
-                                });
-                            }
-                            else {
-
-                                Intent intent = new Intent(getView().getContext(), AddAlarmActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                    });
+                    Intent intent = new Intent(getView().getContext(), AddAlarmActivity.class);
+                    startActivity(intent);
                 }
+
+//                    paymentDetailsRepository.getAll(PaymentStatus.Failed, new OnAsyncResponse<List<PaymentDetails>>() {
+//                        @Override
+//                        public void processResponse(List<PaymentDetails> response) {
+//                            //TODO: add loading bar
+//                            //TODO:: if slow then create a flag with existing failed payment statuses in shared pref, once the updatePaymentStatusJob runs and
+//                            //only then use this logic
+//                            if(response!=null && response.size() > 0){
+//
+//                                dialogInteractor.displayInfoDialog(R.drawable.ic_icon_clock, "First please pay the failed transactions!", () -> {
+//
+////                                    Intent intent = new Intent(getView().getContext(), AlarmHistoryActivity.class);
+////                                    startActivity(intent);
+//                                });
+//                            }
+//                            else {
+//
+//                                Intent intent = new Intent(getView().getContext(), AddAlarmActivity.class);
+//                                startActivity(intent);
+//                            }
+//                        }
+//                    });
+//                }
             }
         };
     }
