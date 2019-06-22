@@ -191,6 +191,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent1);
                 break;
             case R.id.history_text:
+                Intent i  = new Intent(getActivity(), AlarmHistoryActivity.class);
+                startActivity(i);
                 break;
             case R.id.logout_text:
                 showLogoutPopup();

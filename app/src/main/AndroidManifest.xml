@@ -25,6 +25,7 @@
             android:exported="true"/>
 
         <activity android:name=".ui.settings.OnBoardingActivity"/>
+        <activity android:name=".ui.settings.AlarmHistoryActivity"></activity>
         <activity android:name=".ui.settings.TermsAndConditionsActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
@@ -72,6 +73,8 @@
 
         <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity" />
         <activity android:name=".ui.freecredits.FreeCreditsActivity" />
+
+
 
         <!--<activity android:name=".ui.card.CardActivity" />-->
         <!--<service android:name=".ui.alarmLaunch.AlarmBootService"/>-->
