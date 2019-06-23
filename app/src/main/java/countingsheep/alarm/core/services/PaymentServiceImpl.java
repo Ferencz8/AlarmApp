@@ -176,4 +176,9 @@ public class PaymentServiceImpl implements PaymentService {
         paymentDetails.setAlarmReactionId(alarmReactionId);
         return paymentDetails;
     }
+
+    @Override
+    public void getSumAmount(OnAsyncResponse<Integer> response) {
+        this.paymentDetailsRepository.getSumAmount(response);
+    }
 }

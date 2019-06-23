@@ -23,7 +23,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
+import countingsheep.alarm.core.services.interfaces.PaymentService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.infrastructure.EMailServiceImpl;
 import countingsheep.alarm.network.tasks.ProfilePictureTask;
@@ -45,6 +48,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView logout;
     private TextView spentTextView;
     private TextView cashTextView;
+    private TextView alarmCount;
+    private TextView snoozeRate;
 
     @Inject
     AuthenticationService authenticationService;
@@ -58,10 +63,17 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Inject
     EMailServiceImpl eMailService;
 
+    @Inject
+    PaymentService paymentService;
+
+    @Inject
+    AlarmReactionService alarmReactionService;
+
 
     private static SettingsFragment instance;
+
     public static synchronized SettingsFragment newInstance() {
-        if (instance == null){
+        if (instance == null) {
             instance = new SettingsFragment();
         }
         return instance;
@@ -88,7 +100,37 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         } else {
             this.spentTextView.setText(getString(R.string.spent));
             //TODO:: add real spent money
+            paymentService.getSumAmount(new OnAsyncResponse<Integer>() {
+                @Override
+                public void processResponse(Integer response) {
+                    if (response == null) {
+                        response = 0;
+                    }
+                    cashTextView.setText(String.valueOf(response) + " $");
+
+                }
+            });
         }
+
+        alarmReactionService.getAlarmsCount(new OnAsyncResponse<Integer>() {
+            @Override
+            public void processResponse(Integer response) {
+                if (response == null) {
+                    response = 0;
+                }
+                alarmCount.setText(String.valueOf(response));
+            }
+        });
+
+        alarmReactionService.getSnoozeRate(new OnAsyncResponse<Integer>() {
+            @Override
+            public void processResponse(Integer response) {
+                if(response == null){
+                    response = 0;
+                }
+                snoozeRate.setText(String.valueOf(response * 100) + " %");
+            }
+        });
 
         return view;
     }
@@ -112,6 +154,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         alarmHistory.setOnClickListener(this);
         logout = view.findViewById(R.id.logout_text);
         logout.setOnClickListener(this);
+        alarmCount = view.findViewById(R.id.alarm_text);
+        snoozeRate = view.findViewById(R.id.snooze_text);
     }
 
     @Override
@@ -153,8 +197,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 ActivityCompat.requestPermissions(this.getActivity(),
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         1);
-            }
-            else {
+            } else {
 
                 new ProfilePictureTask(this.getContext(), "https://graph.facebook.com/2092028077486336/picture?width=250&height=250", new ProfilePictureTaskResponse() {
                     @Override
@@ -172,13 +215,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
 
-        braintreePaymentInteractor.onActivityResult(requestCode, resultCode,data);
+        braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.terms_text:
                 Intent intent = new Intent(getActivity(), TermsAndConditionsActivity.class);
                 startActivity(intent);
@@ -191,7 +234,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent1);
                 break;
             case R.id.history_text:
-                Intent i  = new Intent(getActivity(), AlarmHistoryActivity.class);
+                Intent i = new Intent(getActivity(), AlarmHistoryActivity.class);
                 startActivity(i);
                 break;
             case R.id.logout_text:
@@ -200,7 +243,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.payment_text:
                 displayPayment();
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -218,7 +262,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    private void showLogoutPopup(){
+    private void showLogoutPopup() {
 
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.logout_popup);

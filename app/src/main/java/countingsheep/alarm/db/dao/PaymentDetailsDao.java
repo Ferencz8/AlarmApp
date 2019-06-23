@@ -16,4 +16,8 @@ public interface PaymentDetailsDao extends BaseDao<PaymentDetails> {
 
     @Query("SELECT * FROM PaymentDetails WHERE alarmReactionId =:alarmReactionId")
     PaymentDetails getForAlarmReactionId(int alarmReactionId);
+
+    @Query("SELECT SUM(COALESCE(amount,0)) FROM PaymentDetails WHERE paymentStatus = 0 OR paymentStatus=1")
+    Integer getAllAmount();
+
 }

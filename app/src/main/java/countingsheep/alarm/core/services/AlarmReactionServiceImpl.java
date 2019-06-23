@@ -94,6 +94,16 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
     }
 
     @Override
+    public void getAlarmsCount(OnAsyncResponse<Integer> response) {
+        this.alarmReactionRepository.getCountAlarms(response);
+    }
+
+    @Override
+    public void getSnoozeRate(OnAsyncResponse<Integer> response) {
+        this.alarmReactionRepository.getSnoozeRate(response);
+    }
+
+    @Override
     public List<AlarmReaction> getAllUnsynced() {
         try {
             return this.alarmReactionRepository.getAllUnsynced();

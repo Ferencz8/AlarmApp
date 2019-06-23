@@ -21,4 +21,10 @@ public interface AlarmReactionDao extends BaseDao<AlarmReaction> {
 
     @Query("UPDATE AlarmReaction SET IsSynced = 1 WHERE id IN (:alarmReactionIds)")
     void markAlarmReactionsSynced(List<Integer> alarmReactionIds);
+
+    @Query("SELECT COUNT(*) FROM AlarmReaction WHERE isSnooze =:isSnooze")
+    Integer getAllAlarmsCount(boolean isSnooze);
+
+    @Query("SELECT COUNT(*) FROM AlarmReaction")
+    Integer getAllAlarmsCount();
 }

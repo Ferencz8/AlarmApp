@@ -14,4 +14,6 @@ public interface PaymentDetailsRepository {
     void getAll(PaymentStatus paymentStatus, OnAsyncResponse<List<PaymentDetails>> onAsyncResponse);
 
     void getForAlarmReactionId(int alarmReactionId, OnAsyncResponse<PaymentDetails> onAsyncResponse);
+
+    void getSumAmount(OnAsyncResponse<Integer> response);
 }

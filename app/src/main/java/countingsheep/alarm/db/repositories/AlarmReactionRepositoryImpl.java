@@ -13,6 +13,8 @@ import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmReactionDao;
 import countingsheep.alarm.db.entities.AlarmReaction;
+import countingsheep.alarm.db.repositories.tasks.alarmReaction.GetCountAlarmsTask;
+import countingsheep.alarm.db.repositories.tasks.alarmReaction.GetSnoozeRateTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.InsertAlarmReactionTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.MarkSyncedAlarmReactionTask;
 
@@ -83,5 +85,15 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
     @Override
     public void markAlarmsSynced(List<Integer> alarmReactionIds) {
         new MarkSyncedAlarmReactionTask(dao, alarmReactionIds).execute();
+    }
+
+    @Override
+    public void getCountAlarms(OnAsyncResponse<Integer> response) {
+        new GetCountAlarmsTask(dao, response).execute();
+    }
+
+    @Override
+    public void getSnoozeRate(OnAsyncResponse<Integer> response) {
+        new GetSnoozeRateTask(dao, response).execute();
     }
 }

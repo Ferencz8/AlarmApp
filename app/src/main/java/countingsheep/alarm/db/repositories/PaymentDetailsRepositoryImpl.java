@@ -13,6 +13,7 @@ import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetGenericTask;
 import countingsheep.alarm.db.repositories.tasks.paymentdetails.GetAllPaymentDetailsTask;
+import countingsheep.alarm.db.repositories.tasks.paymentdetails.GetSumAmountTask;
 import countingsheep.alarm.db.repositories.tasks.paymentdetails.InsertPaymentDetailsTask;
 import countingsheep.alarm.db.repositories.tasks.paymentdetails.UpdatePaymentDetailsTask;
 
@@ -54,5 +55,10 @@ public class PaymentDetailsRepositoryImpl implements PaymentDetailsRepository {
                 onAsyncResponse.processResponse(returnedValues);
             }
         }).execute();
+    }
+
+    @Override
+    public void getSumAmount(OnAsyncResponse<Integer> response) {
+        new GetSumAmountTask(this.dao, response).execute();
     }
 }

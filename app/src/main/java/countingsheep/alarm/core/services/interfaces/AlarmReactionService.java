@@ -21,4 +21,8 @@ public interface AlarmReactionService {
     boolean markSyncedRange(List<AlarmReaction> unsyncedAlarmsReactions);
 
     void requestSnoozePayment(int alarmReactionId);
+
+    void getAlarmsCount(OnAsyncResponse<Integer> response);
+
+    void getSnoozeRate(OnAsyncResponse<Integer> response);
 }

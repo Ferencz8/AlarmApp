@@ -19,4 +19,8 @@ public interface AlarmReactionRepository {
     List<AlarmReaction> getAllUnsynced();
 
     void markAlarmsSynced(List<Integer> alarmReactionIds);
+
+    void getCountAlarms(OnAsyncResponse<Integer> response);
+
+    void getSnoozeRate(OnAsyncResponse<Integer> response);
 }
