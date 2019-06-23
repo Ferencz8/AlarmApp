@@ -3,8 +3,10 @@ package countingsheep.alarm.core.services.interfaces;
 import java.util.List;
 
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.entities.Message;
+import countingsheep.alarm.ui.settings.models.AlarmHistory;
 
 public interface AlarmReactionService {
 
@@ -25,4 +27,6 @@ public interface AlarmReactionService {
     void getAlarmsCount(OnAsyncResponse<Integer> response);
 
     void getSnoozeRate(OnAsyncResponse<Integer> response);
+
+    void getAllAlarmReactionHistory(OnAsyncResponse<List<AlarmHistory>> reactionOnAsyncResponse);
 }

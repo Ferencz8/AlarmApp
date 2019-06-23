@@ -25,7 +25,7 @@
             android:exported="true"/>
 
         <activity android:name=".ui.settings.OnBoardingActivity"/>
-        <activity android:name=".ui.settings.AlarmHistoryActivity"></activity>
+        <activity android:name=".ui.settings.AlarmHistoryActivity"/>
         <activity android:name=".ui.settings.TermsAndConditionsActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>

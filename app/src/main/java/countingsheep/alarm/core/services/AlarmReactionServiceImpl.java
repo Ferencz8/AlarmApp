@@ -17,10 +17,13 @@ import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.PaymentService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
+import countingsheep.alarm.ui.settings.models.AlarmHistory;
+import countingsheep.alarm.util.StringFormatter;
 
 @Singleton
 public class AlarmReactionServiceImpl implements AlarmReactionService {
@@ -103,6 +106,50 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
     @Override
     public void getSnoozeRate(OnAsyncResponse<Integer> response) {
         this.alarmReactionRepository.getSnoozeRate(response);
+    }
+
+    @Override
+    public void getAllAlarmReactionHistory(OnAsyncResponse<List<AlarmHistory>> reactionOnAsyncResponse) {
+        //this.alarmReactionRepository.getAllAlarms(reactionOnAsyncResponse);
+        this.alarmReactionRepository.getAllAlarms(new OnAsyncResponse<List<AlarmHistoryEmbedded>>() {
+            @Override
+            public void processResponse(List<AlarmHistoryEmbedded> response) {
+
+                ArrayList<AlarmHistory> alarmHistories = new ArrayList<>();
+//                for (AlarmHistoryEmbedded alarmHistoryEmbedded : response){
+//                    try {
+//                        AlarmHistory alarmHistory = new AlarmHistory();
+//                        alarmHistory.setName(alarmHistoryEmbedded.getName());
+//                        alarmHistory.setCreatedDate(String.valueOf(alarmHistoryEmbedded.getCreatedDate()));
+//                        alarmHistory.setCreatedHour(String.valueOf(StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getHour())) + ":" + StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getMinute()));
+//                        alarmHistory.setCashSpent(alarmHistoryEmbedded.getAmount());
+//                        String reactionType = alarmHistoryEmbedded.isSnooze() ? "Snooze" : "Awake";
+//                        alarmHistory.setReactionType(reactionType);
+//                        alarmHistory.setRequireRefund(false);
+//                        alarmHistories.add(alarmHistory);
+//                    } catch (Exception e){
+//                        Crashlytics.logException(e);
+//                    }
+//                }
+                for (AlarmHistoryEmbedded alarmHistoryEmbedded : response){
+                    try {
+                        AlarmHistory alarmHistory = new AlarmHistory();
+                        alarmHistory.setName(alarmHistoryEmbedded.getAlarm().getTitle());
+                        alarmHistory.setCreatedDate(String.valueOf(alarmHistoryEmbedded.getAlarm().getDateCreated()));
+                        alarmHistory.setCreatedHour(String.valueOf(StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarmReaction().getCurrentHour())) + ":" +
+                                StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarmReaction().getCurrentMinutes()));
+                        alarmHistory.setCashSpent(alarmHistoryEmbedded.getPaymentDetails().getAmount());
+                        String reactionType = alarmHistoryEmbedded.getAlarmReaction().isSnooze() ? "Snooze" : "Awake";
+                        alarmHistory.setReactionType(reactionType);
+                        alarmHistory.setRequireRefund(false);
+                        alarmHistories.add(alarmHistory);
+                    } catch (Exception e){
+                        Crashlytics.logException(e);
+                    }
+                }
+                reactionOnAsyncResponse.processResponse(alarmHistories);
+            }
+        });
     }
 
     @Override

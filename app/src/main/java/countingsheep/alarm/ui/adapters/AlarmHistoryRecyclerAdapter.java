@@ -13,16 +13,18 @@ import java.util.ArrayList;
 
 import countingsheep.alarm.R;
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.ui.settings.models.AlarmHistory;
 
 public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
 
     private Activity activity;
-    private ArrayList<String> alarms;
+    private ArrayList<AlarmHistory> alarms;
 
-    public AlarmHistoryRecyclerAdapter(Activity activity, ArrayList<String> viewItemList) {
+    public AlarmHistoryRecyclerAdapter(Activity activity, ArrayList<AlarmHistory> viewItemList) {
         this.alarms = viewItemList;
         this.activity = activity;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,17 +38,33 @@ public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String data = alarms.get(position);
+        AlarmHistory data = alarms.get(position);
 
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+        itemViewHolder.alarmName.setText(data.getName());
+        itemViewHolder.alarmDate.setText(data.getCreatedDate());
+        itemViewHolder.alarmHour.setText(data.getCreatedHour());
+        itemViewHolder.alarmStatus.setText(data.getReactionType());
+        itemViewHolder.cashSpend.setText(data.getCashSpent());
+//        if(!data.isRequireRefund()){
+        itemViewHolder.refund.setVisibility(View.GONE);
+//        } else {
+//            itemViewHolder.refund.setVisibility(View.VISIBLE);
+//            itemViewHolder.refund.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
+//        }
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return alarms.size();
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView alarmName;
         private TextView alarmDate;

@@ -24,7 +24,7 @@ import static androidx.room.ForeignKey.SET_NULL;
         onDelete = SET_NULL,
         onUpdate = CASCADE),
         indices = {@Index("alarmId")})
-public class AlarmReaction implements Serializable {
+public class AlarmReaction extends DbEntity implements Serializable {
 
     @SerializedName("deviceAlarmReactionId")
     @Expose

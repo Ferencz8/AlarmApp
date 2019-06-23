@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.internaldi.modules.InfrastructureModule;
 import countingsheep.alarm.internaldi.modules.NetworkModule;
+import countingsheep.alarm.ui.settings.AlarmHistoryActivity;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
@@ -45,5 +46,6 @@ public interface ActivityComponent {
 
     void inject(FreeCreditsActivity freeCreditsActivity);
 
+    void inject(AlarmHistoryActivity alarmHistoryActivity);
     //void inject(CardActivity cardActivity);
 }

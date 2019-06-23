@@ -12,7 +12,9 @@ import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmReactionDao;
+import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
+import countingsheep.alarm.db.repositories.tasks.alarm.GetAllGenericTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.GetCountAlarmsTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.GetSnoozeRateTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.InsertAlarmReactionTask;
@@ -95,5 +97,20 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
     @Override
     public void getSnoozeRate(OnAsyncResponse<Integer> response) {
         new GetSnoozeRateTask(dao, response).execute();
+    }
+
+    @Override
+    public void getAllAlarms(OnAsyncResponse<List<AlarmHistoryEmbedded>> reactionOnAsyncResponse) {
+        new GetAllGenericTask<AlarmReactionDao, AlarmHistoryEmbedded>(dao, new GetAllGenericTask.OnTaskHandler<AlarmReactionDao, AlarmHistoryEmbedded>() {
+            @Override
+            public List<AlarmHistoryEmbedded> doInBackground(AlarmReactionDao o) {
+               return o.getAllAlarmHistory();
+            }
+
+            @Override
+            public void onPostExecute(List<AlarmHistoryEmbedded> returnedValues) {
+                reactionOnAsyncResponse.processResponse(returnedValues);
+            }
+        }).execute();
     }
 }

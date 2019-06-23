@@ -2,6 +2,7 @@ package countingsheep.alarm.core.contracts.data;
 
 import java.util.List;
 
+import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
 
 public interface AlarmReactionRepository {
@@ -23,4 +24,6 @@ public interface AlarmReactionRepository {
     void getCountAlarms(OnAsyncResponse<Integer> response);
 
     void getSnoozeRate(OnAsyncResponse<Integer> response);
+
+    void getAllAlarms(OnAsyncResponse<List<AlarmHistoryEmbedded>> reactionOnAsyncResponse);
 }
