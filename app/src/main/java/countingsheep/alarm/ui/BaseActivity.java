@@ -10,15 +10,22 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import countingsheep.alarm.util.Constants;
 
 public class BaseActivity extends AppCompatActivity {
+
+
+    protected FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(Constants.LOG_OUT));
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     // handler for received Intents for logout event

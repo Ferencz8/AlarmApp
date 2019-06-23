@@ -122,6 +122,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.slideBackBtn:
                 if(reachedPaymentSlide && this.sharedPreferencesContainer.shouldGiveFreeCredits()){
+                    firebaseAnalytics.logEvent("onboarding_payment_not_now", null);
                     Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
                     startActivity(intent);
                 }
@@ -129,6 +130,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.slideNextBtn:
                 if(reachedPaymentSlide) {
+                    firebaseAnalytics.logEvent("onboarding_payment_now", null);
                     displayPaymentDropIn();
                 }
 
@@ -171,6 +173,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == Activity.RESULT_CANCELED && this.sharedPreferencesContainer.shouldGiveFreeCredits()){
+            firebaseAnalytics.logEvent("onboarding_payment_now_canceled", null);
             Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
             startActivity(intent);
         }

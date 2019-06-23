@@ -10,6 +10,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -69,6 +71,7 @@ public class ProfilePictureTask extends AsyncTask<String, Void, String> {
                 out.close();
                 in.close();
             } catch (IOException e) {
+                Crashlytics.logException(e);
                 Log.e("ProfileImageTask", e.getMessage());
             }
         }

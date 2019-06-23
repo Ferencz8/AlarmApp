@@ -2,6 +2,8 @@ package countingsheep.alarm.util;
 
 import androidx.room.TypeConverter;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ public class TimestampConverter {
                 df.setTimeZone(timeZone);
                 return df.parse(value);
             } catch (ParseException e) {
+                Crashlytics.logException(e);
                 e.printStackTrace();
             }
             return null;

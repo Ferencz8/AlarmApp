@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import com.crashlytics.android.Crashlytics;
+
 public class AlarmRingtonePlayer {
     private MediaPlayer mPlayer;
     private Context mContext;
@@ -18,7 +20,7 @@ public class AlarmRingtonePlayer {
         try {
             mPlayer = new MediaPlayer();
         } catch (Exception e) {
-            //Logger.trackException(e);
+            Crashlytics.logException(e);
         }
     }
 
@@ -44,7 +46,7 @@ public class AlarmRingtonePlayer {
                 mPlayer.prepareAsync();
             }
         } catch (Exception e) {
-            //Logger.trackException(e);
+            Crashlytics.logException(e);
         }
     }
 

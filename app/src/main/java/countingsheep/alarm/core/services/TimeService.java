@@ -3,6 +3,8 @@ package countingsheep.alarm.core.services;
 
 import android.text.TextUtils;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -49,6 +51,7 @@ public class TimeService {
             return date;
         } catch (ParseException e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
             return null;
         }
     }

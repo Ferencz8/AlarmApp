@@ -3,6 +3,8 @@ package countingsheep.alarm.network.httpservices;
 import android.app.Activity;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -53,6 +55,7 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
                         sharedPreferencesContainer.setFullname(registeredUser.getFullname());
                         sharedPreferencesContainer.setProfilePictureUrl(registeredUser.getProfilePictureUrl());
                         sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
+                        sharedPreferencesContainer.setToken(registeredUser.getToken());
                         if(!sharedPreferencesContainer.doesCustomerExist()){
                             sharedPreferencesContainer.setDisplayPaymentInOnBoarding(true);
                             sharedPreferencesContainer.allowFreeCredits(true);
@@ -65,6 +68,7 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
                         }
                     }
                 } catch (NumberFormatException nfe) {
+                    Crashlytics.logException(nfe);
                     Toast.makeText(activity, "Failed to connect to server!", Toast.LENGTH_LONG).show();
                     if(onSocialLoginResult!=null) {
                         onSocialLoginResult.onError(null);

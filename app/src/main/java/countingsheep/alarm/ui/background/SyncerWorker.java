@@ -8,6 +8,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.work.Worker;
+
+import com.crashlytics.android.Crashlytics;
+
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
@@ -79,7 +82,7 @@ public class SyncerWorker extends Worker {
         }
         catch (Exception exception){
 
-            //TODO:LOG
+            Crashlytics.logException(exception);
             return WorkerResult.FAILURE;
         }
     }
@@ -179,7 +182,7 @@ public class SyncerWorker extends Worker {
                         });
                     }
                     catch(Exception ex){
-                        //TODO: log
+                        Crashlytics.logException(ex);
                     }
                 }
             }

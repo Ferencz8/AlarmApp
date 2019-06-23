@@ -2,6 +2,8 @@ package countingsheep.alarm.core.services;
 
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -89,6 +91,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
         } catch (Exception exception) {
             Log.e(TAG, "Failed to process payment with exception message" + exception.getMessage());
+            Crashlytics.logException(exception);
             InsertPaymentDetail(paymentDetails, PaymentStatus.Failed);
         }
     }
@@ -139,6 +142,7 @@ public class PaymentServiceImpl implements PaymentService {
                 });
             }
         } catch (Exception exception) {
+            Crashlytics.logException(exception);
             Log.e(TAG, "Failed to retry process payment with exception message" + exception.getMessage());
         }
     }

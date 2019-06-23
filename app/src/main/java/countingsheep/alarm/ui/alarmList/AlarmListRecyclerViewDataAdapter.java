@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.List;
 
 import countingsheep.alarm.R;
@@ -123,7 +125,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
             time = StringFormatter.getFormattedTimeDigits(hourOfDay) + " : " + StringFormatter.getFormattedTimeDigits(minute);
 
         }catch(Exception exception){
-            //log
+            Crashlytics.logException(exception);
             dialogInteractor.displayReactiveDialog("Time Conversion Failed", "Please retry!", null);
         }
 

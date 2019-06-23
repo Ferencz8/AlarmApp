@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -113,12 +114,15 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
                     onResult.onSuccess(loggedInUser);
 
                 } catch (MalformedURLException e) {
+                    Crashlytics.logException(e);
                     e.printStackTrace();
                     onResult.onError(e);
                 } catch (JSONException e) {
+                    Crashlytics.logException(e);
                     e.printStackTrace();
                     onResult.onError(e);
                 } catch (Exception e){
+                    Crashlytics.logException(e);
                     e.printStackTrace();
                     onResult.onError(e);
                 }

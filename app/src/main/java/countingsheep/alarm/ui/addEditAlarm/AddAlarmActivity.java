@@ -99,6 +99,8 @@ public class AddAlarmActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alarm);
 
+        firebaseAnalytics.logEvent("add_alarm", null);
+
         Injector.getActivityComponent(this).inject(this);
 
         setupAlarm();

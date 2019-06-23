@@ -1,5 +1,7 @@
 package countingsheep.alarm.core.services;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +71,7 @@ public class MessageServiceImpl  implements MessageService {
 
             return true;
         } catch (Exception exception) {
-            //TODO:: add logging
+            Crashlytics.logException(exception);
             return false;
         }
     }

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.telephony.SmsManager;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -45,7 +47,7 @@ public class SMSServiceImpl implements SMSService {
             }
         }
         catch(Exception exception){
-            //TODO: log
+            Crashlytics.logException(exception);
         }
     }
 
