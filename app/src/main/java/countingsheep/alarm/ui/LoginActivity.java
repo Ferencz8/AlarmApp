@@ -25,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.inject.Inject;
@@ -146,6 +150,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.SignUpID:
                 if (!checkBox.isChecked()) {
@@ -163,6 +168,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void onSuccess(User user) {
                             Toast.makeText(activity, "Start OnBoarding", Toast.LENGTH_SHORT);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, Integer.toString(user.id));
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, user.email);
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
 
                             if(sharedPreferencesContainer.getCustomerId()!=null && sharedPreferencesContainer.getCustomerId()!=""){
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

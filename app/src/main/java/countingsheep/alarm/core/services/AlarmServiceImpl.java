@@ -1,5 +1,7 @@
 package countingsheep.alarm.core.services;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class AlarmServiceImpl implements AlarmService {
             alarmRepository.insert(alarm);
         }
         catch (Exception exception){
-            //TODO:: add logging
+            Crashlytics.logException(exception);
         }
     }
 
@@ -44,7 +46,7 @@ public class AlarmServiceImpl implements AlarmService {
             alarmRepository.insert(alarm, onAsyncResponse);
         }
         catch (Exception exception){
-            //TODO:: add logging
+            Crashlytics.logException(exception);
         }
     }
 
@@ -55,7 +57,7 @@ public class AlarmServiceImpl implements AlarmService {
             return true;
         }
         catch(Exception exception){
-
+            Crashlytics.logException(exception);
             return false;
         }
     }
@@ -73,7 +75,7 @@ public class AlarmServiceImpl implements AlarmService {
             alarmRepository.update(alarm);
         }
         catch(Exception exception){
-            //TODO:: add logging
+            Crashlytics.logException(exception);
             result = false;
         }
         return result;
@@ -85,7 +87,7 @@ public class AlarmServiceImpl implements AlarmService {
             this.alarmRepository.get(alarmId, onAsyncResponse);
         }
         catch(Exception exception){
-            //TODO:: add logging
+            Crashlytics.logException(exception);
         }
     }
 
@@ -95,7 +97,7 @@ public class AlarmServiceImpl implements AlarmService {
             return this.alarmRepository.get(alarmId);
         }
         catch(Exception exception){
-            //TODO:: add logging
+            Crashlytics.logException(exception);
             return null;
         }
     }
@@ -128,7 +130,7 @@ public class AlarmServiceImpl implements AlarmService {
 
             return true;
         } catch (Exception exception) {
-            //TODO:: add logging
+            Crashlytics.logException(exception);
             return false;
         }
     }
@@ -143,7 +145,7 @@ public class AlarmServiceImpl implements AlarmService {
 
             return true;
         } catch (Exception exception) {
-            //TODO:: add logging
+            Crashlytics.logException(exception);
             return false;
         }
     }
@@ -162,6 +164,7 @@ public class AlarmServiceImpl implements AlarmService {
             return this.alarmRepository.getOnOrOffAlarms(state);
         }
         catch(Exception exception){
+            Crashlytics.logException(exception);
             return null;
         }
     }
@@ -173,7 +176,7 @@ public class AlarmServiceImpl implements AlarmService {
             this.alarmRepository.getOnOrOffAlarms(onAsyncResponse, state);
         }
         catch(Exception exception){
-
+            Crashlytics.logException(exception);
         }
     }
 }

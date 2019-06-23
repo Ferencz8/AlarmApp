@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "741138435118",
+    "firebase_url": "https://counting-sheep-33de1.firebaseio.com",
+    "project_id": "counting-sheep-33de1",
+    "storage_bucket": "counting-sheep-33de1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741138435118:android:c983a9d0442e8b8f",
+        "android_client_info": {
+          "package_name": "countingsheep.alarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741138435118-6bmfkndgp0mkspra2odmqv3tlibb33nt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtXGi0ppqyQn5KKl9XjFsfJfdDltz_u9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741138435118-6bmfkndgp0mkspra2odmqv3tlibb33nt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

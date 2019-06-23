@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -24,14 +24,12 @@ import javax.inject.Inject;
 
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.ui.BaseActivity;
-import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
 
 public class MainActivity extends BaseActivity {
-
     ConstraintLayout headerBar;
     TextView titleTextView;
     ImageView backBtn;

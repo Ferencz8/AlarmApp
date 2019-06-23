@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -20,11 +22,11 @@ public class EMailServiceImpl implements EMailService {
     private static final String CountingSheepRecipient = "ferenczv8@gmail.com";
     private static final String ReportAProblemSubject = "Report a Problem";
     private static final String FeedbackSubject = "Feedback";
-    private static final String ActionSendType =  "message/rfc822";
+    private static final String ActionSendType = "message/rfc822";
     private static final String GMailPackageName = "com.google.android.gm";
 
     @Inject
-    public EMailServiceImpl(Activity activity){
+    public EMailServiceImpl(Activity activity) {
         this.activity = activity;
     }
 
@@ -33,13 +35,16 @@ public class EMailServiceImpl implements EMailService {
         Intent mailClient = new Intent(Intent.ACTION_SEND);
         mailClient.setType(ActionSendType);
         mailClient.setPackage(GMailPackageName);
-        mailClient.putExtra(Intent.EXTRA_EMAIL  , new String[]{recipient});
+        mailClient.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
         mailClient.putExtra(Intent.EXTRA_SUBJECT, subject);
-        mailClient.putExtra(Intent.EXTRA_TEXT   , body);
+        mailClient.putExtra(Intent.EXTRA_TEXT, body);
         try {
             this.activity.startActivity(Intent.createChooser(mailClient, "Send mail..."));
         } catch (ActivityNotFoundException ex) {
+            Crashlytics.logException(ex);
             Toast.makeText(activity, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            Crashlytics.logException(ex);
         }
     }
 

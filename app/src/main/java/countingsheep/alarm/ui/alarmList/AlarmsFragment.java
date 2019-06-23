@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ import countingsheep.alarm.ui.shared.DialogInteractor;
 import retrofit2.Retrofit;
 
 public class AlarmsFragment extends Fragment {
-
+    protected FirebaseAnalytics firebaseAnalytics;
     RecyclerView recyclerView;
 
     AlarmListRecyclerViewDataAdapter adapter;
@@ -77,6 +79,9 @@ public class AlarmsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         alarms = new ArrayList<>();
         super.onCreate(savedInstanceState);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        firebaseAnalytics.logEvent("alarms_list",null);
 
         Injector.getActivityComponent(getActivity()).inject(AlarmsFragment.this);
 

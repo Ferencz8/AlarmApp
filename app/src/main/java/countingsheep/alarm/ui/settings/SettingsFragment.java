@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.services.interfaces.AuthenticationService;
@@ -34,7 +36,7 @@ import countingsheep.alarm.util.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
-
+    protected FirebaseAnalytics firebaseAnalytics;
     private CircleImageView userPhoto;
     private TextView username;
     private TextView termsAndConditions;
@@ -72,6 +74,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         Injector.getActivityComponent(getActivity()).inject(this);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        firebaseAnalytics.logEvent("settings",null);
     }
 
     @Nullable
@@ -156,7 +161,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
             else {
 
-                new ProfilePictureTask(this.getContext(), "https://graph.facebook.com/2092028077486336/picture?width=250&height=250", new ProfilePictureTaskResponse() {
+                new ProfilePictureTask(this.getContext(), sharedPreferencesContainer.getProfilePictureUrl(), new ProfilePictureTaskResponse() {
                     @Override
                     public void OnImageAvailable(@NonNull String imagePath) {
                         sharedPreferencesContainer.setProfilePictureLocalPath(imagePath);
@@ -180,24 +185,30 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.terms_text:
+                firebaseAnalytics.logEvent("terms_and_conditions",null);
                 Intent intent = new Intent(getActivity(), TermsAndConditionsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.feedback_text:
+                firebaseAnalytics.logEvent("feedback",null);
                 this.eMailService.SendFeedbackEMail("");
                 break;
             case R.id.onBoarding_text:
+                firebaseAnalytics.logEvent("onboarding",null);
                 Intent intent1 = new Intent(getActivity(), OnBoardingActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.history_text:
+                firebaseAnalytics.logEvent("alarm_history",null);
                 Intent i  = new Intent(getActivity(), AlarmHistoryActivity.class);
                 startActivity(i);
                 break;
             case R.id.logout_text:
+                firebaseAnalytics.logEvent("logout",null);
                 showLogoutPopup();
                 break;
             case R.id.payment_text:
+                firebaseAnalytics.logEvent("settings_payments",null);
                 displayPayment();
                 break;
             default: break;

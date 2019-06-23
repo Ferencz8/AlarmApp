@@ -1,5 +1,7 @@
 package countingsheep.alarm.core.services;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
             });
         }
         catch(Exception exception){
-            //TODO::LOG
+            Crashlytics.logException(exception);
         }
         finally {
             onAsyncResponse.processResponse(null);
@@ -98,7 +100,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
         try {
             return this.alarmReactionRepository.getAllUnsynced();
         } catch (Exception e) {
-            //TODO:: log
+            Crashlytics.logException(e);
             return null;
         }
     }
@@ -116,7 +118,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
 
             return true;
         } catch (Exception exception) {
-            //TODO:: add logging
+            Crashlytics.logException(exception);
             return false;
         }
     }
