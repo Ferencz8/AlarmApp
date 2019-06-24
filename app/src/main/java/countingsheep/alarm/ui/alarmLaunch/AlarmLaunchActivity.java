@@ -97,6 +97,8 @@ public class AlarmLaunchActivity extends BaseActivity {
                         sendStopPlayerEvent();
 
                         isProcessing = false;
+
+                        activity.finish();
                     }
                 });
 
@@ -127,6 +129,8 @@ public class AlarmLaunchActivity extends BaseActivity {
                         sendStopPlayerEvent();
 
                         isProcessing = false;
+
+                        activity.finish();
                     }
                 });
             }
@@ -134,8 +138,9 @@ public class AlarmLaunchActivity extends BaseActivity {
     }
 
     private void sendStopPlayerEvent() {
-        Intent intent = new Intent(activity, AlarmReceiver.class);
-        intent.putExtra("stopPlayer", true);
-        sendBroadcast(intent);
+//        Intent intent = new Intent(activity, AlarmReceiver.class);
+//        intent.putExtra("stopPlayer", true);
+//        sendBroadcast(intent);
+        this.activity.stopService(new Intent(this.activity, AlarmRingingPlayerService.class));
     }
 }

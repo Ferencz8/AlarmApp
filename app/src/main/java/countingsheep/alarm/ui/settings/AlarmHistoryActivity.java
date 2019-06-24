@@ -23,7 +23,7 @@ import countingsheep.alarm.ui.settings.models.AlarmHistory;
 
 public class AlarmHistoryActivity extends BaseActivity implements View.OnClickListener {
 
-    private RecyclerView recyclerView;;
+    private RecyclerView recyclerView;
     private AlarmHistoryRecyclerAdapter adapter;
     private ArrayList<AlarmHistory> alarms;
 
@@ -46,6 +46,10 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void processResponse(List<AlarmHistory> response) {
                 alarms.addAll(response);
+                synchronized(adapter) {
+                    adapter.notify();
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
         adapter = new AlarmHistoryRecyclerAdapter(this,alarms );

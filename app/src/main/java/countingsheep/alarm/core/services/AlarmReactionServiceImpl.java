@@ -138,7 +138,9 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
                         alarmHistory.setCreatedDate(String.valueOf(alarmHistoryEmbedded.getAlarm().getDateCreated()));
                         alarmHistory.setCreatedHour(String.valueOf(StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarmReaction().getCurrentHour())) + ":" +
                                 StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarmReaction().getCurrentMinutes()));
-                        alarmHistory.setCashSpent(alarmHistoryEmbedded.getPaymentDetails().getAmount());
+
+                        Integer cashSpent = alarmHistoryEmbedded.getPaymentDetails()!=null ? alarmHistoryEmbedded.getPaymentDetails().getAmount() : 0;
+                        alarmHistory.setCashSpent(cashSpent);
                         String reactionType = alarmHistoryEmbedded.getAlarmReaction().isSnooze() ? "Snooze" : "Awake";
                         alarmHistory.setReactionType(reactionType);
                         alarmHistory.setRequireRefund(false);

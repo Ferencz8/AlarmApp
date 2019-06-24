@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -31,11 +33,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
         Log.e("In receiver", "Yay!");
 
         Injector.getBroadcastReceiverComponent(context).inject(this);
-
-        initalize(context, intent);
 
         int alarmId = intent.getExtras().getInt("alarmId");
         alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
@@ -45,7 +46,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                     return;
 
                 if(shouldAlarmBeStarted(alarmDb)){
-                    startAlarmRinging(alarmDb);
+                    Intent intent = new Intent(context, AlarmRingingPlayerService.class);
+                    intent.putExtra("alarmDb", new Gson().toJson(alarmDb));
+                    context.startService(intent);
                     startAlarmUserExperience(alarmDb.getId());
                 }
                 else{
@@ -55,47 +58,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         });
     }
-
-    private void startAlarmRinging(Alarm alarm){
-        if(alarm.isVobrateOn()){
-            vibrator.vibrate();
-        }
-
-        Uri ringtone = Uri.parse(alarm.getRingtonePath());
-        if(ringtone != null){
-            ringtonePlayer.play(ringtone);
-        }
-    }
-
-    private void initalize(Context context, Intent intent){
-
-
-        if(!shouldAlarmBeStopped(intent)) {//the alarm has not yet been started
-            this.context = context;
-            ringtonePlayer = new AlarmRingtonePlayer(context);
-            vibrator = new AlarmVibrator(context);
-        }
-        else{//the alarm is already running
-
-
-            ringtonePlayer.stop();
-            vibrator.stop();
-            ringtonePlayer.cleanup();
-            vibrator.cleanup();
-        }
-    }
-
-    private boolean shouldAlarmBeStopped(Intent intent){
-        try {
-            boolean stopAlarm = intent.getExtras().getBoolean("stopPlayer");
-            return stopAlarm;
-        }
-        catch(Exception e){
-            return false;
-        }
-    }
-
-
 
     private boolean shouldAlarmBeStarted(Alarm alarmDb) {
 

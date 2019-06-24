@@ -45,7 +45,7 @@ public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
         itemViewHolder.alarmDate.setText(data.getCreatedDate());
         itemViewHolder.alarmHour.setText(data.getCreatedHour());
         itemViewHolder.alarmStatus.setText(data.getReactionType());
-        itemViewHolder.cashSpend.setText(data.getCashSpent());
+        itemViewHolder.cashSpend.setText(String.valueOf(data.getCashSpent())+" $");
 //        if(!data.isRequireRefund()){
         itemViewHolder.refund.setVisibility(View.GONE);
 //        } else {

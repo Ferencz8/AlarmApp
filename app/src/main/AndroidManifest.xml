@@ -23,6 +23,10 @@
             android:name=".ui.foreground.ProcessFailedPaymentsService"
             android:enabled="true"
             android:exported="true"/>
+        <service
+            android:name=".ui.alarmLaunch.AlarmRingingPlayerService"
+            android:enabled="true"
+            android:exported="true"/>
 
         <activity android:name=".ui.settings.OnBoardingActivity"/>
         <activity android:name=".ui.settings.AlarmHistoryActivity"/>
