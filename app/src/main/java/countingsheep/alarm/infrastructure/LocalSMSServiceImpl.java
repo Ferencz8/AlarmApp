@@ -18,14 +18,14 @@ import javax.inject.Singleton;
 import countingsheep.alarm.core.contracts.infrastructure.SMSService;
 
 @Singleton
-public class SMSServiceImpl implements SMSService {
+public class LocalSMSServiceImpl implements SMSService {
 
     private static final String SentAction = "SMS_SENT";
     private static final String DeliveredAction = "SMS_DELIVERED";
     private Context context;
 
     @Inject
-    public SMSServiceImpl(Context context) {
+    public LocalSMSServiceImpl(Context context) {
         this.context = context;
     }
 

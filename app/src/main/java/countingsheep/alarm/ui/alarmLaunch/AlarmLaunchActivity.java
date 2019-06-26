@@ -2,23 +2,32 @@ package countingsheep.alarm.ui.alarmLaunch;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.services.SMSServiceImpl;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.shared.DialogInteractor;
+import countingsheep.alarm.util.Constants;
 import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmLaunchActivity extends BaseActivity {
@@ -42,6 +51,9 @@ public class AlarmLaunchActivity extends BaseActivity {
     @Inject
     DialogInteractor dialogInteractor;
 
+    @Inject
+    SMSService smsService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -58,9 +70,9 @@ public class AlarmLaunchActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            getWindow().addFlags(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getWindow().addFlags(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        }
 
         setContentView(R.layout.activity_alarm_launch);
 
@@ -110,6 +122,17 @@ public class AlarmLaunchActivity extends BaseActivity {
                         alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMilliseconds(alarmDb.getHour(), alarmDb.getSnoozeAmount()));
                     }
                 });
+
+                smsService.sendToSelf(new OnResult() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onFailure(String message){
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -142,5 +165,30 @@ public class AlarmLaunchActivity extends BaseActivity {
 //        intent.putExtra("stopPlayer", true);
 //        sendBroadcast(intent);
         this.activity.stopService(new Intent(this.activity, AlarmRingingPlayerService.class));
+    }
+    //TODO
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+            Intent intent = new Intent(Constants.Volume_Down);
+            LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+            return true;
+        } else if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP)) {
+            Intent intent = new Intent(Constants.Volume_Up);
+            LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+            return true;
+        } else
+            return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        super.onKeyLongPress(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+        {
+           //TODO
+            return true;
+        }
+        return false;
     }
 }

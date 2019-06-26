@@ -1,16 +1,20 @@
 package countingsheep.alarm.ui.alarmLaunch;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.util.Constants;
 
 public class AlarmRingingPlayerService extends Service {
 
@@ -31,8 +35,31 @@ public class AlarmRingingPlayerService extends Service {
             startAlarmRinging(alarmDb);
         }
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeUp,
+                new IntentFilter(Constants.Volume_Up));
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeDown,
+                new IntentFilter(Constants.Volume_Down));
+
         return START_STICKY;
     }
+
+    // handler for received Intents for logout event
+    private BroadcastReceiver receiverVolumeUp = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    };
+
+    // handler for received Intents for logout event
+    private BroadcastReceiver receiverVolumeDown = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    };
+
 
     @Nullable
     @Override
@@ -63,5 +90,7 @@ public class AlarmRingingPlayerService extends Service {
             vibrator.stop();
             vibrator.cleanup();
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiverVolumeUp);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiverVolumeDown);
     }
 }

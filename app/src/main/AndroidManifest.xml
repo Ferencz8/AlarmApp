@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="replace"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".AlarmApplication"
@@ -75,7 +76,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity" />
+        <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity"  android:showOnLockScreen="true"/>
         <activity android:name=".ui.freecredits.FreeCreditsActivity" />
 
 

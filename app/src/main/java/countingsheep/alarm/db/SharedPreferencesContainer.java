@@ -11,6 +11,7 @@ public class SharedPreferencesContainer {
     private SharedPreferences sharedPreferences;
 
     private final static String UserId = "UserId";
+    private final static String PhoneNumber = "phoneNumber";
     private final static String MonetizationType = "MonetizationType";
     private final static String MonetizationCost = "MonetizationCost";
     private final static String BootReceivedPermissionOnSpecialDevices = "BootReceivedPermissionOnSpecialDevices";
@@ -105,6 +106,14 @@ public class SharedPreferencesContainer {
 
     public void setCurrentUserId(int currentUserId) {
         changePreferenceValue(UserId, currentUserId);
+    }
+
+    public String getCurrentUserPhoneNumber(){
+        return this.sharedPreferences.getString(PhoneNumber, "+40743922464");
+    }
+
+    public void setCurrentUserPhoneNumber(String phoneNumber) {
+        changePreferenceValue(PhoneNumber, phoneNumber);
     }
 
     public boolean doesUserIdExist(){
