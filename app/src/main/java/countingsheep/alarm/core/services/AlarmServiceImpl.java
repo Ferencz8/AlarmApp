@@ -82,6 +82,20 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    public void update(Alarm alarm, OnAsyncResponse<Void> onAsyncResponse) {
+
+        try{
+
+            alarm.setDateModified(timeService.getUTCDateNow());
+            alarm.setSynced(false);//this way a new alarm will be added on Server
+            alarmRepository.update(alarm, onAsyncResponse);
+        }
+        catch(Exception exception){
+            Crashlytics.logException(exception);
+        }
+    }
+
+    @Override
     public void get(int alarmId, OnAsyncResponse<Alarm> onAsyncResponse) {
         try {
             this.alarmRepository.get(alarmId, onAsyncResponse);

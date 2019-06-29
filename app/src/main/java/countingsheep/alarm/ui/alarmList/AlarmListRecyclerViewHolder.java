@@ -12,8 +12,6 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     private TextView titleView = null;
     private ImageView onOffImageView = null;
-    //private ImageView offBackgroundImageView = null;
-   // private ImageView onBackgroundImageView = null;
     private TextView repeatDaysView = null;
     private TextView timeView = null;
     private ConstraintLayout alarmLayout = null;
@@ -30,26 +28,8 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
             repeatDaysView = (TextView)itemView.findViewById(R.id.alarmListTimeRepeatId);
             timeView = (TextView)itemView.findViewById(R.id.alarmListTimeId);
             alarmLayout = (ConstraintLayout) itemView.findViewById(R.id.alarmItemLayout);
-            //offBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOffBackgroundmageViewId);
-            //onBackgroundImageView = (ImageView)itemView.findViewById(R.id.alarmListOnBackgroundmageViewId);
         }
     }
-
-//    public ImageView getOnBackgroundImageView() {
-//        return onBackgroundImageView;
-//    }
-//
-//    public void setOnBackgroundImageView(ImageView onBackgroundImageView) {
-//        this.onBackgroundImageView = onBackgroundImageView;
-//    }
-//
-//    public void setOffBackgroundImageView(ImageView offBackgroundImageView) {
-//        this.offBackgroundImageView = offBackgroundImageView;
-//    }
-//
-//    public ImageView getOffBackgroundImageView() {
-//        return offBackgroundImageView;
-//    }
 
     public ConstraintLayout getAlarmLayout() {
         return alarmLayout;

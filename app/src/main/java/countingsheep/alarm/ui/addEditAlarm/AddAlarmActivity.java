@@ -391,25 +391,34 @@ public class AddAlarmActivity extends BaseActivity {
 
                 if (isEdit) {
 
-                    alarmService.update(alarm);
+                    alarmService.update(alarm, new OnAsyncResponse<Void>() {
+                        @Override
+                        public void processResponse(Void response) {
 
-                    alarmLaunchHandler.cancelAlarm(alarm.getId());
+                            alarmLaunchHandler.cancelAlarm(alarm.getId());
 
-                    alarmLaunchHandler.registerAlarm(alarm.getId(), timeToStartAlarm);
+                            alarmLaunchHandler.registerAlarm(alarm.getId(), timeToStartAlarm);
+
+//                            Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
+//                            startActivity(intent);
+                            finish();
+                        }
+                    });
                 } else {
                     alarmService.add(alarm, new OnAsyncResponse<Long>() {
                         @Override
                         public void processResponse(Long response) {
 
                             alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+
+//                            Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
+//                            startActivity(intent);
+                            finish();
                         }
                     });
                 }
 
                 startProcessingFailedPayments();
-
-                Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
-                startActivity(intent);
             }
         };
     }

@@ -177,4 +177,10 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     public Alarm getAlarm(int position){
         return viewItemList.get(position);
     }
+
+    public void updateData(List<Alarm> alarms){
+        this.viewItemList.clear();
+        this.viewItemList.addAll(alarms);
+        this.notifyDataSetChanged();
+    }
 }

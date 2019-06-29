@@ -19,6 +19,7 @@ import countingsheep.alarm.db.repositories.tasks.alarm.GetAllTurnedOnAlarmsTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.InsertAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.UpdateAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.UpdateSyncedAlarmTask;
+import countingsheep.alarm.db.repositories.tasks.alarm.VoidGenericTask;
 
 @Singleton
 public class AlarmRepositoryImpl implements AlarmRepository {
@@ -44,6 +45,21 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     @Override
     public void update(Alarm alarm) {
         new UpdateAlarmTask(alarmDatabase, alarm).execute();
+    }
+
+    @Override
+    public void update(Alarm alarm, OnAsyncResponse<Void> onAsyncResponse) {
+        new VoidGenericTask<AlarmDao>(alarmDatabase.alarmDao(), new VoidGenericTask.OnTaskHandler<AlarmDao>() {
+            @Override
+            public void doInBackground(AlarmDao dao) {
+                dao.update(alarm);
+            }
+
+            @Override
+            public void onPostExecute() {
+                onAsyncResponse.processResponse(null);
+            }
+        }).execute();
     }
 
     @Override

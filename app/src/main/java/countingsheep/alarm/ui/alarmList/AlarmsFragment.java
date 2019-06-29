@@ -45,7 +45,7 @@ public class AlarmsFragment extends Fragment {
     RecyclerView recyclerView;
 
     AlarmListRecyclerViewDataAdapter adapter;
-    List<Alarm> alarms;
+    List<Alarm> alarms = new ArrayList<Alarm>();
     ImageView addAlarm;
 
 
@@ -84,8 +84,6 @@ public class AlarmsFragment extends Fragment {
         firebaseAnalytics.logEvent("alarms_list",null);
 
         Injector.getActivityComponent(getActivity()).inject(AlarmsFragment.this);
-
-        initAlarms();
     }
 
     @Override
@@ -104,8 +102,10 @@ public class AlarmsFragment extends Fragment {
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 
+
+        initAlarms();
         // Scroll RecyclerView a little to make later scroll take effect.
-        recyclerView.scrollToPosition(1);
+
 
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
@@ -160,9 +160,15 @@ public class AlarmsFragment extends Fragment {
     private void initAlarms() {
 
         alarmService.getAll(response -> {
-            alarms.addAll(response);
-            adapter.notifyDataSetChanged();
+            adapter.updateData(response);
+            recyclerView.scrollToPosition(1);
         });
+    }
+
+    @Override
+    public void onResume(){
+        initAlarms();
+        super.onResume();
     }
 
     private void setUpItemTouchHelper() {

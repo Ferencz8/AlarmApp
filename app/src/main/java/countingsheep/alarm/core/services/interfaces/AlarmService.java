@@ -15,6 +15,8 @@ public interface AlarmService {
 
     boolean update(Alarm alarm);
 
+    void update(Alarm alarm, OnAsyncResponse<Void> onAsyncResponse);
+
     Alarm get(int alarmId);
 
     void get(int alarmId, OnAsyncResponse<Alarm> onAsyncResponse);

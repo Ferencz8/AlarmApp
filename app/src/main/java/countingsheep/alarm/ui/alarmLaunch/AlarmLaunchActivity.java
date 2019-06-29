@@ -1,12 +1,16 @@
 package countingsheep.alarm.ui.alarmLaunch;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.os.PowerManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -64,15 +68,27 @@ public class AlarmLaunchActivity extends BaseActivity {
 
         extractParameters(savedInstanceState);
 
-        //CHECK API LEVEL
-        //this.setShowWhenLocked(true);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true);
+            setTurnScreenOn(true);
+
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            if (keyguardManager != null)
+                keyguardManager.requestDismissKeyguard(this, null);
+        }
+
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
             getWindow().addFlags(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         }
+
 
         setContentView(R.layout.activity_alarm_launch);
 
@@ -97,7 +113,7 @@ public class AlarmLaunchActivity extends BaseActivity {
         snoozeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isProcessing)
+                if (isProcessing)
                     return;
 
                 isProcessing = true;
@@ -128,8 +144,9 @@ public class AlarmLaunchActivity extends BaseActivity {
                     public void onSuccess(Object result) {
                         Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
-                    public void onFailure(String message){
+                    public void onFailure(String message) {
                         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -140,7 +157,7 @@ public class AlarmLaunchActivity extends BaseActivity {
         awakeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isProcessing)
+                if (isProcessing)
                     return;
 
                 isProcessing = true;
@@ -161,11 +178,9 @@ public class AlarmLaunchActivity extends BaseActivity {
     }
 
     private void sendStopPlayerEvent() {
-//        Intent intent = new Intent(activity, AlarmReceiver.class);
-//        intent.putExtra("stopPlayer", true);
-//        sendBroadcast(intent);
         this.activity.stopService(new Intent(this.activity, AlarmRingingPlayerService.class));
     }
+
     //TODO
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -184,9 +199,8 @@ public class AlarmLaunchActivity extends BaseActivity {
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
         super.onKeyLongPress(keyCode, event);
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
-        {
-           //TODO
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            //TODO
             return true;
         }
         return false;

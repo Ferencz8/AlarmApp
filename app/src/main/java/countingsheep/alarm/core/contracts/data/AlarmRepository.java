@@ -12,6 +12,8 @@ public interface AlarmRepository {
 
     void update(Alarm alarm);
 
+    void update(Alarm alarm, OnAsyncResponse<Void> onAsyncResponse);
+
     void delete(int alarmId);
 
     Alarm get(int id);
