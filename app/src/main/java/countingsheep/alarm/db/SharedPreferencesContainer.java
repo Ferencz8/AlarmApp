@@ -38,7 +38,7 @@ public class SharedPreferencesContainer {
 
     public boolean getPopopShowedRemoveAlarm(){ return this.sharedPreferences.getBoolean(Popup_ShowedRemoveAlarm, false); }
 
-    public int getDefaultSnoozePrice(){return this.sharedPreferences.getInt(DefaultSnoozePrice, 0);}
+    public int getDefaultSnoozePrice(){return this.sharedPreferences.getInt(DefaultSnoozePrice, 1);}
 
     public void setDefaultSnoozePrice(int price){changePreferenceValue(DefaultSnoozePrice, price);}
 

@@ -139,17 +139,17 @@ public class AlarmLaunchActivity extends BaseActivity {
                     }
                 });
 
-                smsService.sendToSelf(new OnResult() {
-                    @Override
-                    public void onSuccess(Object result) {
-                        Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                smsService.sendToSelf(new OnResult() {
+//                    @Override
+//                    public void onSuccess(Object result) {
+//                        Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String message) {
+//                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
         });
 
