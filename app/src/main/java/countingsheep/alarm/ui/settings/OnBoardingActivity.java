@@ -91,7 +91,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
     ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int i, float v, int i1) {
-            int x = 5;
+
         }
 
         @Override
@@ -105,6 +105,10 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
                     slideBackBtn.setText("Not now");
                     slideNextBtn.setText("Now");
                     reachedPaymentSlide = true;
+                }
+                else{
+                    slideBackBtn.setText("Back");
+                    slideNextBtn.setText("Next");
                 }
             } else {
                 slideBackBtn.setVisibility(View.GONE);

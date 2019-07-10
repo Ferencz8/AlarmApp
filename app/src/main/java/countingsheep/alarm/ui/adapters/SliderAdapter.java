@@ -21,17 +21,17 @@ public class SliderAdapter extends PagerAdapter {
     LayoutInflater inflater;
 
     private int[] slide_images = {
-            R.drawable.mock_slide_image,
-            R.drawable.mock_slide_image,
-            R.drawable.mock_slide_image,
-            R.drawable.mock_slide_image
+            R.drawable.ic_onboarding1st,
+            R.drawable.ic_onboarding2nd,
+            R.drawable.ic_onboarding3rd
     };
 
     private String[] slide_texts = {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "Give me all your money! Muhahaha"
+            "Mornings aren’t fun for anybody. \n" +
+                    "Excessive snoozes? Try something which make you feel bad if you snooze.",
+            "Here is how we’re gonna kill \n" + "snoozes. Every snooze you’ll have is a dollar we’re gonna take from you. You can hate us, at least you’d be \n" + " awake.",
+            "Let’s get started! \n" +
+                    "Don’t panic & introduce your card details. We only charge the laziness. "
     };
 
     public SliderAdapter(Context context, boolean displayPayment){
