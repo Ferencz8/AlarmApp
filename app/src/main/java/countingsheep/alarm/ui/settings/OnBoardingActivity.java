@@ -1,18 +1,19 @@
 package countingsheep.alarm.ui.settings;
 
 import android.app.Activity;
-import android.app.AppComponentFactory;
 import android.content.Intent;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
     private TextView[] dots;
     private Button slideBackBtn;
     private Button slideNextBtn;
+    private ProgressBar loadingSpinner;
     private int currentPage;
     private boolean reachedPaymentSlide = false;
 
@@ -69,6 +71,8 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         sliderDots = (LinearLayout) findViewById(R.id.sliderDots);
         slideBackBtn = (Button) findViewById(R.id.slideBackBtn);
         slideNextBtn = (Button) findViewById(R.id.slideNextBtn);
+        loadingSpinner = (ProgressBar) findViewById(R.id.onBoardingProgressBar);
+        loadingSpinner.setVisibility(View.INVISIBLE);
     }
 
     public void addDotsIndicator(int position){
@@ -152,17 +156,25 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
 
     private void displayPaymentDropIn() {
 
+        loadingSpinner.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         this.sharedPreferencesContainer.setDisplayPaymentInOnBoarding(false);
 
         braintreePaymentInteractor.displayPaymentMethods(new OnPaymentInteractionResult() {
             @Override
             public void onSuccess() {
+                loadingSpinner.setVisibility(View.INVISIBLE);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 Intent intent = new Intent(OnBoardingActivity.this, MainActivity.class);
                 startActivity(intent);
             }
 
             @Override
             public void onCanceled() {
+                loadingSpinner.setVisibility(View.INVISIBLE);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 if( sharedPreferencesContainer.shouldGiveFreeCredits()) {
                     Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
                     startActivity(intent);
@@ -177,6 +189,8 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == Activity.RESULT_CANCELED && this.sharedPreferencesContainer.shouldGiveFreeCredits()){
+            loadingSpinner.setVisibility(View.INVISIBLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             firebaseAnalytics.logEvent("onboarding_payment_now_canceled", null);
             Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
             startActivity(intent);

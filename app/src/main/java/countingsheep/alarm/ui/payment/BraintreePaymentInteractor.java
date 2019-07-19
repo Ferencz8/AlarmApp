@@ -8,6 +8,7 @@ import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.cardform.view.CardForm;
+import com.crashlytics.android.Crashlytics;
 
 import javax.inject.Inject;
 
@@ -17,6 +18,7 @@ import countingsheep.alarm.core.domain.PaymentRegistration;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.network.retrofit.PaymentAPI;
 import countingsheep.alarm.util.Constants;
+import io.fabric.sdk.android.services.common.Crash;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,6 +66,7 @@ public class BraintreePaymentInteractor {
             public void onFailure(Call<String> call, Throwable t) {
 
                 Log.d("ERROR", "Failed AR");
+                Crashlytics.logException(t);
             }
         });
     }
@@ -115,6 +118,7 @@ public class BraintreePaymentInteractor {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.e(TAG, "Customer registration failed");
+                Crashlytics.logException(t);
             }
         });
     }
@@ -142,6 +146,8 @@ public class BraintreePaymentInteractor {
             @Override
             public void onFailure(Call<Customer> call, Throwable t) {
                 Log.e(TAG, "Customer registration failed");
+                Crashlytics.logException(t);
+                onPaymentInteractionResult.onCanceled();
             }
         });
     }

@@ -109,6 +109,7 @@ public class SyncerWorker extends Worker {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d("ERROR", "Failed AR");
+                Crashlytics.logException(t);
             }
         });
     }
@@ -135,6 +136,7 @@ public class SyncerWorker extends Worker {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.d("ERROR", "Failed A");
+                Crashlytics.logException(t);
             }
         });
     }

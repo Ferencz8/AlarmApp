@@ -76,4 +76,19 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/onBoardingProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="8dp"
+        android:indeterminateDrawable="@drawable/loadingcircle"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/sliderDots"
+        app:layout_constraintEnd_toEndOf="@+id/viewPager"
+        app:layout_constraintStart_toStartOf="@+id/viewPager"
+        app:layout_constraintTop_toTopOf="@+id/viewPager" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

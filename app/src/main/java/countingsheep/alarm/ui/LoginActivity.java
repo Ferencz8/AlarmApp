@@ -42,7 +42,6 @@ import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
 import countingsheep.alarm.ui.settings.TermsAndConditionsActivity;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -56,9 +55,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     SocialAuthenticationService socialAuthenticationService;
     @Inject
     AuthenticationService authenticationService;
-
-    @Inject
-    Retrofit retrofit;
 
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
@@ -184,7 +180,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 startActivity(intent);
                             }
 
-                            //TODO:: add here the stop loading bar logic
+
                             spinner.setVisibility(View.INVISIBLE);
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }
