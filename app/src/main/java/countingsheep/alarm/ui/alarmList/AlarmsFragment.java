@@ -183,7 +183,7 @@ public class AlarmsFragment extends Fragment {
             private void init() {
                 background = new ColorDrawable(Color.TRANSPARENT);
                 xMark = ContextCompat.getDrawable(getActivity(), R.drawable.trash_icon);
-                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                xMark.setColorFilter(getResources().getColor(R.color.colorPrimary, null), PorterDuff.Mode.SRC_ATOP);
                 xMarkMargin = (int) getActivity().getResources().getDimension(R.dimen.fab_margin);
                 initiated = true;
             }

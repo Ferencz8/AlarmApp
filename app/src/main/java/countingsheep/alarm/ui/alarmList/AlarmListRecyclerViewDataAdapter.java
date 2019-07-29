@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,23 +53,23 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     }
 
 
-
     @Override
     public void onBindViewHolder(final AlarmListRecyclerViewHolder holder, int position) {
-        if(viewItemList!=null) {
+        if (viewItemList != null) {
             // Get car item dto in list.
             final Alarm viewItem = viewItemList.get(position);
 
-            if(viewItem != null) {
+            if (viewItem != null) {
                 // Set car item title.
                 holder.getTitleView().setText(viewItem.getTitle());
-                holder.getHourView().setText(getFormattedTime(viewItem.getHour(),viewItem.getMinutes()));
+                holder.getHourView().setText(getFormattedTime(viewItem.getHour(), viewItem.getMinutes()));
                 holder.getRepeatDaysView().setText(viewItem.getRepeatDays());
+                holder.getOverlay().setVisibility(View.GONE);
                 holder.getAlarmLayout().setBackgroundColor(activity.getResources().getColor(R.color.colorSecondary, null));
                 //holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 //holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);
 
-                if (viewItem.isTurnedOn()){
+                if (viewItem.isTurnedOn()) {
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
                     //holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
                 } else {
@@ -75,7 +77,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                     //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
                 }
 
-                View.OnClickListener onClickListener = new View.OnClickListener(){
+                View.OnClickListener onClickListener = new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
@@ -95,18 +97,19 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                     @Override
                     public void onClick(View view) {
 
-                        if (holder.isClicked()){
+                        if (holder.isClicked()) {
                             holder.setClicked(false);
 
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
-                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorSecondary, 0.9f));
+                            holder.getOverlay().setVisibility(View.VISIBLE);
+//                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorSecondary, 0.9f));
 
                             changeAlarmState(false, viewItem.getId(), 0);
                             //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             holder.setClicked(true);
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
+                            holder.getOverlay().setVisibility(View.GONE);
                             holder.getAlarmLayout().setBackgroundColor(activity.getResources().getColor(R.color.colorSecondary, null));
 
                             changeAlarmState(true, viewItem.getId(), TimeHelper.getTimeInMilliseconds(viewItem.getHour(), viewItem.getMinutes()));
@@ -118,13 +121,13 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
         }
     }
 
-    private String getFormattedTime(int hourOfDay, int minute){
+    private String getFormattedTime(int hourOfDay, int minute) {
 
         String time = "";
         try {
             time = StringFormatter.getFormattedTimeDigits(hourOfDay) + " : " + StringFormatter.getFormattedTimeDigits(minute);
 
-        }catch(Exception exception){
+        } catch (Exception exception) {
             Crashlytics.logException(exception);
             dialogInteractor.displayReactiveDialog("Time Conversion Failed", "Please retry!", null);
         }
@@ -134,13 +137,13 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
 
     /**
      * Used to turn on/off the alarm. If it is on the alarm is registered, otherwise it gets canceled.
+     *
      * @param state
      */
-    private void changeAlarmState(boolean state, int alarmId, long triggerAtMillis){
-        if(state){
+    private void changeAlarmState(boolean state, int alarmId, long triggerAtMillis) {
+        if (state) {
             this.alarmLaunchHandler.registerAlarm(alarmId, triggerAtMillis);
-        }
-        else {
+        } else {
             this.alarmLaunchHandler.cancelAlarm(alarmId);
         }
     }
@@ -148,8 +151,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     @Override
     public int getItemCount() {
         int ret = 0;
-        if(viewItemList!=null)
-        {
+        if (viewItemList != null) {
             ret = viewItemList.size();
         }
         return ret;
@@ -174,11 +176,11 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
         }
     }
 
-    public Alarm getAlarm(int position){
+    public Alarm getAlarm(int position) {
         return viewItemList.get(position);
     }
 
-    public void updateData(List<Alarm> alarms){
+    public void updateData(List<Alarm> alarms) {
         this.viewItemList.clear();
         this.viewItemList.addAll(alarms);
         this.notifyDataSetChanged();

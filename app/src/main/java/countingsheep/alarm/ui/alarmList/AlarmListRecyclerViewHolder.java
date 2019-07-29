@@ -15,6 +15,7 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
     private TextView repeatDaysView = null;
     private TextView timeView = null;
     private ConstraintLayout alarmLayout = null;
+    private ImageView overlay = null;
 
     private boolean isClicked = true;
 
@@ -28,6 +29,7 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
             repeatDaysView = (TextView)itemView.findViewById(R.id.alarmListTimeRepeatId);
             timeView = (TextView)itemView.findViewById(R.id.alarmListTimeId);
             alarmLayout = (ConstraintLayout) itemView.findViewById(R.id.alarmItemLayout);
+            overlay = (ImageView) itemView.findViewById(R.id.overlay);
         }
     }
 
@@ -77,5 +79,13 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public void setHourView(TextView hourView) {
         this.timeView = hourView;
+    }
+
+    public ImageView getOverlay() {
+        return overlay;
+    }
+
+    public void setOverlay(ImageView overlay) {
+        this.overlay = overlay;
     }
 }
