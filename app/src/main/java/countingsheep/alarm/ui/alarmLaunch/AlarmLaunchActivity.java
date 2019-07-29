@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -38,8 +39,10 @@ public class AlarmLaunchActivity extends BaseActivity {
 
     private boolean isProcessing = false;
     private Activity activity;
-    private ImageView snoozeImageView;
-    private ImageView awakeImageView;
+    private TextView snoozeImageView;
+    private TextView awakeImageView;
+    private TextView alarmTime;
+    private TextView alarmTitle;
 
     private int alarmId;
 
@@ -175,6 +178,14 @@ public class AlarmLaunchActivity extends BaseActivity {
                 });
             }
         });
+
+        alarmTime = findViewById(R.id.alarm_awake_time);
+        //TODO cu FERI
+        //alarmTime.setText(String.valueOf(alarmService.get(alarmId).getHour() + ":" + alarmService.get(alarmId).getMinutes()));
+
+        alarmTitle = findViewById(R.id.alarm_name_launch);
+        //TODO cu FERI
+        //alarmTitle.setText(String.valueOf(alarmService.get(alarmId).getTitle()));
     }
 
     private void sendStopPlayerEvent() {

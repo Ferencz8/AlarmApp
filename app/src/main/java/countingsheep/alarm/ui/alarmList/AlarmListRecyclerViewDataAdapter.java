@@ -63,7 +63,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                 holder.getTitleView().setText(viewItem.getTitle());
                 holder.getHourView().setText(getFormattedTime(viewItem.getHour(),viewItem.getMinutes()));
                 holder.getRepeatDaysView().setText(viewItem.getRepeatDays());
-                holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparent, 0.7f));
+                holder.getAlarmLayout().setBackgroundColor(activity.getResources().getColor(R.color.colorSecondary, null));
                 //holder.getOnBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_on);
                 //holder.getOffBackgroundImageView().setImageResource(R.drawable.ic_alarms_rectangle_alarm_off);
 
@@ -99,7 +99,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                             holder.setClicked(false);
 
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
-                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparent, 0.9f));
+                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorSecondary, 0.9f));
 
                             changeAlarmState(false, viewItem.getId(), 0);
                             //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
@@ -107,7 +107,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
                         else {
                             holder.setClicked(true);
                             holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
-                            holder.getAlarmLayout().setBackgroundColor(getColorWithAlpha(R.color.colorTransparent, 0.7f));
+                            holder.getAlarmLayout().setBackgroundColor(activity.getResources().getColor(R.color.colorSecondary, null));
 
                             changeAlarmState(true, viewItem.getId(), TimeHelper.getTimeInMilliseconds(viewItem.getHour(), viewItem.getMinutes()));
                             //holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/ic_background"
+    android:background="@drawable/new_background"
     android:layout_height="match_parent"
     tools:context=".ui.settings.OnBoardingActivity">
 
@@ -58,21 +58,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/custom_button"
             android:text="BACK"
             android:textColor="@color/colorMenuBottomDefault"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/slideNextBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="5dp"
             android:background="@drawable/custom_button"
             android:text="NEXT"
-            android:textColor="@color/colorMenuBottomDefault"
-            android:layout_marginEnd="5dp"/>
+            android:textColor="@color/colorMenuBottomDefault"/>
 
     </LinearLayout>
 

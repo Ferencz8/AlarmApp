@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/popup_background_color">
+    android:background="@color/colorSecondary">
 
     <ImageView
         android:id="@+id/popupImageView"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="To delete alarm swipe"
-        android:textColor="#ffffff"
+        android:textColor="@color/white_text_color"
         app:layout_constraintEnd_toEndOf="@+id/popupImageView"
         app:layout_constraintStart_toStartOf="@+id/popupImageView"
         app:layout_constraintTop_toBottomOf="@+id/popupImageView" />
@@ -36,7 +36,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="30dp"
         android:text="Yes"
-        android:textColor="#01F6C9"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/popupTextId"

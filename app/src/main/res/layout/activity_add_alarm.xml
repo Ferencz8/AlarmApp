@@ -7,6 +7,9 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.addEditAlarm.AddAlarmActivity">
 
-    <include layout="@layout/content_add_alarm" />
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/content_add_alarm" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

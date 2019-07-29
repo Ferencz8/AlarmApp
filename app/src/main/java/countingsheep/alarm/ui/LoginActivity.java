@@ -70,7 +70,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         //termsText.setTypeface(custom_font);
 
-        termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#00CBEB'>Terms of Service</font></b></p>"));
+        termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#FFB800'>Terms of Service</font></b></p>"));
     }
 
     private static Spanned fromHtmlN(String data) {

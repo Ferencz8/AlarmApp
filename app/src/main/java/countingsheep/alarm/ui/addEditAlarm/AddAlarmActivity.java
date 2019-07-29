@@ -67,7 +67,7 @@ public class AddAlarmActivity extends BaseActivity {
     private List<String> weekDays = Arrays.asList("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su");
     private Switch vibrateSwitch;
     private SeekBar volumeSeekBar;
-    private ImageView saveImageView;
+    private TextView saveImageView;
     private TextView selectedRingtoneTextView;
     private TextView timeView;
     private TextView snoozeTv;
@@ -147,7 +147,7 @@ public class AddAlarmActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmDayRecyclerViewDataAdapter(daysList);
+        adapter = new AlarmDayRecyclerViewDataAdapter(this, daysList);
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 
@@ -239,7 +239,7 @@ public class AddAlarmActivity extends BaseActivity {
             }
         });
 
-        saveImageView = findViewById(R.id.saveAlarmAddImageView);
+        saveImageView = findViewById(R.id.add_alarm_save_button);
         saveImageView.setOnClickListener(getSaveAlarmClickListener());
 
         String time;
