@@ -1,5 +1,7 @@
 package countingsheep.alarm.ui;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -50,6 +52,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView termsText;
     Activity activity;
     ProgressBar spinner;
+    private ImageView logo;
 
     @Inject
     SocialAuthenticationService socialAuthenticationService;
@@ -64,6 +67,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         checkBox = findViewById(R.id.checkBox);
         termsText = findViewById(R.id.Terms2);
         spinner = findViewById(R.id.loadingCircle);
+        logo = findViewById(R.id.component);
         spinner.setVisibility(View.INVISIBLE);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Regular.otf");
@@ -71,6 +75,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         //termsText.setTypeface(custom_font);
 
         termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#FFB800'>Terms of Service</font></b></p>"));
+
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                logo,
+                PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.2f));
+        scaleDown.setDuration(1000);
+
+        scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+        scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+
+        scaleDown.start();
     }
 
     private static Spanned fromHtmlN(String data) {

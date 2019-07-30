@@ -86,7 +86,7 @@
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/checkBox"
             android:text="@string/i_agree_to_the_privacy_policy_nand_terms_of_service"
-            android:textColor="#ffffff"
+            android:textColor="@color/white_text_color"
             android:textSize="11sp" />
     </RelativeLayout>
 

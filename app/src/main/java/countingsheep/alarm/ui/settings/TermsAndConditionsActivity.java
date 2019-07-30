@@ -23,9 +23,6 @@ public class TermsAndConditionsActivity extends AppCompatActivity implements Vie
         setContentView(R.layout.activity_terms_and_conditions);
 
         bindViews();
-        titleTv.setText(R.string.terms_and_conditions);
-        termAndConditionsTv.setText(R.string.large_text);
-        backBtn.setOnClickListener(this);
     }
 
     private void bindViews(){
@@ -36,6 +33,9 @@ public class TermsAndConditionsActivity extends AppCompatActivity implements Vie
 
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         titleTv.setTypeface(bold_font);
+        titleTv.setText(R.string.terms_and_conditions);
+        termAndConditionsTv.setText(R.string.large_text);
+        backBtn.setOnClickListener(this);
     }
 
     @Override

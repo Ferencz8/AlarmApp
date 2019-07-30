@@ -15,7 +15,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="8dp"
         android:text="07:58"
-        android:textColor="#ffffff"
+        android:textColor="@color/white_text_color"
         android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Scolata-te maaaaaaa"
-        android:textColor="#ffffff"
+        android:textColor="@color/white_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alarm_awake_time" />

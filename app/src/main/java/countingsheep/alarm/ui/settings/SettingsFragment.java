@@ -29,6 +29,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
@@ -106,6 +107,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         bindViews(view);
 
+        ((MainActivity) getActivity()).hideHeaderBar(true);
         if (sharedPreferencesContainer.getFreeCredits() != 0) {
             this.spentTextView.setText(getString(R.string.creditsLeft));
             this.cashTextView.setText(sharedPreferencesContainer.getFreeCredits() + " $");

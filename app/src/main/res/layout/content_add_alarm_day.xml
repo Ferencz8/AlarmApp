@@ -26,7 +26,7 @@
         android:layout_marginTop="8dp"
         android:lineHeight="19sp"
         android:text="Mo"
-        android:textColor="#ffffff"
+        android:textColor="@color/white_text_color"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/dayImageView"
         app:layout_constraintEnd_toEndOf="@+id/dayImageView"

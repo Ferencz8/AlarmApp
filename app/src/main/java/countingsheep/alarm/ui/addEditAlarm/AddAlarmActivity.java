@@ -9,13 +9,16 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -58,7 +61,7 @@ import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 
-public class AddAlarmActivity extends BaseActivity {
+public class AddAlarmActivity extends BaseActivity implements View.OnClickListener {
 
     private Alarm alarm;
 
@@ -77,6 +80,10 @@ public class AddAlarmActivity extends BaseActivity {
     private Dialog snoozeDialog;
     RecyclerView snoozeRv;
     SnoozeAdapter snoozeAdapter;
+
+    private ConstraintLayout headerBar;
+    private ImageView backBtn;
+    private TextView titleTv;
 
     private boolean isEdit = false;
 
@@ -168,8 +175,7 @@ public class AddAlarmActivity extends BaseActivity {
                             timeView.setText(time);
                         }
                     }, alarm.getHour(), alarm.getMinutes());
-                }
-                else{
+                } else {
                     dialogInteractor.displayTimePickerDialog(new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -243,7 +249,7 @@ public class AddAlarmActivity extends BaseActivity {
         saveImageView.setOnClickListener(getSaveAlarmClickListener());
 
         String time;
-        if(isEdit){
+        if (isEdit) {
             time = this.getFormattedTime(alarm.getHour(), alarm.getMinutes());
 
             selectedRingtoneTextView.setText(alarm.getRingtoneName());
@@ -251,17 +257,23 @@ public class AddAlarmActivity extends BaseActivity {
             adapter.markDaysAsSelected(Arrays.asList(alarm.getRepeatDays().split(",")));
 
             vibrateSwitch.setChecked(alarm.isVobrateOn());
-        }
-        else{
+        } else {
             time = this.getFormattedTime(7, 5);
         }
         timeView.setText(time);
         titleView.setText(alarm.getTitle());
         vibrateSwitch.setChecked(alarm.isVobrateOn());
         volumeSeekBar.setProgress(alarm.getVolume());
+
+        headerBar = findViewById(R.id.headerBar);
+        backBtn = headerBar.findViewById(R.id.backBtn);
+        titleTv = headerBar.findViewById(R.id.titleTv);
+
+        backBtn.setOnClickListener(this);
+        titleTv.setText("Set alarm");
     }
 
-    private AlarmDayRecyclerViewItem getAdarmDayViewItem(String day){
+    private AlarmDayRecyclerViewItem getAdarmDayViewItem(String day) {
         AlarmDayRecyclerViewItem item = new AlarmDayRecyclerViewItem();
         item.setText(day);
         return item;
@@ -369,7 +381,7 @@ public class AddAlarmActivity extends BaseActivity {
 
                 //TODO needs validation
 
-                if(TextUtils.isEmpty(selectedRingtoneTextView.getText()) || selectedRingtoneTextView.getText().equals("None")){
+                if (TextUtils.isEmpty(selectedRingtoneTextView.getText()) || selectedRingtoneTextView.getText().equals("None")) {
                     Toast.makeText(AddAlarmActivity.this, "Please select a Ringtone", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -429,11 +441,11 @@ public class AddAlarmActivity extends BaseActivity {
         paymentDetailsRepository.getAll(PaymentStatus.NotConnectedToInternetToPay, new OnAsyncResponse<List<PaymentDetails>>() {
             @Override
             public void processResponse(List<PaymentDetails> response) {
-                if(response!=null && response.size() > 0){
+                if (response != null && response.size() > 0) {
 
                     int[] alarmReactionIds = new int[response.size()];
                     int index = 0;
-                    for (PaymentDetails paymentDetails : response){
+                    for (PaymentDetails paymentDetails : response) {
                         alarmReactionIds[index++] = paymentDetails.getAlarmReactionId();
                     }
                     Intent serviceIntent = new Intent(activityCompat, ProcessFailedPaymentsService.class);
@@ -457,8 +469,8 @@ public class AddAlarmActivity extends BaseActivity {
         }
     }
 
-    private int getSnoozeAmountFromItem(int position){
-        switch (position){
+    private int getSnoozeAmountFromItem(int position) {
+        switch (position) {
             case -1:
                 return 0;
             case 0:
@@ -476,7 +488,7 @@ public class AddAlarmActivity extends BaseActivity {
         }
     }
 
-    private void createSnoozeDialog(){
+    private void createSnoozeDialog() {
         snoozeDialog = new Dialog(AddAlarmActivity.this);
         snoozeDialog.setContentView(R.layout.snooze_dialog);
         snoozeDialog.setCancelable(false);
@@ -485,7 +497,7 @@ public class AddAlarmActivity extends BaseActivity {
         Window window = snoozeDialog.getWindow();
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
-        window.setLayout((6 * width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
+        window.setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
 
         snoozeAdapter = new SnoozeAdapter(durations);
@@ -500,9 +512,9 @@ public class AddAlarmActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 snoozeDialog.dismiss();
-                if(getSnoozeAmountFromItem(snoozeAdapter.selectedItem) == 1){
+                if (getSnoozeAmountFromItem(snoozeAdapter.selectedItem) == 1) {
                     selectedSnooze.setText(String.valueOf(getSnoozeAmountFromItem(snoozeAdapter.selectedItem)) + " minute");
-                } else if(getSnoozeAmountFromItem(snoozeAdapter.selectedItem) > 1){
+                } else if (getSnoozeAmountFromItem(snoozeAdapter.selectedItem) > 1) {
                     selectedSnooze.setText(String.valueOf(getSnoozeAmountFromItem(snoozeAdapter.selectedItem)) + " minutes");
                 } else {
                     selectedSnooze.setText("");
@@ -516,5 +528,14 @@ public class AddAlarmActivity extends BaseActivity {
                 snoozeDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.backBtn:
+                finish();
+                break;
+        }
     }
 }

@@ -1,15 +1,17 @@
 <resources>
-    <string name="app_name">Counting Sheep</string>
+    <string name="app_name">DarkSheep</string>
     <string name="alarmclock">DarkSheep</string>
     <string name="i_have_read">I have read and agree to the</string>
     <string name="terms_of_service">Terms of Service</string>
-    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="facebook_app_id">475075089689482</string>
     <string name="fb_login_protocol_scheme">fb475075089689482</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_set_alarm">SetAlarmActivity</string>
-    <string name="counting_sheep">Counting Sheep</string>
+    <string name="dark_sheep">DarkSheep</string>
     <string name="logout_text">Are you sure you want\n to <b>Log Out?</b></string>
+    <string name="alarm_history">Alarm History</string>
+    <string name="profile">Profile</string>
     <string name="i_agree_to_the_privacy_policy_nand_terms_of_service">I agree to the Privacy policy and \nTerms of Service</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="large_text">
