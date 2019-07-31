@@ -75,10 +75,12 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
 
                 if (viewItem.isTurnedOn()) {
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepon);
+                    holder.getOverlay().setVisibility(View.INVISIBLE);
                     //holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
                 } else {
                     holder.getOnOffImageView().setImageResource(R.drawable.ic_sheepoff);
                     //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
+                    holder.getOverlay().setVisibility(View.VISIBLE);
                 }
 
                 View.OnClickListener onClickListener = new View.OnClickListener() {
