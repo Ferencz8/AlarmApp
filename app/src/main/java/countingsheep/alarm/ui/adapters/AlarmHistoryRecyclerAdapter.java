@@ -41,22 +41,16 @@ public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
         AlarmHistory data = alarms.get(position);
 
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        itemViewHolder.alarmName.setText(data.getName());
+        if(data.getName() == null || data.getName().isEmpty()) {
+            itemViewHolder.alarmName.setVisibility(View.GONE);
+        } else {
+            itemViewHolder.alarmName.setVisibility(View.VISIBLE);
+            itemViewHolder.alarmName.setText(data.getName());
+        }
         itemViewHolder.alarmDate.setText(data.getCreatedDate());
         itemViewHolder.alarmHour.setText(data.getCreatedHour());
         itemViewHolder.alarmStatus.setText(data.getReactionType());
         itemViewHolder.cashSpend.setText(String.valueOf(data.getCashSpent())+" $");
-//        if(!data.isRequireRefund()){
-        itemViewHolder.refund.setVisibility(View.GONE);
-//        } else {
-//            itemViewHolder.refund.setVisibility(View.VISIBLE);
-//            itemViewHolder.refund.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-//        }
     }
 
     @Override
@@ -71,7 +65,6 @@ public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
         private TextView alarmHour;
         private TextView cashSpend;
         private TextView alarmStatus;
-        private TextView refund;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,7 +73,6 @@ public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
             alarmHour = itemView.findViewById(R.id.alarm_hour);
             cashSpend = itemView.findViewById(R.id.cash_spend);
             alarmStatus = itemView.findViewById(R.id.alarm_status);
-            refund = itemView.findViewById(R.id.refund);
         }
     }
 }

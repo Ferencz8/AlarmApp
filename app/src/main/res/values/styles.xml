@@ -10,7 +10,7 @@
 
     <style name="alarmclock">
         <item name="android:textSize">30sp</item>
-        <item name="android:textColor">#00CBEB</item>
+        <item name="android:textColor">#CACACA</item>
         <item name="android:shadowColor">#40000000</item>
         <item name="android:fontFamily">NTR</item>
         <item name="android:shadowDx">0</item>

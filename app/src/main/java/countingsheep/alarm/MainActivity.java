@@ -1,6 +1,5 @@
 package countingsheep.alarm;
 
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -9,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -60,16 +58,13 @@ public class MainActivity extends BaseActivity {
                         switch (item.getItemId()) {
                             case R.id.action_item1:
                                 selectedFragment = AlarmsFragment.newInstance();
-                                titleTextView.setText(R.string.counting_sheep);
-                                backBtn.setVisibility(View.GONE);
-                                headerBar.setVisibility(View.VISIBLE);
+                                hideHeaderBar(false);
                                 break;
 //                            case R.id.action_item2:
 //                                headerBar.setVisibility(View.VISIBLE);
 //                                selectedFragment = alarmsFragment;
 //                                break;
                             case R.id.action_item3:
-                                headerBar.setVisibility(View.GONE);
                                 selectedFragment = SettingsFragment.newInstance();
                                 break;
                         }
@@ -102,6 +97,9 @@ public class MainActivity extends BaseActivity {
 
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         titleTextView.setTypeface(bold_font);
+        titleTextView.setText(R.string.dark_sheep);
+        backBtn.setVisibility(View.INVISIBLE);
+        backBtn.setOnClickListener(null);
     }
 
     /*
@@ -162,5 +160,15 @@ public class MainActivity extends BaseActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void hideHeaderBar(boolean hide){
+        if(headerBar != null) {
+            if(hide) {
+                headerBar.setVisibility(View.GONE);
+            } else {
+                headerBar.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

@@ -8,29 +8,33 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="replace"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="replace" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".AlarmApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon_aplicatie"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icon_aplicatie"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.settings.ProfileActivity"></activity>
+
         <service
             android:name=".ui.foreground.ProcessFailedPaymentsService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
         <service
             android:name=".ui.alarmLaunch.AlarmRingingPlayerService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
-        <activity android:name=".ui.settings.OnBoardingActivity"/>
-        <activity android:name=".ui.settings.AlarmHistoryActivity"/>
+        <activity android:name=".ui.settings.OnBoardingActivity" />
+        <activity android:name=".ui.settings.AlarmHistoryActivity" />
         <activity android:name=".ui.settings.TermsAndConditionsActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
@@ -68,21 +72,16 @@
             android:name=".ui.alarmLaunch.RecreateAlarmsAtBootReceiver"
             android:exported="false">
             <intent-filter>
-
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-                <action android:name="android.intent.action.REBOOT"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.REBOOT" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.alarmLaunch.AlarmLaunchActivity"  android:showOnLockScreen="true"/>
+        <activity
+            android:name=".ui.alarmLaunch.AlarmLaunchActivity"
+            android:showOnLockScreen="true" />
         <activity android:name=".ui.freecredits.FreeCreditsActivity" />
-
-
-
-        <!--<activity android:name=".ui.card.CardActivity" />-->
-        <!--<service android:name=".ui.alarmLaunch.AlarmBootService"/>-->
     </application>
 
 </manifest>

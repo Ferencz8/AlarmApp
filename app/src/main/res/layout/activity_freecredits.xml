@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_background">
+    android:background="@drawable/new_background">
 
 
     <ImageView
@@ -30,7 +30,7 @@
         android:fontFamily=""
         android:text="@string/creditsText"
         android:textAlignment="center"
-        android:textColor="#ABFFEF"
+        android:textColor="@color/white_text_color"
         android:textSize="21sp"
         app:layout_constraintBottom_toTopOf="@+id/freecreditImg"
         app:layout_constraintEnd_toEndOf="parent"

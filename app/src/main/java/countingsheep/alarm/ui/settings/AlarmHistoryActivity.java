@@ -2,8 +2,11 @@ package countingsheep.alarm.ui.settings;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,9 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
     private RecyclerView recyclerView;
     private AlarmHistoryRecyclerAdapter adapter;
     private ArrayList<AlarmHistory> alarms;
+    private ConstraintLayout headerBar;
+    private ImageView backBtn;
+    private TextView titleTv;
 
     @Inject
     AlarmReactionService alarmReactionService;
@@ -37,7 +43,7 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
 
         Injector.getActivityComponent(this).inject(this);
 
-        recyclerView = findViewById(R.id.alarm_history_rv);
+        bindViews();
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         // Set layout manager.
         recyclerView.setLayoutManager(mLayoutManager);
@@ -56,8 +62,23 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
         recyclerView.setAdapter(adapter);
     }
 
+    private void bindViews(){
+        recyclerView = findViewById(R.id.alarm_history_rv);
+        headerBar = findViewById(R.id.title_bar);
+        backBtn = headerBar.findViewById(R.id.backBtn);
+        titleTv = headerBar.findViewById(R.id.titleTv);
+
+        titleTv.setText(R.string.alarm_history);
+        backBtn.setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.backBtn:
+                finish();
+                break;
+        }
 
     }
 }

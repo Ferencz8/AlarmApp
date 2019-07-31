@@ -29,6 +29,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
@@ -57,6 +58,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView cashTextView;
     private TextView alarmCount;
     private TextView snoozeRate;
+    private TextView profile;
     private ProgressBar loadingSpinner;
 
     @Inject
@@ -105,6 +107,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         bindViews(view);
 
+        ((MainActivity) getActivity()).hideHeaderBar(true);
         if (sharedPreferencesContainer.getFreeCredits() != 0) {
             this.spentTextView.setText(getString(R.string.creditsLeft));
             this.cashTextView.setText(sharedPreferencesContainer.getFreeCredits() + " $");
@@ -169,6 +172,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         snoozeRate = view.findViewById(R.id.snooze_text);
         loadingSpinner = view.findViewById(R.id.settingsProgressBar);
         loadingSpinner.setVisibility(View.INVISIBLE);
+        profile = view.findViewById(R.id.profile_text);
+        profile.setOnClickListener(this);
     }
 
     @Override
@@ -261,6 +266,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.payment_text:
                 firebaseAnalytics.logEvent("settings_payments",null);
                 displayPayment();
+                break;
+            case R.id.profile_text:
+                firebaseAnalytics.logEvent("settings_profile",null);
+                Intent intent2  = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent2);
                 break;
             default:
                 break;

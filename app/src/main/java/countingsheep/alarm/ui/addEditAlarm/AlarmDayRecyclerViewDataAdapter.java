@@ -1,5 +1,6 @@
 package countingsheep.alarm.ui.addEditAlarm;
 
+import android.app.Activity;
 import android.graphics.Color;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,19 +16,20 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
 
     private static int DayNotSelectedImage = R.drawable.ic_smallellipseoff;
     private static int DaySelectedImage = R.drawable.ic_smallellipseon;
-    private static int WhiteCollor = Color.parseColor("#ffffff");
-    private static int BlueCollor = Color.parseColor("#14223B");
 
     private List<AlarmDayRecyclerViewItem> viewItemList;
 
     private List<String> clickedItemsList;
 
+    private Activity activity;
+
     public List<String> getClickedItemsList() {
         return clickedItemsList;
     }
 
-    public AlarmDayRecyclerViewDataAdapter(List<AlarmDayRecyclerViewItem> viewItemList) {
+    public AlarmDayRecyclerViewDataAdapter(Activity activity, List<AlarmDayRecyclerViewItem> viewItemList) {
         this.set(viewItemList);
+        this.activity = activity;
         clickedItemsList = new ArrayList<>();
     }
 
@@ -97,13 +99,13 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
         holder.setClicked(false);
 
         holder.getDayImageView().setImageResource(DayNotSelectedImage);
-        holder.getTextView().setTextColor(WhiteCollor);
+        holder.getTextView().setTextColor(activity.getResources().getColor(R.color.white_text_color, null));
     }
 
     private void markSelected(AlarmDayRecyclerViewHolder holder){
         holder.setClicked(true);
         holder.getDayImageView().setImageResource(DaySelectedImage);
-        holder.getTextView().setTextColor(BlueCollor);
+        holder.getTextView().setTextColor(activity.getResources().getColor(R.color.bt_color_primary_dark, null));
     }
 
     @Override

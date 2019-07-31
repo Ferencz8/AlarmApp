@@ -7,9 +7,9 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="20dp"
     android:elevation="7dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/alarmItemLayout"
@@ -20,10 +20,10 @@
             android:id="@+id/alarmListTitleId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
             android:text="Weekly Call"
-            android:textColor="#ffffff"
+            android:textColor="@color/white_text_color"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,47 +32,52 @@
             android:id="@+id/alarmListTimeId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:text="07:54"
-            android:textColor="#ffffff"
-            android:textColorLink="#ffffff"
+            android:textColor="@color/white_text_color"
+            android:textColorLink="@color/white_text_color"
             android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="@+id/alarmListTitleId"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmListTitleId" />
 
         <TextView
             android:id="@+id/alarmListTimeRepeatId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="Mo, Tu, Th, Fri"
-            android:textColor="#ffffff"
+            android:textColor="@color/white_text_color"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/alarmListTimeId"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmListTimeId" />
 
         <ImageView
             android:id="@+id/alarmListOnOffImageId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
             android:layout_below="@+id/alarmListTitleId"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="20dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/alarmListTimeRepeatId"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/alarmListTimeId"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/alarmListTitleId"
             app:srcCompat="@drawable/ic_sheepon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/item_overlay"
+        android:visibility="gone"/>
 
 </androidx.cardview.widget.CardView>

@@ -1,40 +1,45 @@
 package countingsheep.alarm.ui.settings;
 
-import android.graphics.Typeface;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
 
-public class TermsAndConditionsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView termAndConditionsTv;
     private ConstraintLayout headerBar;
     private ImageView backBtn;
     private TextView titleTv;
+    private EditText phoneNumber;
+    private Button saveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms_and_conditions);
+        setContentView(R.layout.activity_profile);
+
+        Injector.getActivityComponent(this).inject(this);
 
         bindViews();
     }
 
     private void bindViews(){
-        termAndConditionsTv = findViewById(R.id.termsAndConditionsTv);
         headerBar = findViewById(R.id.headerBar);
         backBtn = headerBar.findViewById(R.id.backBtn);
         titleTv = headerBar.findViewById(R.id.titleTv);
 
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         titleTv.setTypeface(bold_font);
-        titleTv.setText(R.string.terms_and_conditions);
-        termAndConditionsTv.setText(R.string.large_text);
+        titleTv.setText(R.string.profile);
         backBtn.setOnClickListener(this);
     }
 
