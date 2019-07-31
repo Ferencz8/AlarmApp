@@ -97,7 +97,7 @@ public class AlarmsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms, dialogInteractor, alarmLaunchHandler);
+        adapter = new AlarmListRecyclerViewDataAdapter(getActivity(), alarms, dialogInteractor, alarmLaunchHandler, alarmService);
 
         // Set data adapter.
         recyclerView.setAdapter(adapter);

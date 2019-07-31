@@ -130,12 +130,25 @@ public class AlarmLaunchActivity extends BaseActivity {
                     }
                 });
 
+                //TODO: make this use only one db call
                 //delays the alarm
                 alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
                     @Override
                     public void processResponse(Alarm alarmDb) {
 
-                        alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMilliseconds(alarmDb.getHour(), alarmDb.getSnoozeAmount()));
+                        alarmService.getSnoozesCount(alarmId, new OnAsyncResponse<Integer>() {
+                            @Override
+                            public void processResponse(Integer response) {
+
+                                int sumOfPastAndCurrentSnoozes = alarmDb.getSnoozeAmount();
+                                if(response != 0)
+                                {
+                                    sumOfPastAndCurrentSnoozes *= (response + 1);
+                                }
+
+                                alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(),alarmDb.getMinutes(), sumOfPastAndCurrentSnoozes));
+                            }
+                        });
                     }
                 });
 

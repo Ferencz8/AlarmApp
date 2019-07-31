@@ -36,4 +36,6 @@ public interface AlarmService {
     List<Alarm> getOnOrOff(boolean state);
 
     void getOnOrOff(OnAsyncResponse<List<Alarm>> onAsyncResponse, boolean state);
+
+    void getSnoozesCount(int alarmId, OnAsyncResponse<Integer> onAsyncResponse);
 }

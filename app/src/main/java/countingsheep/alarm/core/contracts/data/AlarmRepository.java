@@ -33,4 +33,8 @@ public interface AlarmRepository {
     void markAlarmsSynced(List<Integer> alarmIds);
 
     void getAllNotDeleted(OnAsyncResponse<List<Alarm>> onAsyncResponse);
+
+    //void getSnoozesCount(int alarmId);
+
+    void getSnoozesCount(int alarmId, OnAsyncResponse<Integer> onAsyncResponse);
 }

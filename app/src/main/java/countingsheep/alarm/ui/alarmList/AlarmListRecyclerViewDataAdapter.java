@@ -15,6 +15,7 @@ import com.crashlytics.android.Crashlytics;
 import java.util.List;
 
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
@@ -29,13 +30,16 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
     private Activity activity;
     private DialogInteractor dialogInteractor;
     private AlarmLaunchHandler alarmLaunchHandler;
+    private AlarmService alarmService;
 
     public AlarmListRecyclerViewDataAdapter(Activity activity, List<Alarm> viewItemList,
-                                            DialogInteractor dialogInteractor, AlarmLaunchHandler alarmLaunchHandler) {
+                                            DialogInteractor dialogInteractor, AlarmLaunchHandler alarmLaunchHandler,
+                                            AlarmService alarmService) {
         this.viewItemList = viewItemList;
         this.activity = activity;
         this.dialogInteractor = dialogInteractor;
         this.alarmLaunchHandler = alarmLaunchHandler;
+        this.alarmService = alarmService;
     }
 
     @Override
@@ -103,6 +107,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
 
                             changeAlarmState(false, viewItem.getId(), 0);
                             //holder.getOffBackgroundImageView().setVisibility(View.VISIBLE);
+                            alarmService.switchOnOf(viewItem.getId(),false);
                         }
                         else {
                             holder.setClicked(true);
@@ -111,6 +116,7 @@ public class AlarmListRecyclerViewDataAdapter extends RecyclerView.Adapter<Alarm
 
                             changeAlarmState(true, viewItem.getId(), TimeHelper.getTimeInMilliseconds(viewItem.getHour(), viewItem.getMinutes()));
                             //holder.getOffBackgroundImageView().setVisibility(View.INVISIBLE);
+                            alarmService.switchOnOf(viewItem.getId(),true);
                         }
                     }
                 });

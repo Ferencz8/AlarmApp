@@ -52,8 +52,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                     startAlarmUserExperience(alarmDb.getId());
                 }
                 else{
-
-                    alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(), alarmDb.getMinutes(), alarmDb.getSnoozeAmount()));
+                    //this needs to send current day,hour,minute, without snooze
+                    alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMilliseconds(alarmDb.getHour(), alarmDb.getMinutes()));
                 }
             }
         });

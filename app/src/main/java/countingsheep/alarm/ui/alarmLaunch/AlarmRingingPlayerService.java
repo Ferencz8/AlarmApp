@@ -29,10 +29,12 @@ public class AlarmRingingPlayerService extends Service {
         ringtonePlayer = new AlarmRingtonePlayer(context);
         vibrator = new AlarmVibrator(context);
 
-        String alarmDbAsJson = intent.getStringExtra("alarmDb");
-        if(alarmDbAsJson != null){
-            Alarm alarmDb = new Gson().fromJson(alarmDbAsJson, Alarm.class);
-            startAlarmRinging(alarmDb);
+        if(intent!=null) {
+            String alarmDbAsJson = intent.getStringExtra("alarmDb");
+            if (alarmDbAsJson != null) {
+                Alarm alarmDb = new Gson().fromJson(alarmDbAsJson, Alarm.class);
+                startAlarmRinging(alarmDb);
+            }
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeUp,

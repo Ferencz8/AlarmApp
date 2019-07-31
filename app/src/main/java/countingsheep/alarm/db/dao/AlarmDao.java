@@ -30,4 +30,11 @@ public interface AlarmDao extends BaseDao<Alarm>{
 
     @Query("SELECT * FROM Alarm WHERE isDeleted =0")
     List<Alarm> getAllNotDeleted();
+
+    @Query("SELECT " +
+            "COUNT(*)" +
+            "FROM Alarm " +
+            "INNER JOIN AlarmReaction ON Alarm.id = AlarmReaction.alarmId " +
+            "WHERE AlarmReaction.isSnooze = 1 AND Alarm.id=:alarmId")
+    int getSnoozesCount(int alarmId);
 }

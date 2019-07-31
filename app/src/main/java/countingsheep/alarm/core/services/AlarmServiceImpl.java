@@ -166,9 +166,14 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void switchOnOf(int alarmId, boolean value) {
-        Alarm alarmModel = this.alarmRepository.get(alarmId);
-        alarmModel.setTurnedOn(value);
-        this.alarmRepository.update(alarmModel);
+        this.alarmRepository.get(alarmId, new OnAsyncResponse<Alarm>() {
+            @Override
+            public void processResponse(Alarm response) {
+
+                response.setTurnedOn(value);
+                alarmRepository.update(response);
+            }
+        });
     }
 
     @Override
@@ -188,6 +193,17 @@ public class AlarmServiceImpl implements AlarmService {
         try{
 
             this.alarmRepository.getOnOrOffAlarms(onAsyncResponse, state);
+        }
+        catch(Exception exception){
+            Crashlytics.logException(exception);
+        }
+    }
+
+    @Override
+    public void getSnoozesCount(int alarmId, OnAsyncResponse<Integer> onAsyncResponse){
+        try{
+
+            this.alarmRepository.getSnoozesCount(alarmId, onAsyncResponse);
         }
         catch(Exception exception){
             Crashlytics.logException(exception);
