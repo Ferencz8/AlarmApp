@@ -27,11 +27,21 @@ public class SharedPreferencesContainer {
     private final static String ShouldGiveFreeCredits = "ShouldGiveFreeCredits";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
+    private final static String Popup_ShowedAskForPhoneNo = "ShowedAskForPhoneNo";
+
 
 
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
+    }
+
+    public boolean getShowedAskForPhoneNoPopup() {
+        return this.sharedPreferences.getBoolean(Popup_ShowedAskForPhoneNo, false);
+    }
+
+    public void setShowedAskForPhoneNoPopup() {
+        changePreferenceValue(Popup_ShowedAskForPhoneNo, true);
     }
 
     public void setPopopShowedRemoveAlarm(){ changePreferenceValue(Popup_ShowedRemoveAlarm, true); }

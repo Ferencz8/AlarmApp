@@ -54,6 +54,7 @@ public class DialogInteractorImpl implements DialogInteractor {
         dialog.show();
     }
 
+
     /**
      * Displays an alert dialog using the specified parameters with the possibility to react with OK/Cancel or not.
      *

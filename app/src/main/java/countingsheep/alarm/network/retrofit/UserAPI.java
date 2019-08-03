@@ -1,5 +1,6 @@
 package countingsheep.alarm.network.retrofit;
 
+import countingsheep.alarm.core.domain.SavePhoneNoReq;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.domain.UserRegistration;
 import retrofit2.Call;
@@ -12,4 +13,8 @@ public interface UserAPI {
     @POST("/alarm/api/user/register")
     //@POST("/api/user/register")
     Call<UserRegistration> register(@Body User user);
+
+
+    @POST("/alarm/api/user/saveNumber")
+    Call<Void> savePhoneNumber(@Body SavePhoneNoReq savePhoneNoReq);
 }

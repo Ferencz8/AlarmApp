@@ -35,8 +35,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
 import com.kevalpatel.ringtonepicker.RingtonePickerListener;
+import com.kevalpatel.ringtonepicker.RingtoneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,11 +48,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
-import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
@@ -86,6 +88,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
     private TextView titleTv;
 
     private boolean isEdit = false;
+    private int seebBarProgress;
 
     @Inject
     AlarmService alarmService;
@@ -99,7 +102,9 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
     @Inject
     PaymentDetailsRepository paymentDetailsRepository;
 
-    private int seebBarProgress;
+    @Inject
+    SharedPreferencesContainer sharedPreferencesContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,12 +214,8 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
         });
         snoozeTv = (TextView) findViewById(R.id.snoozeTextView);
         selectedSnooze = (TextView) findViewById(R.id.selectedSnooze);
-//        snoozeSpinner = findViewById(R.id.snoozeSpinnerId);
-//        ArrayAdapter<Integer> snoozesAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item, snoozes);
-//        //snoozesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        snoozeSpinner.setAdapter(snoozesAdapter);
-
         createSnoozeDialog();
+        setDefaultSnoozeValue();
 
         snoozeTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +233,6 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
         }
 
         selectedRingtoneTextView = findViewById(R.id.selectedRingtoneTextView);
-
         selectedRingtoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,6 +244,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
                 }
             }
         });
+        setDefaultRingtoneValues();
 
         saveImageView = findViewById(R.id.add_alarm_save_button);
         saveImageView.setOnClickListener(getSaveAlarmClickListener());
@@ -271,6 +272,25 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
 
         backBtn.setOnClickListener(this);
         titleTv.setText("Set alarm");
+    }
+
+    private void setDefaultRingtoneValues() {
+        try {
+            Uri systemRingtoneUri = RingtoneUtils.getSystemRingtoneTone();
+            String systemRingtoneName = RingtoneUtils.getRingtoneName(this, systemRingtoneUri);
+
+            alarm.setRingtonePath(systemRingtoneUri.toString());
+            alarm.setRingtoneName(systemRingtoneName);
+            selectedRingtoneTextView.setText(systemRingtoneName);
+        }
+        catch(Exception ex){
+            Crashlytics.logException(ex);
+        }
+    }
+
+    private void setDefaultSnoozeValue() {
+        snoozeAdapter.selectedItem = 0; //1 minute
+        selectedSnooze.setText(getString(R.string.DefaultSnoozeDisplayedValue));
     }
 
     private AlarmDayRecyclerViewItem getAdarmDayViewItem(String day) {
@@ -423,9 +443,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
 
                             alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
 
-//                            Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
-//                            startActivity(intent);
-                            finish();
+                            displayAskForPhoneNoPopUp();
                         }
                     });
                 }
@@ -433,6 +451,37 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
                 startProcessingFailedPayments();
             }
         };
+    }
+
+    private void displayAskForPhoneNoPopUp() {
+        if(this.sharedPreferencesContainer.getShowedAskForPhoneNoPopup()){
+           finish();
+        }
+        else{
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.phoneno_popup);
+            ImageView closePopUp = dialog.findViewById(R.id.closePhoneNoPopUpId);
+            closePopUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            TextView phoneNoText = dialog.findViewById(R.id.phoneNoTxtView);
+
+
+            TextView saveBtn = dialog.findViewById(R.id.savePhoneNoBtn);
+            saveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sharedPreferencesContainer.setCurrentUserPhoneNumber(phoneNoText.getText().toString());
+                    sharedPreferencesContainer.setShowedAskForPhoneNoPopup();
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            dialog.show();
+        }
     }
 
     private void startProcessingFailedPayments() {
@@ -472,7 +521,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
     private int getSnoozeAmountFromItem(int position) {
         switch (position) {
             case -1:
-                return 0;
+                return 1;
             case 0:
                 return 1;
             case 1:
@@ -484,7 +533,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
             case 4:
                 return 30;
             default:
-                return 0;
+                return 1;
         }
     }
 

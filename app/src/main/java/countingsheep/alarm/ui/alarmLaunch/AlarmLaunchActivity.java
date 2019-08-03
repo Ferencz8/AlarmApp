@@ -7,32 +7,31 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.os.PowerManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
-import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
-import countingsheep.alarm.core.services.SMSServiceImpl;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.SMSService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
-import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
+import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmLaunchActivity extends BaseActivity {
@@ -42,7 +41,7 @@ public class AlarmLaunchActivity extends BaseActivity {
     private TextView snoozeImageView;
     private TextView awakeImageView;
     private TextView alarmTime;
-    private TextView alarmTitle;
+    private TextView alarmTitleTxtView;
 
     private int alarmId;
 
@@ -61,6 +60,9 @@ public class AlarmLaunchActivity extends BaseActivity {
     @Inject
     SMSService smsService;
 
+    @Inject
+    SharedPreferencesContainer sharedPreferencesContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -70,8 +72,6 @@ public class AlarmLaunchActivity extends BaseActivity {
         Injector.getActivityComponent(this).inject(this);
 
         extractParameters(savedInstanceState);
-
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
@@ -121,7 +121,7 @@ public class AlarmLaunchActivity extends BaseActivity {
 
                 isProcessing = true;
 
-                //register the snooze
+                //persists the snooze
                 alarmReactionService.add(alarmId, true, new OnAsyncResponse<Void>() {
                     @Override
                     public void processResponse(Void response) {
@@ -144,16 +144,20 @@ public class AlarmLaunchActivity extends BaseActivity {
                             public void processResponse(Integer response) {
 
                                 int sumOfPastAndCurrentSnoozes = alarmDb.getSnoozeAmount();
-                                if(response != 0)
-                                {
+                                if (response != 0) {
                                     sumOfPastAndCurrentSnoozes *= (response + 1);
                                 }
 
-                                alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(),alarmDb.getMinutes(), sumOfPastAndCurrentSnoozes));
+                                alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(), alarmDb.getMinutes(), sumOfPastAndCurrentSnoozes));
                             }
                         });
                     }
                 });
+
+                if (!sharedPreferencesContainer.getShowedAskForPhoneNoPopup()) {
+
+                    Toast.makeText(activity, "Phone No is required for Roast.", Toast.LENGTH_LONG).show();
+                } else {
 
 //                smsService.sendToSelf(new OnResult() {
 //                    @Override
@@ -166,6 +170,7 @@ public class AlarmLaunchActivity extends BaseActivity {
 //                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
 //                    }
 //                });
+                }
             }
         });
 
@@ -193,12 +198,24 @@ public class AlarmLaunchActivity extends BaseActivity {
         });
 
         alarmTime = findViewById(R.id.alarm_awake_time);
+        alarmTitleTxtView = findViewById(R.id.alarm_name_launch);
         //TODO cu FERI
+        alarmService.get(alarmId, responseAsAlarm -> {
+            try {
+                alarmTime.setText(StringFormatter.getFormattedTimeDigits(responseAsAlarm.getHour()) + ":" + StringFormatter.getFormattedTimeDigits(responseAsAlarm.getMinutes()));
+                String alarmTitle = responseAsAlarm.getTitle();
+                if (!TextUtils.isEmpty(alarmTitle)) {
+                    alarmTitleTxtView.setText(alarmTitle);
+                }
+            }
+            catch(Exception ex){
+                Crashlytics.logException(ex);
+            }
+        });
         //alarmTime.setText(String.valueOf(alarmService.get(alarmId).getHour() + ":" + alarmService.get(alarmId).getMinutes()));
 
-        alarmTitle = findViewById(R.id.alarm_name_launch);
         //TODO cu FERI
-        //alarmTitle.setText(String.valueOf(alarmService.get(alarmId).getTitle()));
+        //alarmTitleTxtView.setText(String.valueOf(alarmService.get(alarmId).getTitle()));
     }
 
     private void sendStopPlayerEvent() {

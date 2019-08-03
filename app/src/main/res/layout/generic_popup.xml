@@ -20,12 +20,14 @@
 
     <TextView
         android:id="@+id/popupTextId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="155dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="40dp"
         android:text="To delete alarm swipe"
+        android:textAlignment="center"
         android:textColor="@color/white_text_color"
         app:layout_constraintEnd_toEndOf="@+id/popupImageView"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="@+id/popupImageView"
         app:layout_constraintTop_toBottomOf="@+id/popupImageView" />
 
@@ -33,7 +35,7 @@
         android:id="@+id/ok_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="30dp"
         android:text="Yes"
         android:textColor="@color/colorPrimary"
@@ -41,5 +43,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/popupTextId"
         app:layout_constraintStart_toStartOf="@+id/popupTextId"
-        app:layout_constraintTop_toBottomOf="@+id/popupTextId" />
+        app:layout_constraintTop_toBottomOf="@+id/popupTextId"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

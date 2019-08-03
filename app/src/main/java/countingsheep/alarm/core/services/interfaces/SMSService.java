@@ -7,4 +7,6 @@ import countingsheep.alarm.core.domain.SMSRoastMessageReq;
 public interface SMSService {
 
     void sendToSelf(OnResult onResult);
+
+    void savePhoneNumber(String phoneNoInput);
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSecondary">
+
+    <ImageView
+        android:id="@+id/closePhoneNoPopUpId"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/popupImageView"
+        app:srcCompat="@drawable/ic_askforphonenox" />
+
+    <ImageView
+        android:id="@+id/popupImageView"
+        android:layout_width="278dp"
+        android:layout_height="233dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/popupTextId"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/popupTextId"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_ask_phone_no_layer" />
+
+    <TextView
+        android:id="@+id/popupTextId"
+        android:layout_width="275dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:paddingLeft="40px"
+        android:paddingRight="40px"
+        android:text="I forgot my number, so give me yours in order to roast you"
+        android:textAlignment="center"
+        android:textColor="@color/white_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popupImageView" />
+
+    <TextView
+        android:id="@+id/savePhoneNoBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="24dp"
+        android:text="Save"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/phoneNoTxtView"
+        app:layout_constraintStart_toStartOf="@+id/phoneNoTxtView"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNoTxtView" />
+
+    <EditText
+        android:id="@+id/phoneNoTxtView"
+        android:layout_width="219dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/circle_border"
+        android:ems="10"
+        android:inputType="phone"
+        android:paddingLeft="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/white_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popupTextId" />
+
+    <TextView
+        android:id="@+id/addPhoneNumberLabel"
+        android:layout_width="195dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Add phone number"
+        android:textAlignment="center"
+        android:textColor="@color/white_text_color"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/popupTextId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/popupImageView"
+        app:layout_constraintVertical_bias="0.886" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
