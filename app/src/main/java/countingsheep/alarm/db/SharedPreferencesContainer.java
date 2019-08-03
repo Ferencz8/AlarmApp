@@ -119,7 +119,7 @@ public class SharedPreferencesContainer {
     }
 
     public String getCurrentUserPhoneNumber(){
-        return this.sharedPreferences.getString(PhoneNumber, "+40743922464");
+        return this.sharedPreferences.getString(PhoneNumber, "");
     }
 
     public void setCurrentUserPhoneNumber(String phoneNumber) {
