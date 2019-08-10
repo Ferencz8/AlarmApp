@@ -11,13 +11,13 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.util.Constants;
 
 public class AlarmRingingPlayerService extends Service {
-
 
     private Context context;
     private AlarmRingtonePlayer ringtonePlayer;
@@ -50,7 +50,7 @@ public class AlarmRingingPlayerService extends Service {
     private BroadcastReceiver receiverVolumeUp = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            ringtonePlayer.setVolumne(true);
         }
     };
 
@@ -58,7 +58,7 @@ public class AlarmRingingPlayerService extends Service {
     private BroadcastReceiver receiverVolumeDown = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            ringtonePlayer.setVolumne(false);
         }
     };
 
@@ -78,7 +78,7 @@ public class AlarmRingingPlayerService extends Service {
 
         Uri ringtone = Uri.parse(alarm.getRingtonePath());
         if(ringtone != null){
-            ringtonePlayer.play(ringtone);
+            ringtonePlayer.play(ringtone, alarm.getVolume());
         }
     }
 
