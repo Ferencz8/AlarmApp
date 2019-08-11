@@ -45,7 +45,7 @@ public interface AlarmDao extends BaseDao<Alarm>{
     @Query("\n" +
             "SELECT * FROM Alarm \n" +
             "WHERE Alarm.hour =:minHour AND Alarm.isTurnedOn = 1 AND Alarm.isDeleted = 0\n" +
-            "AND Alarm.minutes >=:minMinutes \n" +
+            "AND Alarm.minutes >=:minMinutes " +
             "UNION\n" +
             "SELECT * FROM Alarm \n" +
             "WHERE Alarm.hour =:maxHour AND Alarm.isTurnedOn = 1 AND Alarm.isDeleted = 0\n" +

@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.TimeService;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
@@ -31,6 +32,8 @@ import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.infrastructure.NetworkStateInteractor;
+import countingsheep.alarm.infrastructure.NetworkStateReceiver;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
@@ -164,17 +167,17 @@ public class AlarmLaunchActivity extends BaseActivity {
                     Toast.makeText(activity, "Phone No is required for Roast.", Toast.LENGTH_LONG).show();
                 } else {
 
-//                smsService.sendToSelf(new OnResult() {
-//                    @Override
-//                    public void onSuccess(Object result) {
-//                        Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String message) {
-//                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                    smsService.sendToSelf(new OnResult() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(String message) {
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -269,7 +272,7 @@ public class AlarmLaunchActivity extends BaseActivity {
 
                         long ringingTime = TimeHelper.getCurrentTimeInMilliseconds(alarmDb.getSnoozeAmount());
                         alarmLaunchHandler.registerAlarm(alarmId, ringingTime);
-                        Toast.makeText(activity, TimeHelper.getTimeDifference(ringingTime), Toast.LENGTH_LONG ).show();
+                        Toast.makeText(activity, TimeHelper.getTimeDifference(ringingTime), Toast.LENGTH_LONG).show();
 
 //                        Crashlytics.log(99, AlarmLaunchActivity.class.getName(), debuglog);
 //                        Bundle bundle = new Bundle();

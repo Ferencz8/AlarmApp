@@ -2,6 +2,7 @@ package countingsheep.alarm;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.infrastructure.NetworkStateReceiver;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
@@ -31,12 +34,17 @@ public class MainActivity extends BaseActivity {
     ConstraintLayout headerBar;
     TextView titleTextView;
     ImageView backBtn;
+    private NetworkStateReceiver networkStateReceiver;
+    private NetworkStateReceiver.NetworkStateReceiverListener networkStateReceiverListener;
 
     @Inject
     DialogInteractor dialogInteractor;
 
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
+
+    @Inject
+    SMSService smsService;
 
 
     @Override
@@ -86,6 +94,12 @@ public class MainActivity extends BaseActivity {
         Injector.getActivityComponent(this).inject(this);
 
         askBootPermission();
+
+
+        networkStateReceiverListener =  smsService.getSMSNetworkStateListener();
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(networkStateReceiverListener);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
@@ -175,5 +189,13 @@ public class MainActivity extends BaseActivity {
                 headerBar.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(networkStateReceiverListener);
+        this.unregisterReceiver(networkStateReceiver);
     }
 }

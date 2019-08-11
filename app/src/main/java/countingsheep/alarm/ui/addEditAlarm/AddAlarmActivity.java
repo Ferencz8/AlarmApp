@@ -412,17 +412,21 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
                 alarmService.get(alarm.getHour(), alarm.getMinutes(), new OnAsyncResponse<List<Alarm>>() {
                     @Override
                     public void processResponse(List<Alarm> response) {
-                        if(response != null && response.size() > 0) // alarms already exists //TODO:: check also if they have been recorded through AlarmManager
-                        {
-                            try {
-                                Toast.makeText(activity, "You cannot create an alarm before/ after 30 minutes from " + StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : " + StringFormatter.getFormattedTimeDigits(alarm.getMinutes()) + ", since one already exists.", Toast.LENGTH_LONG).show();
-                            }
-                            catch (Exception ex){
-                                Crashlytics.logException(ex);
-                            }
+                        if(response == null || response.size() == 0){
+                            startSavingProcess();
                         }
                         else{
-                            startSavingProcess();
+                            if(response.size() == 1 && response.get(0).getId() == alarm.getId()){
+                                startSavingProcess();
+                            }
+                            else {
+
+                                try {
+                                    Toast.makeText(activity, "You cannot create an alarm before/ after 30 minutes from " + StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : " + StringFormatter.getFormattedTimeDigits(alarm.getMinutes()) + ", since one already exists.", Toast.LENGTH_LONG).show();
+                                } catch (Exception ex) {
+                                    Crashlytics.logException(ex);
+                                }
+                            }
                         }
                     }
                 });

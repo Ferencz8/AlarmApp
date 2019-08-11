@@ -12,12 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class NetworkInteractor {
+public class NetworkStateInteractor {
 
     private Context context;
 
     @Inject
-    public NetworkInteractor(Context context) {
+    public NetworkStateInteractor(Context context) {
         this.context = context;
     }
 
