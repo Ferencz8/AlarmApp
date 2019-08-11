@@ -82,13 +82,30 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public void update(Alarm alarm, OnAsyncResponse<Void> onAsyncResponse) {
+    public void update(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse) {
 
         try{
+            //add a new one
+            Alarm newAlarm = new Alarm();
+            newAlarm.setDateCreated(timeService.getUTCDateNow());
+            newAlarm.setHour(alarm.getHour());
+            newAlarm.setMinutes(alarm.getMinutes());
+            newAlarm.setRepeatDays(alarm.getRepeatDays());
+            newAlarm.setRingtoneName(alarm.getRingtoneName());
+            newAlarm.setRingtonePath(alarm.getRingtonePath());
+            newAlarm.setSnoozeAmount(alarm.getSnoozeAmount());
+            newAlarm.setTitle(alarm.getTitle());
+            newAlarm.setVolume(alarm.getVolume());
+            newAlarm.setVobrateOn(alarm.isVobrateOn());
+            newAlarm.setTurnedOn(true);
 
+            //remove the old one
             alarm.setDateModified(timeService.getUTCDateNow());
-            alarm.setSynced(false);//this way a new alarm will be added on Server
-            alarmRepository.update(alarm, onAsyncResponse);
+            alarm.setDeleted(true);
+            alarmRepository.update(alarm);
+
+            alarmRepository.insert(newAlarm, onAsyncResponse);
+
         }
         catch(Exception exception){
             Crashlytics.logException(exception);
@@ -204,6 +221,29 @@ public class AlarmServiceImpl implements AlarmService {
         try{
 
             this.alarmRepository.getSnoozesCount(alarmId, onAsyncResponse);
+        }
+        catch(Exception exception){
+            Crashlytics.logException(exception);
+        }
+    }
+
+    @Override
+    public void get(int hour, int minutes, OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+        try{
+            int minMinutes, minHour, maxHour, maxMinutes;
+
+            if(minutes < 30){
+                minMinutes = maxMinutes = 30 + minutes;
+                minHour = hour - 1;
+                maxHour = hour;
+            }
+            else {
+                minMinutes = maxMinutes = minutes - 30;
+                minHour = hour;
+                maxHour = hour + 1;
+            }
+
+            this.alarmRepository.getAlarm(minHour, maxHour, minMinutes, maxMinutes, onAsyncResponse);
         }
         catch(Exception exception){
             Crashlytics.logException(exception);

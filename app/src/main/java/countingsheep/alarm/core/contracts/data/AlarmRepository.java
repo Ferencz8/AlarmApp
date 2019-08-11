@@ -8,7 +8,7 @@ public interface AlarmRepository {
 
     void insert(Alarm alarm);
 
-    void insert(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse);
+    void  insert(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse);
 
     void update(Alarm alarm);
 
@@ -19,6 +19,8 @@ public interface AlarmRepository {
     Alarm get(int id);
 
     void get(int id, OnAsyncResponse<Alarm> onAsyncResponse);
+
+    void getAlarm(int minHour, int maxHour, int minMinutes, int maxMinutes, OnAsyncResponse<List<Alarm>> onAsyncResponse);
 
     List<Alarm> get();
 

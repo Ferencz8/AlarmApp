@@ -5,6 +5,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Calendar;
 
@@ -18,7 +22,6 @@ import static android.content.Context.ALARM_SERVICE;
 
 @Singleton
 public class AlarmLaunchHandler {
-
     private Context context;
     private AlarmManager alarmManager;
 
@@ -33,9 +36,10 @@ public class AlarmLaunchHandler {
         if(isTimeInThePast(triggerAtMillis)){
             triggerAtMillis = TimeHelper.delayMillisWithDays(triggerAtMillis, 1);
         }
+        PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId, AlarmIntentType.Create);
 
-        PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId);
-
+        //AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(triggerAtMillis, alarmReceiverIntennt);
+        //alarmManager.setAlarmClock(alarmClockInfo, alarmReceiverIntennt);
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, alarmReceiverIntennt);
     }
 
@@ -45,21 +49,52 @@ public class AlarmLaunchHandler {
      * @param alarmId
      */
     public void cancelAlarm(int alarmId){
-        PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId);
+        PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId, AlarmIntentType.Cancel);
 
         alarmManager.cancel(alarmReceiverIntennt);
     }
 
-    private PendingIntent setupAlarmReceiverIntent(int requestCode){
+    /**
+     * Check if an alarm with the specified alarmId is already registered.
+     * @param alarmId
+     * @return
+     */
+    public boolean isAlarmUp(int alarmId){
+        PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId, AlarmIntentType.CheckIfAlarmIsUp);
+
+        boolean alarmUp = (PendingIntent.getBroadcast(context, 0,
+                new Intent("com.my.package.MY_UNIQUE_ACTION"),
+                PendingIntent.FLAG_NO_CREATE) != null);
+        return alarmUp;
+    }
+
+    private PendingIntent setupAlarmReceiverIntent(int requestCode, AlarmIntentType alarmIntentType){
         final Intent alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
         alarmReceiverIntent.putExtra("alarmId", requestCode);
 
         // Pending intent to delay intent until specific calendar time
         PendingIntent pendingIntent = PendingIntent.getBroadcast
-                (context, requestCode, alarmReceiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                (context, requestCode, alarmReceiverIntent, getAlarmIntentType(alarmIntentType));
 
         return pendingIntent;
     }
+
+    public enum AlarmIntentType{
+        Create,
+        CheckIfAlarmIsUp,
+        Cancel
+    }
+
+    private int getAlarmIntentType(AlarmIntentType alarmIntentType){
+        switch (alarmIntentType){
+            case Cancel:
+            case CheckIfAlarmIsUp: return PendingIntent.FLAG_NO_CREATE;
+            case Create:
+                default: return PendingIntent.FLAG_UPDATE_CURRENT;
+
+        }
+    }
+
 
     /**
      * Checks if the time is in the past compared to the present time of the system

@@ -86,6 +86,11 @@ public class MainActivity extends BaseActivity {
         Injector.getActivityComponent(this).inject(this);
 
         askBootPermission();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
 
         showRemovePopup();
     }
@@ -131,7 +136,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showRemovePopup() {
-        if (!this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
+        if (this.sharedPreferencesContainer.getAlarmsCountThatWereSet() >= 3 && !this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
             this.sharedPreferencesContainer.setPopopShowedRemoveAlarm();
 
             this.dialogInteractor.displayInfoDialog(R.drawable.remove_icon, "To delete alarm swipe");

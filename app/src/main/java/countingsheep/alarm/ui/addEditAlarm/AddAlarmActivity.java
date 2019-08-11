@@ -1,6 +1,7 @@
 package countingsheep.alarm.ui.addEditAlarm;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
 import com.kevalpatel.ringtonepicker.RingtonePickerListener;
 import com.kevalpatel.ringtonepicker.RingtoneUtils;
@@ -43,6 +45,7 @@ import com.kevalpatel.ringtonepicker.RingtoneUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,8 +67,9 @@ import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 
 public class AddAlarmActivity extends BaseActivity implements View.OnClickListener {
-
+    protected FirebaseAnalytics firebaseAnalytics;
     private Alarm alarm;
+    private Activity activity;
 
     AlarmDayRecyclerViewDataAdapter adapter;
     private List<AlarmDayRecyclerViewItem> daysList = null;
@@ -110,11 +114,10 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alarm);
-
-        firebaseAnalytics.logEvent("add_alarm", null);
+        activity = this;
 
         Injector.getActivityComponent(this).inject(this);
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setupAlarm();
 
         bindViews();
@@ -403,55 +406,102 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
 
                 if (TextUtils.isEmpty(selectedRingtoneTextView.getText()) || selectedRingtoneTextView.getText().equals("None")) {
                     Toast.makeText(AddAlarmActivity.this, "Please select a Ringtone", Toast.LENGTH_SHORT).show();
-                    return;
+                    return ;
                 }
 
-
-                alarm.setVobrateOn(vibrateSwitch.isChecked());
-                alarm.setVolume(seebBarProgress);
-                alarm.setTurnedOn(true);
-
-                if (!TextUtils.isEmpty(titleView.getText())) {
-                    alarm.setTitle(titleView.getText().toString());
-                }
-
-                alarm.setRepeatDays(TextUtils.join(",", adapter.getClickedItemsList()));
-
-                alarm.setSnoozeAmount(getSnoozeAmount());
-
-                final long timeToStartAlarm = TimeHelper.getTimeInMilliseconds(alarm.getHour(), alarm.getMinutes());
-
-                if (isEdit) {
-
-                    alarmService.update(alarm, new OnAsyncResponse<Void>() {
-                        @Override
-                        public void processResponse(Void response) {
-
-                            alarmLaunchHandler.cancelAlarm(alarm.getId());
-
-                            alarmLaunchHandler.registerAlarm(alarm.getId(), timeToStartAlarm);
-
-//                            Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
-//                            startActivity(intent);
-                            finish();
+                alarmService.get(alarm.getHour(), alarm.getMinutes(), new OnAsyncResponse<List<Alarm>>() {
+                    @Override
+                    public void processResponse(List<Alarm> response) {
+                        if(response != null && response.size() > 0) // alarms already exists //TODO:: check also if they have been recorded through AlarmManager
+                        {
+                            try {
+                                Toast.makeText(activity, "You cannot create an alarm before/ after 30 minutes from " + StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : " + StringFormatter.getFormattedTimeDigits(alarm.getMinutes()) + ", since one already exists.", Toast.LENGTH_LONG).show();
+                            }
+                            catch (Exception ex){
+                                Crashlytics.logException(ex);
+                            }
                         }
-                    });
-                } else {
-                    alarmService.add(alarm, new OnAsyncResponse<Long>() {
-                        @Override
-                        public void processResponse(Long response) {
-
-                            alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
-
-                            displayAskForPhoneNoPopUp();
+                        else{
+                            startSavingProcess();
                         }
-                    });
-                }
-
-                startProcessingFailedPayments();
+                    }
+                });
             }
         };
     }
+
+    private void startSavingProcess() {
+        alarm.setVobrateOn(vibrateSwitch.isChecked());
+        alarm.setVolume(seebBarProgress);
+        alarm.setTurnedOn(true);
+
+        if (!TextUtils.isEmpty(titleView.getText())) {
+            alarm.setTitle(titleView.getText().toString());
+        }
+
+        alarm.setRepeatDays(TextUtils.join(",", adapter.getClickedItemsList()));
+
+        alarm.setSnoozeAmount(getSnoozeAmount());
+
+        final long timeToStartAlarm = calculateTimeToStartAlarm(alarm.getRepeatDays());
+
+        Toast.makeText(activity, TimeHelper.getTimeDifference(timeToStartAlarm), Toast.LENGTH_LONG).show();
+
+        String debuglog = "Save alarm with " + alarm.getHour() + " H : " + alarm.getMinutes() + " M, with snooze of " + alarm.getSnoozeAmount() + " and repeat days: " + alarm.getRepeatDays();
+        Crashlytics.log(99, AddAlarmActivity.class.getName(), debuglog);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, debuglog);
+        firebaseAnalytics.logEvent("debuglog_addalarm", bundle);
+        if (isEdit) {
+
+
+            alarmService.update(alarm, new OnAsyncResponse<Long>() {
+                @Override
+                public void processResponse(Long response) {
+
+                    alarmLaunchHandler.cancelAlarm(alarm.getId());
+
+                    alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+
+                    finish();
+                }
+            });
+        } else {
+            alarmService.add(alarm, new OnAsyncResponse<Long>() {
+                @Override
+                public void processResponse(Long response) {
+
+                    alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+
+                    displayAskForPhoneNoPopUp();
+                }
+            });
+        }
+
+        sharedPreferencesContainer.increaseSetAlarmsCount();
+
+        startProcessingFailedPayments();
+    }
+
+    private long calculateTimeToStartAlarm(String repeatDays){
+        long startRingingTime = 0;
+        if(TextUtils.isEmpty(repeatDays)){//if no repeat days
+            if(TimeHelper.isTimeInThePast(alarm.getHour(), alarm.getMinutes())){//if alarm is in the past => delay with 1 day
+                startRingingTime = TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarm.getHour(), alarm.getMinutes(), 1);
+            }
+            else{// if alarm is in the future return the time
+                startRingingTime = TimeHelper.getTimeInMilliseconds(alarm.getHour(), alarm.getMinutes());
+            }
+        }
+        else {//calculate based on the current day vs available repeat days
+            int delayDays = TimeHelper.getDaysUntilRepeatDay(repeatDays);
+
+            startRingingTime = TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarm.getHour(), alarm.getMinutes(), delayDays);
+        }
+        return startRingingTime;
+    }
+
 
     private void displayAskForPhoneNoPopUp() {
         if(this.sharedPreferencesContainer.getShowedAskForPhoneNoPopup()){

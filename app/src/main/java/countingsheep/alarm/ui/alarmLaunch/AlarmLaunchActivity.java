@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,12 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.services.TimeService;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.SMSService;
@@ -36,13 +39,15 @@ import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmLaunchActivity extends BaseActivity {
 
-    private boolean isProcessing = false;
+    //https://stackoverflow.com/questions/13582395/sharing-a-variable-between-multiple-different-threads
+
+    protected FirebaseAnalytics firebaseAnalytics;
+    private volatile boolean isProcessing = false;
     private Activity activity;
     private TextView snoozeImageView;
     private TextView awakeImageView;
     private TextView alarmTime;
     private TextView alarmTitleTxtView;
-
     private int alarmId;
 
     @Inject
@@ -70,6 +75,8 @@ public class AlarmLaunchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         Injector.getActivityComponent(this).inject(this);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+
 
         extractParameters(savedInstanceState);
 
@@ -96,6 +103,36 @@ public class AlarmLaunchActivity extends BaseActivity {
         setContentView(R.layout.activity_alarm_launch);
 
         bindViews();
+
+        initAutomaticSnooze();
+    }
+
+    private void initAutomaticSnooze() {
+
+        alarmService.getSnoozesCount(alarmId, (snoozeCount) -> {
+
+            final Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                //Do something after 1 min
+                if (isProcessing)
+                    return;
+
+                isProcessing = true;
+
+                switch (snoozeCount) {
+                    case 0: {
+                        launchSnoozeProcess();
+                        break;
+                    }
+                    case 1:
+                    default: {
+                        sendStopPlayerEvent();
+                        activity.finish();
+                        break;
+                    }
+                }
+            }, 1000 * 60);
+        });
     }
 
     private void extractParameters(Bundle savedInstanceState) {
@@ -120,39 +157,7 @@ public class AlarmLaunchActivity extends BaseActivity {
                     return;
 
                 isProcessing = true;
-
-                //persists the snooze
-                alarmReactionService.add(alarmId, true, new OnAsyncResponse<Void>() {
-                    @Override
-                    public void processResponse(Void response) {
-                        sendStopPlayerEvent();
-
-                        isProcessing = false;
-
-                        activity.finish();
-                    }
-                });
-
-                //TODO: make this use only one db call
-                //delays the alarm
-                alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
-                    @Override
-                    public void processResponse(Alarm alarmDb) {
-
-                        alarmService.getSnoozesCount(alarmId, new OnAsyncResponse<Integer>() {
-                            @Override
-                            public void processResponse(Integer response) {
-
-                                int sumOfPastAndCurrentSnoozes = alarmDb.getSnoozeAmount();
-                                if (response != 0) {
-                                    sumOfPastAndCurrentSnoozes *= (response + 1);
-                                }
-
-                                alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(), alarmDb.getMinutes(), sumOfPastAndCurrentSnoozes));
-                            }
-                        });
-                    }
-                });
+                launchSnoozeProcess();
 
                 if (!sharedPreferencesContainer.getShowedAskForPhoneNoPopup()) {
 
@@ -181,6 +186,10 @@ public class AlarmLaunchActivity extends BaseActivity {
                 if (isProcessing)
                     return;
 
+                Crashlytics.log(99, AlarmLaunchActivity.class.getName(), "Awake clicked");
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Awake clicked");
+                firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
                 isProcessing = true;
 
                 //register the awake
@@ -189,7 +198,7 @@ public class AlarmLaunchActivity extends BaseActivity {
                     public void processResponse(Void response) {
                         sendStopPlayerEvent();
 
-                        isProcessing = false;
+                        //isProcessing = false;
 
                         activity.finish();
                     }
@@ -199,16 +208,18 @@ public class AlarmLaunchActivity extends BaseActivity {
 
         alarmTime = findViewById(R.id.alarm_awake_time);
         alarmTitleTxtView = findViewById(R.id.alarm_name_launch);
+        alarmTime.setText(TimeHelper.getCurrentShortTime());
+
         //TODO cu FERI
         alarmService.get(alarmId, responseAsAlarm -> {
             try {
-                alarmTime.setText(StringFormatter.getFormattedTimeDigits(responseAsAlarm.getHour()) + ":" + StringFormatter.getFormattedTimeDigits(responseAsAlarm.getMinutes()));
-                String alarmTitle = responseAsAlarm.getTitle();
-                if (!TextUtils.isEmpty(alarmTitle)) {
-                    alarmTitleTxtView.setText(alarmTitle);
-                }
-            }
-            catch(Exception ex){
+                //alarmTime.setText(StringFormatter.getFormattedTimeDigits(responseAsAlarm.getHour()) + ":" + StringFormatter.getFormattedTimeDigits(responseAsAlarm.getMinutes()));
+//                String alarmTitle = responseAsAlarm.getTitle();
+//                if (!TextUtils.isEmpty(alarmTitle)) {
+//                    alarmTitleTxtView.setText(alarmTitle);
+//                }
+                alarmTitleTxtView.setText(StringFormatter.getFormattedTimeDigits(responseAsAlarm.getHour()) + ":" + StringFormatter.getFormattedTimeDigits(responseAsAlarm.getMinutes()));
+            } catch (Exception ex) {
                 Crashlytics.logException(ex);
             }
         });
@@ -216,6 +227,58 @@ public class AlarmLaunchActivity extends BaseActivity {
 
         //TODO cu FERI
         //alarmTitleTxtView.setText(String.valueOf(alarmService.get(alarmId).getTitle()));
+    }
+
+    private void launchSnoozeProcess() {
+        Crashlytics.log(99, AlarmLaunchActivity.class.getName(), "Snooze clicked");
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Snooze clicked");
+        firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
+
+
+        //persists the snooze
+        alarmReactionService.add(alarmId, true, new OnAsyncResponse<Void>() {
+            @Override
+            public void processResponse(Void response) {
+                sendStopPlayerEvent();
+
+                //isProcessing = false;
+
+                activity.finish();
+            }
+        });
+
+        //TODO: make this use only one db call
+        //delays the alarm
+        alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
+            @Override
+            public void processResponse(Alarm alarmDb) {
+
+                alarmService.getSnoozesCount(alarmId, new OnAsyncResponse<Integer>() {
+                    @Override
+                    public void processResponse(Integer response) {
+
+                        //String debuglog = "Snooze db amount: " + alarmDb.getSnoozeAmount() + " and Snooze count: " + response;
+
+//                        int sumOfPastAndCurrentSnoozes = alarmDb.getSnoozeAmount();
+//                        if (response != 0) {
+//                            sumOfPastAndCurrentSnoozes *= (response + 1);
+//                        }
+                        //debuglog += "Register alarm at: " + alarmDb.getHour() + " H :" + alarmDb.getMinutes() + " M with delayed min: " + sumOfPastAndCurrentSnoozes;
+                        //alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(), alarmDb.getMinutes(), sumOfPastAndCurrentSnoozes));
+
+                        long ringingTime = TimeHelper.getCurrentTimeInMilliseconds(alarmDb.getSnoozeAmount());
+                        alarmLaunchHandler.registerAlarm(alarmId, ringingTime);
+                        Toast.makeText(activity, TimeHelper.getTimeDifference(ringingTime), Toast.LENGTH_LONG ).show();
+
+//                        Crashlytics.log(99, AlarmLaunchActivity.class.getName(), debuglog);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, debuglog);
+//                        firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
+                    }
+                });
+            }
+        });
     }
 
     private void sendStopPlayerEvent() {
@@ -245,5 +308,10 @@ public class AlarmLaunchActivity extends BaseActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        //do nothing
     }
 }

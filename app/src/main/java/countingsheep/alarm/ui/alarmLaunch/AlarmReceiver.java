@@ -4,9 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
@@ -20,7 +23,7 @@ import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmReceiver extends BroadcastReceiver {
-
+    protected FirebaseAnalytics firebaseAnalytics;
     private Context context;
     private AlarmRingtonePlayer ringtonePlayer;
     private AlarmVibrator vibrator;
@@ -38,6 +41,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Injector.getBroadcastReceiverComponent(context).inject(this);
 
+
+        Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm receiver started");
+        firebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm receiver started");
+        firebaseAnalytics.logEvent("AlarmReceiver", bundle);
+
         int alarmId = intent.getExtras().getInt("alarmId");
         alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
             @Override
@@ -46,6 +56,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                     return;
 
                 if(shouldAlarmBeStarted(alarmDb)){
+                    Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm starting");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm starting");
+                    firebaseAnalytics.logEvent("AlarmReceiver", bundle);
+
                     Intent intent = new Intent(context, AlarmRingingPlayerService.class);
                     intent.putExtra("alarmDb", new Gson().toJson(alarmDb));
                     context.startService(intent);
@@ -53,7 +68,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                 }
                 else{
                     //this needs to send current day,hour,minute, without snooze
-                    alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMilliseconds(alarmDb.getHour(), alarmDb.getMinutes()));
+                    alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
+                    Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm delayed");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm delayed");
+                    firebaseAnalytics.logEvent("AlarmReceiver", bundle);
+
                 }
             }
         });

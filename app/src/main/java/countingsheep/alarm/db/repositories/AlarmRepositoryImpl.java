@@ -145,4 +145,19 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     public void markAlarmsSynced(List<Integer> alarmIds) {
         new UpdateSyncedAlarmTask(alarmDatabase, alarmIds).execute();
     }
+
+    @Override
+    public void getAlarm(int minHour, int maxHour, int minMinutes, int maxMinutes, OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+        new GetGenericTask2<AlarmDao, List<Alarm>>(alarmDatabase.alarmDao(), new GetGenericTask2.OnTaskHandler<AlarmDao, List<Alarm>>() {
+            @Override
+            public List<Alarm> doInBackground(AlarmDao dao) {
+                return dao.getAlarm(minHour,maxHour, minMinutes, maxMinutes);
+            }
+
+            @Override
+            public void onPostExecute(List<Alarm> returnedValues) {
+                onAsyncResponse.processResponse(returnedValues);
+            }
+        }).execute();
+    }
 }

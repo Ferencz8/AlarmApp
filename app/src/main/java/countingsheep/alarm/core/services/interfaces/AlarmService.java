@@ -15,11 +15,13 @@ public interface AlarmService {
 
     boolean update(Alarm alarm);
 
-    void update(Alarm alarm, OnAsyncResponse<Void> onAsyncResponse);
+    void update(Alarm alarm, OnAsyncResponse<Long> onAsyncResponse);
 
     Alarm get(int alarmId);
 
     void get(int alarmId, OnAsyncResponse<Alarm> onAsyncResponse);
+
+    void get(int hour, int minutes, OnAsyncResponse<List<Alarm>> onAsyncResponse);
 
     List<Alarm> getAll();
 

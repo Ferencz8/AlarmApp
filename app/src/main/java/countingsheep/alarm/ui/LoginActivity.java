@@ -167,9 +167,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (!checkBox.isChecked()) {
                     Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
                 } else {
-                    //TODO: remove on production
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
 
                     spinner.setVisibility(View.VISIBLE);
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

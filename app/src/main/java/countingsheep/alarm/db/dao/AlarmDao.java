@@ -19,7 +19,7 @@ public interface AlarmDao extends BaseDao<Alarm>{
     @Query("SELECT * FROM Alarm WHERE isSynced =0")
     List<Alarm> getUnSynced();
 
-    @Query("SELECT * FROM Alarm WHERE isTurnedOn =1")
+    @Query("SELECT * FROM Alarm WHERE isTurnedOn =1 AND IsDeleted =0")
     List<Alarm> getOnOrOffAlarms();
 
     @Query("UPDATE Alarm SET IsSynced = 1, DateModified = DATETIME('now') WHERE id IN (:alarmIds)")
@@ -37,4 +37,18 @@ public interface AlarmDao extends BaseDao<Alarm>{
             "INNER JOIN AlarmReaction ON Alarm.id = AlarmReaction.alarmId " +
             "WHERE AlarmReaction.isSnooze = 1 AND Alarm.id=:alarmId")
     int getSnoozesCount(int alarmId);
+//
+//    @Query("SELECT * FROM Alarm \n" +
+//            "WHERE Alarm.hour >=:minHour AND Alarm.hour <=:maxHour AND Alarm.minutes <=:maxMinutes AND Alarm.minutes >=:minMinutes AND Alarm.isTurnedOn = 1 AND Alarm.isDeleted = 0")
+//    List<Alarm> getAlarm(int minHour,int maxHour, int minMinutes, int maxMinutes);
+
+    @Query("\n" +
+            "SELECT * FROM Alarm \n" +
+            "WHERE Alarm.hour =:minHour AND Alarm.isTurnedOn = 1 AND Alarm.isDeleted = 0\n" +
+            "AND Alarm.minutes >=:minMinutes \n" +
+            "UNION\n" +
+            "SELECT * FROM Alarm \n" +
+            "WHERE Alarm.hour =:maxHour AND Alarm.isTurnedOn = 1 AND Alarm.isDeleted = 0\n" +
+            "AND Alarm.minutes <=:maxMinutes ")
+    List<Alarm> getAlarm(int minHour,int maxHour, int minMinutes, int maxMinutes);
 }
