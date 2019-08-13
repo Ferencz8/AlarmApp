@@ -25,13 +25,48 @@ public class SharedPreferencesContainer {
     private final static String Fullname = "Fullname";
     private final static String DisplayPaymentInOnBoarding = "DisplayPaymentInOnBoarding";
     private final static String ShouldGiveFreeCredits = "ShouldGiveFreeCredits";
+    private final static String AlarmsSetCount = "AlarmsSetCount";
+    private final static String NeedToRequestSMSRoastCount = "NeedToRequestSMSRoastCount";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
+    private final static String Popup_ShowedAskForPhoneNo = "ShowedAskForPhoneNo";
+
 
 
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
+    }
+
+    public void resetNeededToRequestSMSRoastCount() {
+        changePreferenceValue(NeedToRequestSMSRoastCount, 0);
+    }
+
+    public void increaseNeededToRequestSMSRoastCount() {
+        int currentValue = getNeedToRequestSMSRoastCount();
+        changePreferenceValue(NeedToRequestSMSRoastCount, ++currentValue);
+    }
+
+    public int getNeedToRequestSMSRoastCount() {
+        return this.sharedPreferences.getInt(NeedToRequestSMSRoastCount, 0);
+    }
+
+
+    public void increaseSetAlarmsCount() {
+        int currentValue = getAlarmsCountThatWereSet();
+        changePreferenceValue(AlarmsSetCount, ++currentValue);
+    }
+
+    public int getAlarmsCountThatWereSet() {
+        return this.sharedPreferences.getInt(AlarmsSetCount, 0);
+    }
+
+    public boolean getShowedAskForPhoneNoPopup() {
+        return this.sharedPreferences.getBoolean(Popup_ShowedAskForPhoneNo, false);
+    }
+
+    public void setShowedAskForPhoneNoPopup() {
+        changePreferenceValue(Popup_ShowedAskForPhoneNo, true);
     }
 
     public void setPopopShowedRemoveAlarm(){ changePreferenceValue(Popup_ShowedRemoveAlarm, true); }
@@ -109,7 +144,7 @@ public class SharedPreferencesContainer {
     }
 
     public String getCurrentUserPhoneNumber(){
-        return this.sharedPreferences.getString(PhoneNumber, "+40743922464");
+        return this.sharedPreferences.getString(PhoneNumber, "");
     }
 
     public void setCurrentUserPhoneNumber(String phoneNumber) {

@@ -7,6 +7,7 @@ import countingsheep.alarm.internaldi.modules.InfrastructureModule;
 import countingsheep.alarm.internaldi.modules.NetworkModule;
 import countingsheep.alarm.ui.settings.AlarmHistoryActivity;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
+import countingsheep.alarm.ui.settings.ProfileActivity;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchActivity;
@@ -48,4 +49,5 @@ public interface ActivityComponent {
 
     void inject(AlarmHistoryActivity alarmHistoryActivity);
     //void inject(CardActivity cardActivity);
+    void inject(ProfileActivity profileActivity);
 }

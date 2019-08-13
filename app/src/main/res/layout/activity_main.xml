@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_background"
+    android:background="@drawable/new_background"
     tools:context=".MainActivity">
 
 
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorDarkBlue"
+        android:background="#141414"
         app:itemIconTint="@color/bottom_menu_state_list"
         app:itemTextColor="@color/bottom_menu_state_list"
         app:layout_constraintBottom_toBottomOf="parent"

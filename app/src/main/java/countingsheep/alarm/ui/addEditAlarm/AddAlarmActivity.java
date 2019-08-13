@@ -1,6 +1,7 @@
 package countingsheep.alarm.ui.addEditAlarm;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -9,13 +10,16 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,22 +36,26 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
 import com.kevalpatel.ringtonepicker.RingtonePickerListener;
+import com.kevalpatel.ringtonepicker.RingtoneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
-import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
@@ -58,16 +66,17 @@ import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 
-public class AddAlarmActivity extends BaseActivity {
-
+public class AddAlarmActivity extends BaseActivity implements View.OnClickListener {
+    protected FirebaseAnalytics firebaseAnalytics;
     private Alarm alarm;
+    private Activity activity;
 
     AlarmDayRecyclerViewDataAdapter adapter;
     private List<AlarmDayRecyclerViewItem> daysList = null;
     private List<String> weekDays = Arrays.asList("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su");
     private Switch vibrateSwitch;
     private SeekBar volumeSeekBar;
-    private ImageView saveImageView;
+    private TextView saveImageView;
     private TextView selectedRingtoneTextView;
     private TextView timeView;
     private TextView snoozeTv;
@@ -78,7 +87,12 @@ public class AddAlarmActivity extends BaseActivity {
     RecyclerView snoozeRv;
     SnoozeAdapter snoozeAdapter;
 
+    private ConstraintLayout headerBar;
+    private ImageView backBtn;
+    private TextView titleTv;
+
     private boolean isEdit = false;
+    private int seebBarProgress;
 
     @Inject
     AlarmService alarmService;
@@ -92,17 +106,18 @@ public class AddAlarmActivity extends BaseActivity {
     @Inject
     PaymentDetailsRepository paymentDetailsRepository;
 
-    private int seebBarProgress;
+    @Inject
+    SharedPreferencesContainer sharedPreferencesContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alarm);
-
-        firebaseAnalytics.logEvent("add_alarm", null);
+        activity = this;
 
         Injector.getActivityComponent(this).inject(this);
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setupAlarm();
 
         bindViews();
@@ -147,7 +162,7 @@ public class AddAlarmActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // Create car recycler view data adapter with car item list.
-        adapter = new AlarmDayRecyclerViewDataAdapter(daysList);
+        adapter = new AlarmDayRecyclerViewDataAdapter(this, daysList);
         // Set data adapter.
         recyclerView.setAdapter(adapter);
 
@@ -168,8 +183,7 @@ public class AddAlarmActivity extends BaseActivity {
                             timeView.setText(time);
                         }
                     }, alarm.getHour(), alarm.getMinutes());
-                }
-                else{
+                } else {
                     dialogInteractor.displayTimePickerDialog(new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -203,12 +217,8 @@ public class AddAlarmActivity extends BaseActivity {
         });
         snoozeTv = (TextView) findViewById(R.id.snoozeTextView);
         selectedSnooze = (TextView) findViewById(R.id.selectedSnooze);
-//        snoozeSpinner = findViewById(R.id.snoozeSpinnerId);
-//        ArrayAdapter<Integer> snoozesAdapter = new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item, snoozes);
-//        //snoozesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        snoozeSpinner.setAdapter(snoozesAdapter);
-
         createSnoozeDialog();
+        setDefaultSnoozeValue();
 
         snoozeTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +236,6 @@ public class AddAlarmActivity extends BaseActivity {
         }
 
         selectedRingtoneTextView = findViewById(R.id.selectedRingtoneTextView);
-
         selectedRingtoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,12 +247,13 @@ public class AddAlarmActivity extends BaseActivity {
                 }
             }
         });
+        setDefaultRingtoneValues();
 
-        saveImageView = findViewById(R.id.saveAlarmAddImageView);
+        saveImageView = findViewById(R.id.add_alarm_save_button);
         saveImageView.setOnClickListener(getSaveAlarmClickListener());
 
         String time;
-        if(isEdit){
+        if (isEdit) {
             time = this.getFormattedTime(alarm.getHour(), alarm.getMinutes());
 
             selectedRingtoneTextView.setText(alarm.getRingtoneName());
@@ -251,17 +261,42 @@ public class AddAlarmActivity extends BaseActivity {
             adapter.markDaysAsSelected(Arrays.asList(alarm.getRepeatDays().split(",")));
 
             vibrateSwitch.setChecked(alarm.isVobrateOn());
-        }
-        else{
+        } else {
             time = this.getFormattedTime(7, 5);
         }
         timeView.setText(time);
         titleView.setText(alarm.getTitle());
         vibrateSwitch.setChecked(alarm.isVobrateOn());
         volumeSeekBar.setProgress(alarm.getVolume());
+
+        headerBar = findViewById(R.id.headerBar);
+        backBtn = headerBar.findViewById(R.id.backBtn);
+        titleTv = headerBar.findViewById(R.id.titleTv);
+
+        backBtn.setOnClickListener(this);
+        titleTv.setText("Set alarm");
     }
 
-    private AlarmDayRecyclerViewItem getAdarmDayViewItem(String day){
+    private void setDefaultRingtoneValues() {
+        try {
+            Uri systemRingtoneUri = RingtoneUtils.getSystemRingtoneTone();
+            String systemRingtoneName = RingtoneUtils.getRingtoneName(this, systemRingtoneUri);
+
+            alarm.setRingtonePath(systemRingtoneUri.toString());
+            alarm.setRingtoneName(systemRingtoneName);
+            selectedRingtoneTextView.setText(systemRingtoneName);
+        }
+        catch(Exception ex){
+            Crashlytics.logException(ex);
+        }
+    }
+
+    private void setDefaultSnoozeValue() {
+        snoozeAdapter.selectedItem = 0; //1 minute
+        selectedSnooze.setText(getString(R.string.DefaultSnoozeDisplayedValue));
+    }
+
+    private AlarmDayRecyclerViewItem getAdarmDayViewItem(String day) {
         AlarmDayRecyclerViewItem item = new AlarmDayRecyclerViewItem();
         item.setText(day);
         return item;
@@ -369,58 +404,138 @@ public class AddAlarmActivity extends BaseActivity {
 
                 //TODO needs validation
 
-                if(TextUtils.isEmpty(selectedRingtoneTextView.getText()) || selectedRingtoneTextView.getText().equals("None")){
+                if (TextUtils.isEmpty(selectedRingtoneTextView.getText()) || selectedRingtoneTextView.getText().equals("None")) {
                     Toast.makeText(AddAlarmActivity.this, "Please select a Ringtone", Toast.LENGTH_SHORT).show();
-                    return;
+                    return ;
                 }
 
-
-                alarm.setVobrateOn(vibrateSwitch.isChecked());
-                alarm.setVolume(seebBarProgress);
-                alarm.setTurnedOn(true);
-
-                if (!TextUtils.isEmpty(titleView.getText())) {
-                    alarm.setTitle(titleView.getText().toString());
-                }
-
-                alarm.setRepeatDays(TextUtils.join(",", adapter.getClickedItemsList()));
-
-                alarm.setSnoozeAmount(getSnoozeAmount());
-
-                final long timeToStartAlarm = TimeHelper.getTimeInMilliseconds(alarm.getHour(), alarm.getMinutes());
-
-                if (isEdit) {
-
-                    alarmService.update(alarm, new OnAsyncResponse<Void>() {
-                        @Override
-                        public void processResponse(Void response) {
-
-                            alarmLaunchHandler.cancelAlarm(alarm.getId());
-
-                            alarmLaunchHandler.registerAlarm(alarm.getId(), timeToStartAlarm);
-
-//                            Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
-//                            startActivity(intent);
-                            finish();
+                alarmService.get(alarm.getHour(), alarm.getMinutes(), new OnAsyncResponse<List<Alarm>>() {
+                    @Override
+                    public void processResponse(List<Alarm> response) {
+                        if(response == null || response.size() == 0){
+                            startSavingProcess();
                         }
-                    });
-                } else {
-                    alarmService.add(alarm, new OnAsyncResponse<Long>() {
-                        @Override
-                        public void processResponse(Long response) {
+                        else{
+                            if(response.size() == 1 && response.get(0).getId() == alarm.getId()){
+                                startSavingProcess();
+                            }
+                            else {
 
-                            alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
-
-//                            Intent intent = new Intent(AddAlarmActivity.this, MainActivity.class);
-//                            startActivity(intent);
-                            finish();
+                                try {
+                                    Toast.makeText(activity, "You cannot create an alarm before/ after 30 minutes from " + StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : " + StringFormatter.getFormattedTimeDigits(alarm.getMinutes()) + ", since one already exists.", Toast.LENGTH_LONG).show();
+                                } catch (Exception ex) {
+                                    Crashlytics.logException(ex);
+                                }
+                            }
                         }
-                    });
-                }
-
-                startProcessingFailedPayments();
+                    }
+                });
             }
         };
+    }
+
+    private void startSavingProcess() {
+        alarm.setVobrateOn(vibrateSwitch.isChecked());
+        alarm.setVolume(seebBarProgress);
+        alarm.setTurnedOn(true);
+
+        if (!TextUtils.isEmpty(titleView.getText())) {
+            alarm.setTitle(titleView.getText().toString());
+        }
+
+        alarm.setRepeatDays(TextUtils.join(",", adapter.getClickedItemsList()));
+
+        alarm.setSnoozeAmount(getSnoozeAmount());
+
+        final long timeToStartAlarm = calculateTimeToStartAlarm(alarm.getRepeatDays());
+
+        Toast.makeText(activity, TimeHelper.getTimeDifference(timeToStartAlarm), Toast.LENGTH_LONG).show();
+
+        String debuglog = "Save alarm with " + alarm.getHour() + " H : " + alarm.getMinutes() + " M, with snooze of " + alarm.getSnoozeAmount() + " and repeat days: " + alarm.getRepeatDays();
+        Crashlytics.log(99, AddAlarmActivity.class.getName(), debuglog);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, debuglog);
+        firebaseAnalytics.logEvent("debuglog_addalarm", bundle);
+        if (isEdit) {
+
+
+            alarmService.update(alarm, new OnAsyncResponse<Long>() {
+                @Override
+                public void processResponse(Long response) {
+
+                    alarmLaunchHandler.cancelAlarm(alarm.getId());
+
+                    alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+
+                    finish();
+                }
+            });
+        } else {
+            alarmService.add(alarm, new OnAsyncResponse<Long>() {
+                @Override
+                public void processResponse(Long response) {
+
+                    alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+
+                    displayAskForPhoneNoPopUp();
+                }
+            });
+        }
+
+        sharedPreferencesContainer.increaseSetAlarmsCount();
+
+        startProcessingFailedPayments();
+    }
+
+    private long calculateTimeToStartAlarm(String repeatDays){
+        long startRingingTime = 0;
+        if(TextUtils.isEmpty(repeatDays)){//if no repeat days
+            if(TimeHelper.isTimeInThePast(alarm.getHour(), alarm.getMinutes())){//if alarm is in the past => delay with 1 day
+                startRingingTime = TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarm.getHour(), alarm.getMinutes(), 1);
+            }
+            else{// if alarm is in the future return the time
+                startRingingTime = TimeHelper.getTimeInMilliseconds(alarm.getHour(), alarm.getMinutes());
+            }
+        }
+        else {//calculate based on the current day vs available repeat days
+            int delayDays = TimeHelper.getDaysUntilRepeatDay(repeatDays);
+
+            startRingingTime = TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarm.getHour(), alarm.getMinutes(), delayDays);
+        }
+        return startRingingTime;
+    }
+
+
+    private void displayAskForPhoneNoPopUp() {
+        if(this.sharedPreferencesContainer.getShowedAskForPhoneNoPopup()){
+           finish();
+        }
+        else{
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.phoneno_popup);
+            ImageView closePopUp = dialog.findViewById(R.id.closePhoneNoPopUpId);
+            closePopUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            TextView phoneNoText = dialog.findViewById(R.id.phoneNoTxtView);
+
+
+            TextView saveBtn = dialog.findViewById(R.id.savePhoneNoBtn);
+            saveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sharedPreferencesContainer.setCurrentUserPhoneNumber(phoneNoText.getText().toString());
+                    sharedPreferencesContainer.setShowedAskForPhoneNoPopup();
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            dialog.show();
+        }
     }
 
     private void startProcessingFailedPayments() {
@@ -429,11 +544,11 @@ public class AddAlarmActivity extends BaseActivity {
         paymentDetailsRepository.getAll(PaymentStatus.NotConnectedToInternetToPay, new OnAsyncResponse<List<PaymentDetails>>() {
             @Override
             public void processResponse(List<PaymentDetails> response) {
-                if(response!=null && response.size() > 0){
+                if (response != null && response.size() > 0) {
 
                     int[] alarmReactionIds = new int[response.size()];
                     int index = 0;
-                    for (PaymentDetails paymentDetails : response){
+                    for (PaymentDetails paymentDetails : response) {
                         alarmReactionIds[index++] = paymentDetails.getAlarmReactionId();
                     }
                     Intent serviceIntent = new Intent(activityCompat, ProcessFailedPaymentsService.class);
@@ -457,10 +572,10 @@ public class AddAlarmActivity extends BaseActivity {
         }
     }
 
-    private int getSnoozeAmountFromItem(int position){
-        switch (position){
+    private int getSnoozeAmountFromItem(int position) {
+        switch (position) {
             case -1:
-                return 0;
+                return 1;
             case 0:
                 return 1;
             case 1:
@@ -472,11 +587,11 @@ public class AddAlarmActivity extends BaseActivity {
             case 4:
                 return 30;
             default:
-                return 0;
+                return 1;
         }
     }
 
-    private void createSnoozeDialog(){
+    private void createSnoozeDialog() {
         snoozeDialog = new Dialog(AddAlarmActivity.this);
         snoozeDialog.setContentView(R.layout.snooze_dialog);
         snoozeDialog.setCancelable(false);
@@ -485,7 +600,7 @@ public class AddAlarmActivity extends BaseActivity {
         Window window = snoozeDialog.getWindow();
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
-        window.setLayout((6 * width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
+        window.setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
 
         snoozeAdapter = new SnoozeAdapter(durations);
@@ -500,9 +615,9 @@ public class AddAlarmActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 snoozeDialog.dismiss();
-                if(getSnoozeAmountFromItem(snoozeAdapter.selectedItem) == 1){
+                if (getSnoozeAmountFromItem(snoozeAdapter.selectedItem) == 1) {
                     selectedSnooze.setText(String.valueOf(getSnoozeAmountFromItem(snoozeAdapter.selectedItem)) + " minute");
-                } else if(getSnoozeAmountFromItem(snoozeAdapter.selectedItem) > 1){
+                } else if (getSnoozeAmountFromItem(snoozeAdapter.selectedItem) > 1) {
                     selectedSnooze.setText(String.valueOf(getSnoozeAmountFromItem(snoozeAdapter.selectedItem)) + " minutes");
                 } else {
                     selectedSnooze.setText("");
@@ -516,5 +631,14 @@ public class AddAlarmActivity extends BaseActivity {
                 snoozeDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.backBtn:
+                finish();
+                break;
+        }
     }
 }

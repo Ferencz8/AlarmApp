@@ -15,7 +15,7 @@ import countingsheep.alarm.core.services.interfaces.PaymentService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
-import countingsheep.alarm.infrastructure.NetworkInteractor;
+import countingsheep.alarm.infrastructure.NetworkStateInteractor;
 import countingsheep.alarm.network.retrofit.PaymentAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,19 +29,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     private Retrofit retrofit;
     private SharedPreferencesContainer sharedPreferencesContainer;
-    private NetworkInteractor networkInteractor;
+    private NetworkStateInteractor networkStateInteractor;
     private PaymentDetailsRepository paymentDetailsRepository;
     private TimeService timeService;
 
     @Inject
     PaymentServiceImpl(Retrofit retrofit,
                        SharedPreferencesContainer sharedPreferencesContainer,
-                       NetworkInteractor networkInteractor,
+                       NetworkStateInteractor networkStateInteractor,
                        PaymentDetailsRepository paymentDetailsRepository,
                        TimeService timeService) {
         this.retrofit = retrofit;
         this.sharedPreferencesContainer = sharedPreferencesContainer;
-        this.networkInteractor = networkInteractor;
+        this.networkStateInteractor = networkStateInteractor;
         this.paymentDetailsRepository = paymentDetailsRepository;
         this.timeService = timeService;
     }
@@ -56,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
         try {
             Checkout checkout = initializeCheckout(alarmReactionId);
 
-            if (!this.networkInteractor.isNetworkAvailable()) {
+            if (!this.networkStateInteractor.isNetworkAvailable()) {
                 InsertPaymentDetail(paymentDetails, PaymentStatus.NotConnectedToInternetToPay);
                 if(onResult!=null) {
                     onResult.onFailure();
@@ -100,7 +100,7 @@ public class PaymentServiceImpl implements PaymentService {
     public void processFailedPayment(int alarmReactionId, OnResult<String> onResult){
         if (alarmReactionId == 0) return;
         try {
-            if (!this.networkInteractor.isNetworkAvailable()) {
+            if (!this.networkStateInteractor.isNetworkAvailable()) {
                 onResult.onFailure("Network is not available!");
             }
             else {

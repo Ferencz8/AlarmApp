@@ -4,11 +4,16 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -24,6 +29,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
@@ -52,6 +58,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView cashTextView;
     private TextView alarmCount;
     private TextView snoozeRate;
+    private TextView profile;
+    private ProgressBar loadingSpinner;
 
     @Inject
     AuthenticationService authenticationService;
@@ -99,6 +107,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         bindViews(view);
 
+        ((MainActivity) getActivity()).hideHeaderBar(true);
         if (sharedPreferencesContainer.getFreeCredits() != 0) {
             this.spentTextView.setText(getString(R.string.creditsLeft));
             this.cashTextView.setText(sharedPreferencesContainer.getFreeCredits() + " $");
@@ -161,6 +170,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         logout.setOnClickListener(this);
         alarmCount = view.findViewById(R.id.alarm_text);
         snoozeRate = view.findViewById(R.id.snooze_text);
+        loadingSpinner = view.findViewById(R.id.settingsProgressBar);
+        loadingSpinner.setVisibility(View.INVISIBLE);
+        profile = view.findViewById(R.id.profile_text);
+        profile.setOnClickListener(this);
     }
 
     @Override
@@ -254,21 +267,35 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 firebaseAnalytics.logEvent("settings_payments",null);
                 displayPayment();
                 break;
+            case R.id.profile_text:
+                firebaseAnalytics.logEvent("settings_profile",null);
+                Intent intent2  = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent2);
+                break;
             default:
                 break;
         }
     }
 
     private void displayPayment() {
+        loadingSpinner.setVisibility(View.VISIBLE);
+        Window currentWindow = getActivity().getWindow();
+        if(currentWindow!=null) {
+            currentWindow.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            currentWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
         this.braintreePaymentInteractor.displayPaymentMethods(new OnPaymentInteractionResult() {
             @Override
             public void onSuccess() {
+
                 sharedPreferencesContainer.setFreeCredits(0);
+                dismissLoadingCircle();
             }
 
             @Override
             public void onCanceled() {
-
+                dismissLoadingCircle();
             }
         });
     }
@@ -299,5 +326,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         });
         dialog.show();
+    }
+
+    private void dismissLoadingCircle(){
+        loadingSpinner.setVisibility(View.INVISIBLE);
+        Window currentWindow = getActivity().getWindow();
+        if(currentWindow!=null) {
+            currentWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
     }
 }

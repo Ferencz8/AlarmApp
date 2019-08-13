@@ -1,5 +1,6 @@
 package countingsheep.alarm.network.retrofit;
 
+import countingsheep.alarm.core.domain.SavePhoneNoReq;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.domain.UserRegistration;
 import retrofit2.Call;
@@ -19,4 +20,7 @@ public interface UserAPI {
     @Headers({"Accept: application/json"})
     @GET("/alarm/api/user/GetCredits")
     Call<Integer> getFreeCredits(@Query("id")int userId);
+
+    @POST("/alarm/api/user/saveNumber")
+    Call<Void> savePhoneNumber(@Body SavePhoneNoReq savePhoneNoReq);
 }

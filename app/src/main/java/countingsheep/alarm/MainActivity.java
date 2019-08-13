@@ -1,15 +1,14 @@
 package countingsheep.alarm;
 
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,7 +21,9 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.infrastructure.NetworkStateReceiver;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
@@ -33,12 +34,17 @@ public class MainActivity extends BaseActivity {
     ConstraintLayout headerBar;
     TextView titleTextView;
     ImageView backBtn;
+    private NetworkStateReceiver networkStateReceiver;
+    private NetworkStateReceiver.NetworkStateReceiverListener networkStateReceiverListener;
 
     @Inject
     DialogInteractor dialogInteractor;
 
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
+
+    @Inject
+    SMSService smsService;
 
 
     @Override
@@ -60,16 +66,13 @@ public class MainActivity extends BaseActivity {
                         switch (item.getItemId()) {
                             case R.id.action_item1:
                                 selectedFragment = AlarmsFragment.newInstance();
-                                titleTextView.setText(R.string.counting_sheep);
-                                backBtn.setVisibility(View.GONE);
-                                headerBar.setVisibility(View.VISIBLE);
+                                hideHeaderBar(false);
                                 break;
 //                            case R.id.action_item2:
 //                                headerBar.setVisibility(View.VISIBLE);
 //                                selectedFragment = alarmsFragment;
 //                                break;
                             case R.id.action_item3:
-                                headerBar.setVisibility(View.GONE);
                                 selectedFragment = SettingsFragment.newInstance();
                                 break;
                         }
@@ -92,6 +95,17 @@ public class MainActivity extends BaseActivity {
 
         askBootPermission();
 
+
+        networkStateReceiverListener =  smsService.getSMSNetworkStateListener();
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(networkStateReceiverListener);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
         showRemovePopup();
     }
 
@@ -102,6 +116,9 @@ public class MainActivity extends BaseActivity {
 
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         titleTextView.setTypeface(bold_font);
+        titleTextView.setText(R.string.dark_sheep);
+        backBtn.setVisibility(View.INVISIBLE);
+        backBtn.setOnClickListener(null);
     }
 
     /*
@@ -133,7 +150,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showRemovePopup() {
-        if (!this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
+        if (this.sharedPreferencesContainer.getAlarmsCountThatWereSet() >= 3 && !this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
             this.sharedPreferencesContainer.setPopopShowedRemoveAlarm();
 
             this.dialogInteractor.displayInfoDialog(R.drawable.remove_icon, "To delete alarm swipe");
@@ -162,5 +179,23 @@ public class MainActivity extends BaseActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void hideHeaderBar(boolean hide){
+        if(headerBar != null) {
+            if(hide) {
+                headerBar.setVisibility(View.GONE);
+            } else {
+                headerBar.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(networkStateReceiverListener);
+        this.unregisterReceiver(networkStateReceiver);
     }
 }

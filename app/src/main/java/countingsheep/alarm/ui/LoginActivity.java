@@ -1,5 +1,7 @@
 package countingsheep.alarm.ui;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -42,7 +44,6 @@ import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
 import countingsheep.alarm.ui.settings.TermsAndConditionsActivity;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -51,14 +52,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView termsText;
     Activity activity;
     ProgressBar spinner;
+    private ImageView logo;
 
     @Inject
     SocialAuthenticationService socialAuthenticationService;
     @Inject
     AuthenticationService authenticationService;
-
-    @Inject
-    Retrofit retrofit;
 
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
@@ -68,13 +67,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         checkBox = findViewById(R.id.checkBox);
         termsText = findViewById(R.id.Terms2);
         spinner = findViewById(R.id.loadingCircle);
+        logo = findViewById(R.id.component);
         spinner.setVisibility(View.INVISIBLE);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Regular.otf");
         Typeface bold_font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         //termsText.setTypeface(custom_font);
 
-        termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#00CBEB'>Terms of Service</font></b></p>"));
+        termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#FFB800'>Terms of Service</font></b></p>"));
+
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                logo,
+                PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.2f));
+        scaleDown.setDuration(1000);
+
+        scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+        scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+
+        scaleDown.start();
     }
 
     private static Spanned fromHtmlN(String data) {
@@ -156,9 +167,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (!checkBox.isChecked()) {
                     Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
                 } else {
-                    //TODO: remove on production
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
 
                     spinner.setVisibility(View.VISIBLE);
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -184,7 +192,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 startActivity(intent);
                             }
 
-                            //TODO:: add here the stop loading bar logic
+
                             spinner.setVisibility(View.INVISIBLE);
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }

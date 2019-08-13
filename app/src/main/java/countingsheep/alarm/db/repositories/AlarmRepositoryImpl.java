@@ -10,6 +10,7 @@ import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmDao;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
+import countingsheep.alarm.db.repositories.tasks.GetGenericTask2;
 import countingsheep.alarm.db.repositories.tasks.alarm.DeleteLogicallyAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllGenericTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetGenericTask;
@@ -108,6 +109,21 @@ public class AlarmRepositoryImpl implements AlarmRepository {
         }).execute();
     }
 
+    @Override
+    public void getSnoozesCount(int alarmId, OnAsyncResponse<Integer> onAsyncResponse) {
+        new GetGenericTask2<AlarmDao, Integer>(alarmDatabase.alarmDao(), new GetGenericTask2.OnTaskHandler<AlarmDao, Integer>() {
+            @Override
+            public Integer doInBackground(AlarmDao dao) {
+                return dao.getSnoozesCount(alarmId);
+            }
+
+            @Override
+            public void onPostExecute(Integer returnedValue) {
+                onAsyncResponse.processResponse(returnedValue);
+            }
+        }).execute();
+    }
+
 
     @Override
     public List<Alarm> getAllUnsyced() {
@@ -128,5 +144,20 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     @Override
     public void markAlarmsSynced(List<Integer> alarmIds) {
         new UpdateSyncedAlarmTask(alarmDatabase, alarmIds).execute();
+    }
+
+    @Override
+    public void getAlarm(int minHour, int maxHour, int minMinutes, int maxMinutes, OnAsyncResponse<List<Alarm>> onAsyncResponse) {
+        new GetGenericTask2<AlarmDao, List<Alarm>>(alarmDatabase.alarmDao(), new GetGenericTask2.OnTaskHandler<AlarmDao, List<Alarm>>() {
+            @Override
+            public List<Alarm> doInBackground(AlarmDao dao) {
+                return dao.getAlarm(minHour,maxHour, minMinutes, maxMinutes);
+            }
+
+            @Override
+            public void onPostExecute(List<Alarm> returnedValues) {
+                onAsyncResponse.processResponse(returnedValues);
+            }
+        }).execute();
     }
 }
