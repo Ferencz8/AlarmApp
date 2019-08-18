@@ -1,11 +1,13 @@
 package countingsheep.alarm;
 
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -13,18 +15,25 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import javax.inject.Inject;
 
+import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.infrastructure.NetworkStateReceiver;
 import countingsheep.alarm.ui.BaseActivity;
+import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
@@ -46,6 +55,8 @@ public class MainActivity extends BaseActivity {
     @Inject
     SMSService smsService;
 
+    @Inject
+    MessageService messageService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +79,10 @@ public class MainActivity extends BaseActivity {
                                 selectedFragment = AlarmsFragment.newInstance();
                                 hideHeaderBar(false);
                                 break;
-//                            case R.id.action_item2:
-//                                headerBar.setVisibility(View.VISIBLE);
-//                                selectedFragment = alarmsFragment;
-//                                break;
+                            case R.id.action_item2:
+                                selectedFragment = RoastHistoryFragment.newInstance();
+                                hideHeaderBar(false);
+                                break;
                             case R.id.action_item3:
                                 selectedFragment = SettingsFragment.newInstance();
                                 break;
@@ -82,12 +93,19 @@ public class MainActivity extends BaseActivity {
                         return true;
                     }
                 });
-
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, AlarmsFragment.newInstance());
-        transaction.commit();
+        Intent intent = getIntent();
+        if(intent!= null && intent.getIntExtra("fragment", 0) == 2){
 
+            //transaction.replace(R.id.frame_layout, RoastHistoryFragment.newInstance());
+            bottomNavigationView.setSelectedItemId(R.id.action_item2);
+        }
+        else {
+            transaction.replace(R.id.frame_layout, AlarmsFragment.newInstance());
+
+        }
+        transaction.commit();
         //Used to select an item programmatically
         //bottomNavigationView.getMenu().getItem(2).setChecked(true);
 
@@ -96,7 +114,7 @@ public class MainActivity extends BaseActivity {
         askBootPermission();
 
 
-        networkStateReceiverListener =  smsService.getSMSNetworkStateListener();
+        networkStateReceiverListener =  messageService.getRoastMessageNetworkStateListener(this);//smsService.getSMSNetworkStateListener();
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(networkStateReceiverListener);
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
@@ -147,8 +165,48 @@ public class MainActivity extends BaseActivity {
                         }
                     });
         }
+        if("huawei".equalsIgnoreCase(android.os.Build.MANUFACTURER) ) {
+            AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+            builder.setTitle("Huawei Special").setMessage("Huawei Special")
+                    .setPositiveButton("Do it", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
+                            startActivity(intent);
+                            //sp.edit().putBoolean("protected",true).commit();
+//                            try {
+//                                String cmd = "am start -n com.huawei.systemmanager/.optimize.process.ProtectActivity";
+//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                                    cmd += " --user " + getUserSerial();
+//                                }
+//                                Runtime.getRuntime().exec(cmd);
+//                            } catch (IOException ignored) {
+//                            }
+                        }
+                    }).create().show();
+        }
     }
 
+//    private String getUserSerial() {
+//        //noinspection ResourceType
+//        Object userManager = getSystemService("user");
+//        if (null == userManager) return "";
+//
+//        try {
+//            Method myUserHandleMethod = android.os.Process.class.getMethod("myUserHandle", (Class<?>[]) null);
+//            Object myUserHandle = myUserHandleMethod.invoke(android.os.Process.class, (Object[]) null);
+//            Method getSerialNumberForUser = userManager.getClass().getMethod("getSerialNumberForUser", myUserHandle.getClass());
+//            Long userSerial = (Long) getSerialNumberForUser.invoke(userManager, myUserHandle);
+//            if (userSerial != null) {
+//                return String.valueOf(userSerial);
+//            } else {
+//                return "";
+//            }
+//        } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ignored) {
+//        }
+//        return "";
+//    }
     private void showRemovePopup() {
         if (this.sharedPreferencesContainer.getAlarmsCountThatWereSet() >= 3 && !this.sharedPreferencesContainer.getPopopShowedRemoveAlarm()) {
             this.sharedPreferencesContainer.setPopopShowedRemoveAlarm();

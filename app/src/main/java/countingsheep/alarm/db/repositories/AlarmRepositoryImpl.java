@@ -10,10 +10,9 @@ import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmDao;
 import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
-import countingsheep.alarm.db.repositories.tasks.GetGenericTask2;
+import countingsheep.alarm.db.repositories.tasks.GenericTaskObject;
 import countingsheep.alarm.db.repositories.tasks.alarm.DeleteLogicallyAlarmTask;
-import countingsheep.alarm.db.repositories.tasks.alarm.GetAllGenericTask;
-import countingsheep.alarm.db.repositories.tasks.alarm.GetGenericTask;
+import countingsheep.alarm.db.repositories.tasks.GenericTaskList;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllAlarmTask;
 import countingsheep.alarm.db.repositories.tasks.alarm.GetAllTurnedOnAlarmsTask;
@@ -96,7 +95,7 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     @SuppressWarnings("unchecked")
     public void getAllNotDeleted(OnAsyncResponse<List<Alarm>> onAsyncResponse) {
 
-        new GetAllGenericTask<AlarmDao, Alarm>(alarmDatabase.alarmDao(), new GetAllGenericTask.OnTaskHandler<AlarmDao, Alarm>() {
+        new GenericTaskList<AlarmDao, Alarm>(alarmDatabase.alarmDao(), new GenericTaskList.OnTaskHandler<AlarmDao, Alarm>() {
             @Override
             public List<Alarm> doInBackground(AlarmDao o) {
                 return o.getAllNotDeleted();
@@ -111,7 +110,7 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
     @Override
     public void getSnoozesCount(int alarmId, OnAsyncResponse<Integer> onAsyncResponse) {
-        new GetGenericTask2<AlarmDao, Integer>(alarmDatabase.alarmDao(), new GetGenericTask2.OnTaskHandler<AlarmDao, Integer>() {
+        new GenericTaskObject<AlarmDao, Integer>(alarmDatabase.alarmDao(), new GenericTaskObject.OnTaskHandler<AlarmDao, Integer>() {
             @Override
             public Integer doInBackground(AlarmDao dao) {
                 return dao.getSnoozesCount(alarmId);
@@ -148,7 +147,7 @@ public class AlarmRepositoryImpl implements AlarmRepository {
 
     @Override
     public void getAlarm(int minHour, int maxHour, int minMinutes, int maxMinutes, OnAsyncResponse<List<Alarm>> onAsyncResponse) {
-        new GetGenericTask2<AlarmDao, List<Alarm>>(alarmDatabase.alarmDao(), new GetGenericTask2.OnTaskHandler<AlarmDao, List<Alarm>>() {
+        new GenericTaskObject<AlarmDao, List<Alarm>>(alarmDatabase.alarmDao(), new GenericTaskObject.OnTaskHandler<AlarmDao, List<Alarm>>() {
             @Override
             public List<Alarm> doInBackground(AlarmDao dao) {
                 return dao.getAlarm(minHour,maxHour, minMinutes, maxMinutes);

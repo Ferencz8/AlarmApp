@@ -52,28 +52,40 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
             @Override
             public void processResponse(Alarm alarmDb) {
-                if(alarmDb == null)
-                    return;
+                try {
+                    if (alarmDb == null)
+                    {
+                        throw new Exception("Alarmdb is null in AlarmReceiver");
+                        //return;
+                    }
 
-                if(shouldAlarmBeStarted(alarmDb)){
-                    Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm starting");
-                    Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm starting");
-                    firebaseAnalytics.logEvent("AlarmReceiver", bundle);
+                    if (shouldAlarmBeStarted(alarmDb)) {
+                        if(TextUtils.isEmpty(alarmDb.getRepeatDays()))
+                        {   //this was a one time alarm => turn it off after ringing
+                            alarmService.switchOnOf(alarmId, false);
+                        }
 
-                    Intent intent = new Intent(context, AlarmRingingPlayerService.class);
-                    intent.putExtra("alarmDb", new Gson().toJson(alarmDb));
-                    context.startService(intent);
-                    startAlarmUserExperience(alarmDb.getId());
-                }
-                else{
-                    //this needs to send current day,hour,minute, without snooze
-                    alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
-                    Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm delayed");
-                    Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm delayed");
-                    firebaseAnalytics.logEvent("AlarmReceiver", bundle);
+                        Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm starting");
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm starting");
+                        firebaseAnalytics.logEvent("AlarmReceiver", bundle);
 
+                        Intent intent = new Intent(context, AlarmRingingPlayerService.class);
+                        intent.putExtra("alarmDb", new Gson().toJson(alarmDb));
+                        context.startService(intent);
+                        startAlarmUserExperience(alarmDb.getId());
+                    } else {
+                        //this needs to send current day,hour,minute, without snooze
+                        alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
+                        Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm delayed");
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Alarm delayed");
+                        firebaseAnalytics.logEvent("AlarmReceiver", bundle);
+
+                    }
+
+                } catch (Exception e) {
+                    Crashlytics.logException(e);
                 }
             }
         });
@@ -85,7 +97,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         String repeatDays = alarmDb.getRepeatDays();
 
-        if(TextUtils.isEmpty(repeatDays))
+        if (TextUtils.isEmpty(repeatDays))
             return true;
 
         Calendar calendar = Calendar.getInstance();
@@ -94,59 +106,52 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         switch (today) {
             case Calendar.MONDAY:
-                if(repeatDays.contains("Mo")){
+                if (repeatDays.contains("Mo")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
             case Calendar.TUESDAY:
-                if(repeatDays.contains("Tu")){
+                if (repeatDays.contains("Tu")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
             case Calendar.WEDNESDAY:
-                if(repeatDays.contains("We")){
+                if (repeatDays.contains("We")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
             case Calendar.THURSDAY:
-                if(repeatDays.contains("Th")){
+                if (repeatDays.contains("Th")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
 
             case Calendar.FRIDAY:
-                if(repeatDays.contains("Fr")){
+                if (repeatDays.contains("Fr")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
             case Calendar.SATURDAY:
-                if(repeatDays.contains("Sa")){
+                if (repeatDays.contains("Sa")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
             case Calendar.SUNDAY:
-                if(repeatDays.contains("Su")){
+                if (repeatDays.contains("Su")) {
                     shouldAlarmBeStarted = true;
-                }
-                else{
+                } else {
                     shouldAlarmBeStarted = false;
                 }
                 break;
@@ -155,7 +160,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         return shouldAlarmBeStarted;
     }
 
-    private void startAlarmUserExperience(int alarmId){
+    private void startAlarmUserExperience(int alarmId) {
         // Create intent
         Intent alarmintent = new Intent(context, AlarmLaunchActivity.class);
         alarmintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -29,4 +29,7 @@ public class User {
 
     @Expose
     public  String profilePictureUrl;
+
+    @Expose
+    public int mobilePlatform;
 }

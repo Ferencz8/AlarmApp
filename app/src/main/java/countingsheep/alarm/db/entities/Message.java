@@ -5,23 +5,30 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.util.Date;
 
 import countingsheep.alarm.util.TimestampConverter;
 
 @Entity
-public class Message implements Serializable {
+public class Message extends DbEntity implements Serializable {
 
     @PrimaryKey(autoGenerate = false)
+    @Expose
     private int id;
 
+    @Expose
     private String content;
 
+    @Expose
     private boolean isHate;
 
+    @Expose
     private boolean isLiked;
 
+    @Expose
     private boolean isShared;
 
     private boolean isSeen;

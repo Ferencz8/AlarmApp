@@ -1,5 +1,11 @@
 package countingsheep.alarm.util;
 
+import android.text.TextUtils;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * This class is used to format string and have it returned in a different manner.
  */
@@ -12,7 +18,7 @@ public class StringFormatter {
      * @return
      * @throws Exception if the given value is not a time value. It should be between 0 and 59
      */
-    public  static String getFormattedTimeDigits(int value) throws Exception {
+    public static String getFormattedTimeDigits(int value) throws Exception {
         if(value < 0 || value >59)
             throw new Exception("The given value is not a time value. It should be between 0 and 59");
 
@@ -23,5 +29,12 @@ public class StringFormatter {
             time = String.valueOf(value);
 
         return time;
+    }
+
+    public static String getFormattedDate(Date value, String format){
+        if(value == null || TextUtils.isEmpty(format))
+            throw new IllegalArgumentException("The given value is null.");
+        DateFormat df = new SimpleDateFormat(format);
+        return df.format(value);
     }
 }

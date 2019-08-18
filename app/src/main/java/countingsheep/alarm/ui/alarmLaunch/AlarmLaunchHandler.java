@@ -49,9 +49,14 @@ public class AlarmLaunchHandler {
      * @param alarmId
      */
     public void cancelAlarm(int alarmId){
-        PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId, AlarmIntentType.Cancel);
+        try{
+            PendingIntent alarmReceiverIntennt = setupAlarmReceiverIntent(alarmId, AlarmIntentType.Cancel);
 
-        alarmManager.cancel(alarmReceiverIntennt);
+            alarmManager.cancel(alarmReceiverIntennt);
+        }
+        catch(Exception ex){
+
+        }
     }
 
     /**

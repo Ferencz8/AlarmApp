@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import countingsheep.alarm.R;
-import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.ui.settings.models.AlarmHistory;
 
 public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
@@ -48,7 +47,7 @@ public class AlarmHistoryRecyclerAdapter extends RecyclerView.Adapter {
             itemViewHolder.alarmName.setText(data.getName());
         }
         itemViewHolder.alarmDate.setText(data.getCreatedDate());
-        itemViewHolder.alarmHour.setText(data.getCreatedHour());
+        itemViewHolder.alarmHour.setText(data.getRingingTime());
         itemViewHolder.alarmStatus.setText(data.getReactionType());
         itemViewHolder.cashSpend.setText(String.valueOf(data.getCashSpent())+" $");
     }

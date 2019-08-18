@@ -9,9 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.core.contracts.data.MessageRepository;
+import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.MessageDao;
 import countingsheep.alarm.db.entities.Message;
+import countingsheep.alarm.db.repositories.tasks.GenericTaskObject;
+import countingsheep.alarm.db.repositories.tasks.GenericTaskList;
 
 @Singleton
 public class MessageRepositoryImpl implements MessageRepository {
@@ -26,6 +29,21 @@ public class MessageRepositoryImpl implements MessageRepository {
     @Override
     public void insert(Message message) {
         new InsertMessageTask(dao, message).execute();
+    }
+
+    @Override
+    public void insert(Message message, OnAsyncResponse<Long> onAsyncResponse) {
+        new GenericTaskObject<MessageDao, Long>(dao, new GenericTaskObject.OnTaskHandler<MessageDao, Long>() {
+            @Override
+            public Long doInBackground(MessageDao dao) {
+                return dao.insert(message);
+            }
+
+            @Override
+            public void onPostExecute(Long returnedValues) {
+                onAsyncResponse.processResponse(returnedValues);
+            }
+        }).execute();
     }
 
     static class InsertMessageTask extends AsyncTask<Void, Void, Void> {
@@ -80,6 +98,21 @@ public class MessageRepositoryImpl implements MessageRepository {
     }
 
     @Override
+    public void getAllHistory(OnAsyncResponse<List<Message>> onAsyncResponse) {
+        new GenericTaskList<MessageDao, Message>(dao, new GenericTaskList.OnTaskHandler<MessageDao, Message>() {
+            @Override
+            public List<Message> doInBackground(MessageDao o) {
+                return o.getAllHistory();
+            }
+
+            @Override
+            public void onPostExecute(List<Message> returnedValues) {
+                onAsyncResponse.processResponse(returnedValues);
+            }
+        }).execute();
+    }
+
+    @Override
     public Message getNotSeen() {
         return dao.getNotSeen();
     }
@@ -93,4 +126,7 @@ public class MessageRepositoryImpl implements MessageRepository {
     public void markMessagesSynced(List<Integer> messageIds) {
         dao.markMessagesSynced(messageIds);
     }
+
+
+
 }

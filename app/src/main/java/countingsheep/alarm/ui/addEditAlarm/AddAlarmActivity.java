@@ -292,7 +292,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setDefaultSnoozeValue() {
-        snoozeAdapter.selectedItem = 0; //1 minute
+        snoozeAdapter.selectedItem = 1; //5 minute
         selectedSnooze.setText(getString(R.string.DefaultSnoozeDisplayedValue));
     }
 
@@ -409,29 +409,35 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
                     return ;
                 }
 
-                alarmService.get(alarm.getHour(), alarm.getMinutes(), new OnAsyncResponse<List<Alarm>>() {
-                    @Override
-                    public void processResponse(List<Alarm> response) {
-                        if(response == null || response.size() == 0){
-                            startSavingProcess();
-                        }
-                        else{
-                            if(response.size() == 1 && response.get(0).getId() == alarm.getId()){
-                                startSavingProcess();
-                            }
-                            else {
+                startSavingProcess();
 
-                                try {
-                                    Toast.makeText(activity, "You cannot create an alarm before/ after 30 minutes from " + StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : " + StringFormatter.getFormattedTimeDigits(alarm.getMinutes()) + ", since one already exists.", Toast.LENGTH_LONG).show();
-                                } catch (Exception ex) {
-                                    Crashlytics.logException(ex);
-                                }
-                            }
-                        }
-                    }
-                });
+                //validateAndSave();
             }
         };
+    }
+
+    private void validateAndSave() {
+        alarmService.get(alarm.getHour(), alarm.getMinutes(), new OnAsyncResponse<List<Alarm>>() {
+            @Override
+            public void processResponse(List<Alarm> response) {
+                if(response == null || response.size() == 0){
+                    startSavingProcess();
+                }
+                else{
+                    if(response.size() == 1 && response.get(0).getId() == alarm.getId()){
+                        startSavingProcess();
+                    }
+                    else {
+
+                        try {
+                            Toast.makeText(activity, "You cannot create an alarm before/ after 30 minutes from " + StringFormatter.getFormattedTimeDigits(alarm.getHour()) + " : " + StringFormatter.getFormattedTimeDigits(alarm.getMinutes()) + ", since one already exists.", Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            Crashlytics.logException(ex);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void startSavingProcess() {
@@ -478,7 +484,9 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
 
                     alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
 
-                    displayAskForPhoneNoPopUp();
+                    finish();
+
+                    //displayAskForPhoneNoPopUp();
                 }
             });
         }

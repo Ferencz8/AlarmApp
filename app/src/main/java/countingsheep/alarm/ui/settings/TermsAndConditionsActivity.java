@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import countingsheep.alarm.R;
+import countingsheep.alarm.infrastructure.NotificationHelper;
 
 public class TermsAndConditionsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -16,6 +19,7 @@ public class TermsAndConditionsActivity extends AppCompatActivity implements Vie
     private ConstraintLayout headerBar;
     private ImageView backBtn;
     private TextView titleTv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

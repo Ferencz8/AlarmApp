@@ -16,6 +16,9 @@ public interface MessageDao extends BaseDao<Message>{
     @Query("SELECT * FROM Message")
     List<Message> getAll();
 
+    @Query("SELECT * FROM Message WHERE isSeen = 1 ORDER BY seenAt DESC")
+    List<Message> getAllHistory();
+
     @Query("SELECT * FROM Message WHERE id =:messageId")
     Message getById(int messageId);
 

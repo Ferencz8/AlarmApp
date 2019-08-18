@@ -78,7 +78,7 @@ public class SMSServiceImpl implements SMSService {
 
     @Override
     public void sendToFriend(int messageId, String recipientPhoneNo, Date scheduledDate, OnResult onResult){
-        if(this.networkInteractor.isNetworkAvailable()) {
+        if(this.networkStateInteractor.isNetworkAvailable()) {
             SMSScheduledRoast smsScheduledRoast = new SMSScheduledRoast();
             smsScheduledRoast.setDateCreated(this.timeService.getUTCDateNow());
             smsScheduledRoast.setSenderUserId(this.sharedPreferencesContainer.getCurrentUserId());
@@ -125,9 +125,9 @@ public class SMSServiceImpl implements SMSService {
             });
         }
         else{
-            if (onResult != null) {
-                onResult.onFailure("Not connected to internet");
-            }
+//            if (onResult != null) {
+//                onResult.onFailure("Not connected to internet");
+//            }
         }
     }
 

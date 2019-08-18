@@ -48,6 +48,7 @@ public interface AlarmReactionDao extends BaseDao<AlarmReaction> {
             "PaymentDetails.amount AS pd_amount " +
             "FROM Alarm " +
             "INNER JOIN AlarmReaction ON AlarmReaction.alarmId = Alarm.id " +
-            "LEFT JOIN PaymentDetails ON PaymentDetails.alarmReactionId = AlarmReaction.id")
+            "LEFT JOIN PaymentDetails ON PaymentDetails.alarmReactionId = AlarmReaction.id " +
+            "ORDER BY AlarmReaction.reactedAt DESC")
     List<AlarmHistoryEmbedded> getAllAlarmHistory();
 }

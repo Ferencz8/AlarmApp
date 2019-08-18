@@ -8,20 +8,15 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.core.contracts.data.AlarmRepository;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
-import countingsheep.alarm.core.contracts.data.PaymentDetailsRepository;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.PaymentService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
-import countingsheep.alarm.db.entities.Message;
-import countingsheep.alarm.db.entities.PaymentDetails;
-import countingsheep.alarm.db.entities.PaymentStatus;
 import countingsheep.alarm.ui.settings.models.AlarmHistory;
 import countingsheep.alarm.util.StringFormatter;
 
@@ -88,7 +83,9 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
             Crashlytics.logException(exception);
         }
         finally {
-            onAsyncResponse.processResponse(null);
+            if(onAsyncResponse != null){
+                onAsyncResponse.processResponse(null);
+            }
         }
     }
 
@@ -123,7 +120,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
 //                        AlarmHistory alarmHistory = new AlarmHistory();
 //                        alarmHistory.setName(alarmHistoryEmbedded.getName());
 //                        alarmHistory.setCreatedDate(String.valueOf(alarmHistoryEmbedded.getCreatedDate()));
-//                        alarmHistory.setCreatedHour(String.valueOf(StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getHour())) + ":" + StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getMinute()));
+//                        alarmHistory.setRingingTime(String.valueOf(StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getHour())) + ":" + StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getMinute()));
 //                        alarmHistory.setCashSpent(alarmHistoryEmbedded.getAmount());
 //                        String reactionType = alarmHistoryEmbedded.isSnooze() ? "Snooze" : "Awake";
 //                        alarmHistory.setReactionType(reactionType);
@@ -137,9 +134,10 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
                     try {
                         AlarmHistory alarmHistory = new AlarmHistory();
                         alarmHistory.setName(alarmHistoryEmbedded.getAlarm().getTitle());
-                        alarmHistory.setCreatedDate(String.valueOf(alarmHistoryEmbedded.getAlarm().getDateCreated()));
-                        alarmHistory.setCreatedHour(String.valueOf(StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarmReaction().getCurrentHour())) + ":" +
-                                StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarmReaction().getCurrentMinutes()));
+                        alarmHistory.setCreatedDate(StringFormatter.getFormattedDate(alarmHistoryEmbedded.getAlarm().getDateCreated(), "dd/MM/yyyy"));
+                        alarmHistory.setRingingTime(
+                                StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarm().getHour()) + ":" +
+                                StringFormatter.getFormattedTimeDigits(alarmHistoryEmbedded.getAlarm().getMinutes()));
 
                         Integer cashSpent = alarmHistoryEmbedded.getPaymentDetails()!=null ? alarmHistoryEmbedded.getPaymentDetails().getAmount() : 0;
                         alarmHistory.setCashSpent(cashSpent);

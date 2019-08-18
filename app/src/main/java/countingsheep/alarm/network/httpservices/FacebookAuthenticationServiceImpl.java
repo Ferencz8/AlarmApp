@@ -110,6 +110,7 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
                 Log.d("response: ", response.toString());
                 try {
                     User loggedInUser = extractUser(object);
+                    loggedInUser.mobilePlatform = 0;
                     //TODO:: store locally the user details ??
                     onResult.onSuccess(loggedInUser);
 

@@ -1,0 +1,12 @@
+Android built not working & not displaying compile errors
+gradlew assembleDebug --info
+
+Crashlytics - adb - debug:
+Test device setup
+
+To enable sending of DebugView data on a connected Android test device for a configured Firebase Analytics app, execute the following command:
+
+adb shell setprop debug.firebase.analytics.app [your_app_package_name]
+This behavior persists until you explicitly disable it by executing the following command:
+
+adb shell setprop debug.firebase.analytics.app .none.

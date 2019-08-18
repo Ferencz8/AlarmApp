@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         bindViews(view);
-
+        Log.e(SettingsFragment.class.getName(), "onCreateView");
         ((MainActivity) getActivity()).hideHeaderBar(true);
         if (sharedPreferencesContainer.getFreeCredits() != 0) {
             this.spentTextView.setText(getString(R.string.creditsLeft));
@@ -236,6 +237,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.e(SettingsFragment.class.getName(), "onResume");
+    }
 
     @Override
     public void onClick(View v) {

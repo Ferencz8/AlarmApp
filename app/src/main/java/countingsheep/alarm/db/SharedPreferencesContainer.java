@@ -27,6 +27,8 @@ public class SharedPreferencesContainer {
     private final static String ShouldGiveFreeCredits = "ShouldGiveFreeCredits";
     private final static String AlarmsSetCount = "AlarmsSetCount";
     private final static String NeedToRequestSMSRoastCount = "NeedToRequestSMSRoastCount";
+    private final static String NeedToRequestRoastCount="NeedToRequestRoastCount";
+    private final static String UserInitiatedShare = "UserInitiatedShare";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
     private final static String Popup_ShowedAskForPhoneNo = "ShowedAskForPhoneNo";
@@ -36,6 +38,27 @@ public class SharedPreferencesContainer {
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
+    }
+
+    public void setUserInitiatedShare(boolean value){
+        this.changePreferenceValue(UserInitiatedShare, value);
+    }
+
+    public boolean getUserInitiatedShare() {
+        return this.sharedPreferences.getBoolean(UserInitiatedShare, false);
+    }
+
+    public void resetNeededToRequestRoastCount() {
+        changePreferenceValue(NeedToRequestRoastCount, 0);
+    }
+
+    public void increaseNeededToRequestRoastCount() {
+        int currentValue = getNeedToRequestSMSRoastCount();
+        changePreferenceValue(NeedToRequestRoastCount, ++currentValue);
+    }
+
+    public int getNeedToRequestRoastCount() {
+        return this.sharedPreferences.getInt(NeedToRequestRoastCount, 0);
     }
 
     public void resetNeededToRequestSMSRoastCount() {
@@ -87,8 +110,22 @@ public class SharedPreferencesContainer {
     public boolean shouldGiveFreeCredits(){
         return this.sharedPreferences.getBoolean(ShouldGiveFreeCredits, false);
     }
+
     public void allowFreeCredits(boolean value){
         changePreferenceValue(ShouldGiveFreeCredits, value);
+    }
+
+    public void increaseFreeCredits(int amount){
+        int currentValue = getFreeCredits();
+        setFreeCredits(amount + currentValue);
+    }
+
+    public int getFreeCredits(){
+        return this.sharedPreferences.getInt(FreeCredits, 0);
+    }
+
+    public void setFreeCredits(int amount) {
+        changePreferenceValue(FreeCredits, amount);
     }
 
     public boolean doesAllPaymentInformationExist(){
@@ -154,14 +191,6 @@ public class SharedPreferencesContainer {
     public boolean doesUserIdExist(){
         int UserDoesNotExistValue = 0;
         return this.getCurrentUserId()!= UserDoesNotExistValue;
-    }
-
-    public int getFreeCredits(){
-        return this.sharedPreferences.getInt(FreeCredits, 0);
-    }
-
-    public void setFreeCredits(int amount) {
-        changePreferenceValue(FreeCredits, amount);
     }
 
     public int getMoneySpentOnSnooze(){ return this.sharedPreferences.getInt(MoneySpentOnSnooze, 0); }

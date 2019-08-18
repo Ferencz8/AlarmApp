@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/icon_aplicatie"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.settings.ProfileActivity"></activity>
+        <activity android:name=".ui.settings.ProfileActivity" android:screenOrientation="portrait"></activity>
 
         <service
             android:name=".ui.foreground.ProcessFailedPaymentsService"
@@ -33,18 +33,18 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ui.settings.OnBoardingActivity" />
-        <activity android:name=".ui.settings.AlarmHistoryActivity" />
-        <activity android:name=".ui.settings.TermsAndConditionsActivity" />
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".ui.settings.OnBoardingActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.settings.AlarmHistoryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.settings.TermsAndConditionsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ui.addEditAlarm.AddAlarmActivity" />
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.addEditAlarm.AddAlarmActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -55,7 +55,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
-            android:name="com.facebook.CustomTabActivity"
+            android:name="com.facebook.CustomTabActivity" android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -79,9 +79,10 @@
         </receiver>
 
         <activity
-            android:name=".ui.alarmLaunch.AlarmLaunchActivity"
+            android:name=".ui.alarmLaunch.AlarmLaunchActivity" android:screenOrientation="portrait"
             android:showOnLockScreen="true" />
-        <activity android:name=".ui.freecredits.FreeCreditsActivity" />
+        <activity android:name=".ui.freecredits.FreeCreditsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.alarmLaunch.AlarmRefundActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

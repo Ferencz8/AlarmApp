@@ -195,6 +195,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                             spinner.setVisibility(View.INVISIBLE);
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            finish();
                         }
 
                         @Override

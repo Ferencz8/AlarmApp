@@ -24,7 +24,7 @@ public class AlarmListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         if(itemView != null)
         {
-            titleView = (TextView)itemView.findViewById(R.id.alarmListTitleId);
+            titleView = (TextView)itemView.findViewById(R.id.alarmTitletId);
             onOffImageView = (ImageView) itemView.findViewById(R.id.alarmListOnOffImageId);
             repeatDaysView = (TextView)itemView.findViewById(R.id.alarmListTimeRepeatId);
             timeView = (TextView)itemView.findViewById(R.id.alarmListTimeId);

@@ -11,7 +11,7 @@ import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.PaymentDetailsDao;
 import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
-import countingsheep.alarm.db.repositories.tasks.alarm.GetGenericTask;
+import countingsheep.alarm.db.repositories.tasks.GenericTaskDbEntity;
 import countingsheep.alarm.db.repositories.tasks.paymentdetails.GetAllPaymentDetailsTask;
 import countingsheep.alarm.db.repositories.tasks.paymentdetails.GetSumAmountTask;
 import countingsheep.alarm.db.repositories.tasks.paymentdetails.InsertPaymentDetailsTask;
@@ -44,7 +44,7 @@ public class PaymentDetailsRepositoryImpl implements PaymentDetailsRepository {
 
     @Override
     public void getForAlarmReactionId(int alarmReactionId, OnAsyncResponse<PaymentDetails> onAsyncResponse) {
-        new GetGenericTask<PaymentDetailsDao, PaymentDetails>(dao, new GetGenericTask.OnTaskHandler<PaymentDetailsDao, PaymentDetails>() {
+        new GenericTaskDbEntity<PaymentDetailsDao, PaymentDetails>(dao, new GenericTaskDbEntity.OnTaskHandler<PaymentDetailsDao, PaymentDetails>() {
             @Override
             public PaymentDetails doInBackground(PaymentDetailsDao dao) {
                 return dao.getForAlarmReactionId(alarmReactionId);

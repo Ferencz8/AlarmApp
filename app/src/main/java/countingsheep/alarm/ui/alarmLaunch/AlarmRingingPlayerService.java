@@ -11,6 +11,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
@@ -25,23 +26,27 @@ public class AlarmRingingPlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.context = getApplicationContext();
-        ringtonePlayer = new AlarmRingtonePlayer(context);
-        vibrator = new AlarmVibrator(context);
+        try {
+            this.context = getApplicationContext();
+            ringtonePlayer = new AlarmRingtonePlayer(context);
+            vibrator = new AlarmVibrator(context);
 
-        if(intent!=null) {
-            String alarmDbAsJson = intent.getStringExtra("alarmDb");
-            if (alarmDbAsJson != null) {
-                Alarm alarmDb = new Gson().fromJson(alarmDbAsJson, Alarm.class);
-                startAlarmRinging(alarmDb);
+            if (intent != null) {
+                String alarmDbAsJson = intent.getStringExtra("alarmDb");
+                if (alarmDbAsJson != null) {
+                    Alarm alarmDb = new Gson().fromJson(alarmDbAsJson, Alarm.class);
+                    startAlarmRinging(alarmDb);
+                }
             }
+
+            LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeUp,
+                    new IntentFilter(Constants.Volume_Up));
+
+            LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeDown,
+                    new IntentFilter(Constants.Volume_Down));
+        } catch (Exception e) {
+            Crashlytics.logException(e);
         }
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeUp,
-                new IntentFilter(Constants.Volume_Up));
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiverVolumeDown,
-                new IntentFilter(Constants.Volume_Down));
 
         return START_STICKY;
     }
@@ -70,25 +75,28 @@ public class AlarmRingingPlayerService extends Service {
     }
 
 
+    private void startAlarmRinging(Alarm alarm) {
+        try {
+            if (alarm.isVobrateOn()) {
+                vibrator.vibrate();
+            }
 
-    private void startAlarmRinging(Alarm alarm){
-        if(alarm.isVobrateOn()){
-            vibrator.vibrate();
-        }
-
-        Uri ringtone = Uri.parse(alarm.getRingtonePath());
-        if(ringtone != null){
-            ringtonePlayer.play(ringtone, alarm.getVolume());
+            Uri ringtone = Uri.parse(alarm.getRingtonePath());
+            if (ringtone != null) {
+                ringtonePlayer.play(ringtone, alarm.getVolume());
+            }
+        } catch (Exception e) {
+            Crashlytics.logException(e);
         }
     }
 
     @Override
     public void onDestroy() {
-        if (ringtonePlayer!=null ) {
+        if (ringtonePlayer != null) {
             ringtonePlayer.stop();
             ringtonePlayer.cleanup();
         }
-        if(vibrator!=null){
+        if (vibrator != null) {
             vibrator.stop();
             vibrator.cleanup();
         }

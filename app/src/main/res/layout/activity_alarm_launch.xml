@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="8dp"
-        android:text="07:58"
+        android:text=""
         android:textColor="@color/white_text_color"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -58,6 +58,9 @@
         android:background="@drawable/save_border"
         android:text="Snooze (1$)"
         android:textColor="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +85,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/snoozeImageViewId"/>
-
 
 
     <!--

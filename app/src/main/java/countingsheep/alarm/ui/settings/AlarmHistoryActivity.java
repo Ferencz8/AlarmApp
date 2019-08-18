@@ -17,9 +17,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
+import countingsheep.alarm.infrastructure.NotificationHelper;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.adapters.AlarmHistoryRecyclerAdapter;
 import countingsheep.alarm.ui.settings.models.AlarmHistory;
@@ -35,6 +37,7 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
 
     @Inject
     AlarmReactionService alarmReactionService;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

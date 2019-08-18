@@ -124,4 +124,10 @@ public class DialogInteractorImpl implements DialogInteractor {
         timePickerDialog.setCanceledOnTouchOutside(false);
         timePickerDialog.show();
     }
+
+    public void displayTimerDialog(int minutes){
+
+
+    }
+
 }

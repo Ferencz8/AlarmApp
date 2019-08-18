@@ -1,47 +1,47 @@
-package countingsheep.alarm.db.repositories.tasks.alarm;
+package countingsheep.alarm.db.repositories.tasks;
 
 import android.os.AsyncTask;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
-
 import countingsheep.alarm.db.dao.BaseDao;
 import countingsheep.alarm.db.entities.DbEntity;
 
-public class GetAllGenericTask<TDao extends BaseDao, TReturn extends DbEntity> extends AsyncTask<TReturn, Void, List<TReturn>> {
+
+public class GenericTaskDbEntity<TDao extends BaseDao, TReturn extends DbEntity> extends AsyncTask<Void, Void, TReturn> {
 
 
-    public interface OnTaskHandler<TDao extends BaseDao, TReturn extends DbEntity> {
-        List<TReturn> doInBackground(TDao dao);
+    public interface OnTaskHandler<TDao extends BaseDao, TReturn extends DbEntity>{
+        TReturn doInBackground(TDao dao);
 
-        void onPostExecute(List<TReturn> returnedValues);
+        void onPostExecute(TReturn returnedValues);
     }
 
 
     private WeakReference<TDao> daoWeakReference;
     private WeakReference<OnTaskHandler<TDao, TReturn>> onTaskHandlerWeakReference;
 
-    public GetAllGenericTask(TDao dao, OnTaskHandler<TDao, TReturn> onTaskHandler) {
+    public GenericTaskDbEntity(TDao dao, OnTaskHandler<TDao, TReturn> onTaskHandler) {
         this.daoWeakReference = new WeakReference<>(dao);
         this.onTaskHandlerWeakReference = new WeakReference<>(onTaskHandler);
     }
 
     @Override
-    protected List<TReturn> doInBackground(TReturn... params) {
+    protected TReturn doInBackground(Void... voids) {
 
         TDao dao = daoWeakReference.get();
-        if (dao == null)
+        if(dao==null)
             return null;
 
         OnTaskHandler<TDao, TReturn> onTaskHandler = this.onTaskHandlerWeakReference.get();
-        return onTaskHandler.doInBackground(dao);
+        return onTaskHandler != null ? onTaskHandler.doInBackground(dao) : null;
     }
 
     @Override
-    protected void onPostExecute(List<TReturn> treturn) {
+    protected void onPostExecute(TReturn treturn) {
 
         OnTaskHandler<TDao, TReturn> onTaskHandler = this.onTaskHandlerWeakReference.get();
-        if (onTaskHandler != null) {
+        if(onTaskHandler!=null) {
             onTaskHandler.onPostExecute(treturn);
         }
     }

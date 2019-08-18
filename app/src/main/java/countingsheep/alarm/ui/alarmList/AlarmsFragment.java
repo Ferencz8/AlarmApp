@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,8 @@ public class AlarmsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm_list, container, false);
 
+        Log.e(AlarmsFragment.class.getName(), "onCreateView");
+
         recyclerView = view.findViewById(R.id.alarmListRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         // Set layout manager.
@@ -158,15 +161,18 @@ public class AlarmsFragment extends Fragment {
     }
 
     private void initAlarms() {
-
+        Log.e(AlarmsFragment.class.getName(), "initAlarms");
         alarmService.getAll(response -> {
             adapter.updateData(response);
             recyclerView.scrollToPosition(1);
+            Log.e(AlarmsFragment.class.getName(), "initAlarms 2");
         });
     }
 
     @Override
     public void onResume(){
+
+        Log.e(AlarmsFragment.class.getName(), "onResume");
         initAlarms();
         super.onResume();
     }

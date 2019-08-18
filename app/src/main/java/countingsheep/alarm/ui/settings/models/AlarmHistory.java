@@ -5,7 +5,7 @@ public class AlarmHistory {
     private String name;
     private String createdDate;
     private Integer cashSpent;
-    private String createdHour;
+    private String ringingTime;
     private String reactionType;
     private boolean requireRefund;
 
@@ -33,12 +33,12 @@ public class AlarmHistory {
         this.cashSpent = cashSpent;
     }
 
-    public String getCreatedHour() {
-        return createdHour;
+    public String getRingingTime() {
+        return ringingTime;
     }
 
-    public void setCreatedHour(String createdHour) {
-        this.createdHour = createdHour;
+    public void setRingingTime(String ringingTime) {
+        this.ringingTime = ringingTime;
     }
 
     public String getReactionType() {

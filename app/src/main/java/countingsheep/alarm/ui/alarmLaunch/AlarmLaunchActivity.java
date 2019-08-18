@@ -11,9 +11,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +32,16 @@ import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.TimeService;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
+import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
+import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.infrastructure.NetworkStateInteractor;
 import countingsheep.alarm.infrastructure.NetworkStateReceiver;
+import countingsheep.alarm.infrastructure.NotificationHelper;
 import countingsheep.alarm.ui.BaseActivity;
+import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
 import countingsheep.alarm.util.StringFormatter;
@@ -46,7 +53,6 @@ public class AlarmLaunchActivity extends BaseActivity {
 
     protected FirebaseAnalytics firebaseAnalytics;
     private volatile boolean isProcessing = false;
-    private Activity activity;
     private TextView snoozeImageView;
     private TextView awakeImageView;
     private TextView alarmTime;
@@ -69,7 +75,11 @@ public class AlarmLaunchActivity extends BaseActivity {
     SMSService smsService;
 
     @Inject
+    MessageService messageService;
+
+    @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +126,6 @@ public class AlarmLaunchActivity extends BaseActivity {
 
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
-                //Do something after 1 min
                 if (isProcessing)
                     return;
 
@@ -124,7 +133,7 @@ public class AlarmLaunchActivity extends BaseActivity {
 
                 switch (snoozeCount) {
                     case 0: {
-                        launchSnoozeProcess();
+                        delayTheAlarmForFree();
                         break;
                     }
                     case 1:
@@ -134,7 +143,21 @@ public class AlarmLaunchActivity extends BaseActivity {
                         break;
                     }
                 }
-            }, 1000 * 60);
+            }, 1000 * 60 * 3);
+        });
+    }
+
+    private void delayTheAlarmForFree() {
+
+        //delays the alarm
+        alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
+            @Override
+            public void processResponse(Alarm alarmDb) {
+
+                long ringingTime = TimeHelper.getCurrentTimeInMilliseconds(alarmDb.getSnoozeAmount());
+                alarmLaunchHandler.registerAlarm(alarmId, ringingTime);
+                Toast.makeText(activity, TimeHelper.getTimeDifference(ringingTime), Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -152,6 +175,9 @@ public class AlarmLaunchActivity extends BaseActivity {
     }
 
     private void bindViews() {
+
+        displayAlarmInfo();
+
         snoozeImageView = findViewById(R.id.snoozeImageViewId);
         snoozeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,25 +186,13 @@ public class AlarmLaunchActivity extends BaseActivity {
                     return;
 
                 isProcessing = true;
-                launchSnoozeProcess();
 
-                if (!sharedPreferencesContainer.getShowedAskForPhoneNoPopup()) {
-
-                    Toast.makeText(activity, "Phone No is required for Roast.", Toast.LENGTH_LONG).show();
-                } else {
-
-                    smsService.sendToSelf(new OnResult() {
-                        @Override
-                        public void onSuccess(Object result) {
-                            Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(String message) {
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                sendStopPlayerEvent();
+                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmRefundActivity.class);
+                intent.putExtra("alarmId",alarmId);
+                startActivity(intent);
+                isProcessing = false;
+                activity.finish();
             }
         });
 
@@ -189,11 +203,11 @@ public class AlarmLaunchActivity extends BaseActivity {
                 if (isProcessing)
                     return;
 
+                isProcessing = true;
                 Crashlytics.log(99, AlarmLaunchActivity.class.getName(), "Awake clicked");
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Awake clicked");
                 firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
-                isProcessing = true;
 
                 //register the awake
                 alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
@@ -201,85 +215,29 @@ public class AlarmLaunchActivity extends BaseActivity {
                     public void processResponse(Void response) {
                         sendStopPlayerEvent();
 
-                        //isProcessing = false;
+                        isProcessing = false;
 
                         activity.finish();
                     }
                 });
             }
         });
+    }
 
+    private void displayAlarmInfo() {
         alarmTime = findViewById(R.id.alarm_awake_time);
         alarmTitleTxtView = findViewById(R.id.alarm_name_launch);
         alarmTime.setText(TimeHelper.getCurrentShortTime());
 
-        //TODO cu FERI
         alarmService.get(alarmId, responseAsAlarm -> {
             try {
-                //alarmTime.setText(StringFormatter.getFormattedTimeDigits(responseAsAlarm.getHour()) + ":" + StringFormatter.getFormattedTimeDigits(responseAsAlarm.getMinutes()));
-//                String alarmTitle = responseAsAlarm.getTitle();
-//                if (!TextUtils.isEmpty(alarmTitle)) {
-//                    alarmTitleTxtView.setText(alarmTitle);
-//                }
-                alarmTitleTxtView.setText(StringFormatter.getFormattedTimeDigits(responseAsAlarm.getHour()) + ":" + StringFormatter.getFormattedTimeDigits(responseAsAlarm.getMinutes()));
+                String alarmTitle = responseAsAlarm.getTitle();
+                if (!TextUtils.isEmpty(alarmTitle)) {
+                    alarmTitleTxtView.setText(alarmTitle);
+                }
+
             } catch (Exception ex) {
                 Crashlytics.logException(ex);
-            }
-        });
-        //alarmTime.setText(String.valueOf(alarmService.get(alarmId).getHour() + ":" + alarmService.get(alarmId).getMinutes()));
-
-        //TODO cu FERI
-        //alarmTitleTxtView.setText(String.valueOf(alarmService.get(alarmId).getTitle()));
-    }
-
-    private void launchSnoozeProcess() {
-        Crashlytics.log(99, AlarmLaunchActivity.class.getName(), "Snooze clicked");
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Snooze clicked");
-        firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
-
-
-        //persists the snooze
-        alarmReactionService.add(alarmId, true, new OnAsyncResponse<Void>() {
-            @Override
-            public void processResponse(Void response) {
-                sendStopPlayerEvent();
-
-                //isProcessing = false;
-
-                activity.finish();
-            }
-        });
-
-        //TODO: make this use only one db call
-        //delays the alarm
-        alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
-            @Override
-            public void processResponse(Alarm alarmDb) {
-
-                alarmService.getSnoozesCount(alarmId, new OnAsyncResponse<Integer>() {
-                    @Override
-                    public void processResponse(Integer response) {
-
-                        //String debuglog = "Snooze db amount: " + alarmDb.getSnoozeAmount() + " and Snooze count: " + response;
-
-//                        int sumOfPastAndCurrentSnoozes = alarmDb.getSnoozeAmount();
-//                        if (response != 0) {
-//                            sumOfPastAndCurrentSnoozes *= (response + 1);
-//                        }
-                        //debuglog += "Register alarm at: " + alarmDb.getHour() + " H :" + alarmDb.getMinutes() + " M with delayed min: " + sumOfPastAndCurrentSnoozes;
-                        //alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithMinutes(alarmDb.getHour(), alarmDb.getMinutes(), sumOfPastAndCurrentSnoozes));
-
-                        long ringingTime = TimeHelper.getCurrentTimeInMilliseconds(alarmDb.getSnoozeAmount());
-                        alarmLaunchHandler.registerAlarm(alarmId, ringingTime);
-                        Toast.makeText(activity, TimeHelper.getTimeDifference(ringingTime), Toast.LENGTH_LONG).show();
-
-//                        Crashlytics.log(99, AlarmLaunchActivity.class.getName(), debuglog);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, debuglog);
-//                        firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
-                    }
-                });
             }
         });
     }
