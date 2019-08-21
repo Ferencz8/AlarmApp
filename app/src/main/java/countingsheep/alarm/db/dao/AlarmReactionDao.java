@@ -5,6 +5,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
 
@@ -51,4 +52,11 @@ public interface AlarmReactionDao extends BaseDao<AlarmReaction> {
             "LEFT JOIN PaymentDetails ON PaymentDetails.alarmReactionId = AlarmReaction.id " +
             "ORDER BY AlarmReaction.reactedAt DESC")
     List<AlarmHistoryEmbedded> getAllAlarmHistory();
+
+
+
+    @Query("SELECT Alarm.* FROM Alarm\n" +
+            "INNER JOIN AlarmReaction ON AlarmReaction.alarmId = Alarm.id\n" +
+            "WHERE AlarmReaction.id =:alarmReactionId")
+    Alarm getAlarm(int alarmReactionId);
 }

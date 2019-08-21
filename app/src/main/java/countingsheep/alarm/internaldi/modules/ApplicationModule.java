@@ -47,6 +47,7 @@ public class ApplicationModule {
                 .create();
 
 //        //TODO:: this is for Testing
+
         final OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .callTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)

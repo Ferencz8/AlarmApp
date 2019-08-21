@@ -2,6 +2,8 @@ package countingsheep.alarm.core.contracts.data;
 
 import java.util.List;
 
+import countingsheep.alarm.core.domain.Pair;
+import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
 
@@ -26,4 +28,6 @@ public interface AlarmReactionRepository {
     void getSnoozeRate(OnAsyncResponse<Integer> response);
 
     void getAllAlarms(OnAsyncResponse<List<AlarmHistoryEmbedded>> reactionOnAsyncResponse);
+
+    void getAlarmAndAlarmReactionId(int alarmReactionId, OnAsyncResponse<Pair<Alarm, AlarmReaction>> onAsyncResponse);
 }

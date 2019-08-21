@@ -7,5 +7,7 @@ public interface PaymentService {
 
     void processPayment(int alarmReactionId, OnResult onResult);
 
+    void processPayment2(int alarmReactionId, OnResult onResult);
+
     void getSumAmount(OnAsyncResponse<Integer> response);
 }

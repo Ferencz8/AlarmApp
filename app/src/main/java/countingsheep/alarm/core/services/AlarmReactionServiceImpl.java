@@ -90,7 +90,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
     }
 
     public void requestSnoozePayment(int alarmReactionId) {
-        paymentService.processPayment(alarmReactionId,null);
+        paymentService.processPayment2(alarmReactionId,null);
         //the alarm reaction id might not be on the server yet, in which case it needs to be added
         //verify if it exists on server using isSync
         //also verify before doing any server call if there is internet

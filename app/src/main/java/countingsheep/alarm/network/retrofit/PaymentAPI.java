@@ -1,6 +1,7 @@
 package countingsheep.alarm.network.retrofit;
 
 import countingsheep.alarm.core.domain.Checkout;
+import countingsheep.alarm.core.domain.Checkout2;
 import countingsheep.alarm.core.domain.Customer;
 import countingsheep.alarm.core.domain.CustomerRegistration;
 import countingsheep.alarm.core.domain.PaymentRegistration;
@@ -27,6 +28,10 @@ public interface PaymentAPI {
     @POST("/alarm/api/payment/Checkout")
     //@Headers({ "Content-Type: application/json;charset=UTF-8"})
     Call<String> checkout(@Body Checkout checkout);
+
+    @POST("/alarm/api/payment/ProcessSnooze")
+        //@Headers({ "Content-Type: application/json;charset=UTF-8"})
+    Call<String> checkout2(@Body Checkout2 checkout);
 
 
     @POST("/alarm/api/payment/Register")

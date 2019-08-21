@@ -18,6 +18,8 @@ public interface AlarmRepository {
 
     Alarm get(int id);
 
+    Alarm getByAlarmReactionId(int alarmReactionId);
+
     void get(int id, OnAsyncResponse<Alarm> onAsyncResponse);
 
     void getAlarm(int minHour, int maxHour, int minMinutes, int maxMinutes, OnAsyncResponse<List<Alarm>> onAsyncResponse);

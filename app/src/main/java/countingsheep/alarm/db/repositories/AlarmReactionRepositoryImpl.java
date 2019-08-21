@@ -10,11 +10,14 @@ import javax.inject.Singleton;
 
 import countingsheep.alarm.core.contracts.data.AlarmReactionRepository;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
+import countingsheep.alarm.core.domain.Pair;
 import countingsheep.alarm.db.AlarmDatabase;
 import countingsheep.alarm.db.dao.AlarmReactionDao;
+import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
 import countingsheep.alarm.db.repositories.tasks.GenericTaskList;
+import countingsheep.alarm.db.repositories.tasks.PairTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.GetCountAlarmsTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.GetSnoozeRateTask;
 import countingsheep.alarm.db.repositories.tasks.alarmReaction.InsertAlarmReactionTask;
@@ -112,5 +115,9 @@ public class AlarmReactionRepositoryImpl implements AlarmReactionRepository {
                 reactionOnAsyncResponse.processResponse(returnedValues);
             }
         }).execute();
+    }
+
+    public void getAlarmAndAlarmReactionId(int alarmReactionId, OnAsyncResponse<Pair<Alarm, AlarmReaction>> onAsyncResponse){
+        new PairTask(dao, onAsyncResponse).execute(alarmReactionId);
     }
 }

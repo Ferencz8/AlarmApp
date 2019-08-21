@@ -76,7 +76,7 @@ public class SyncerWorker extends Worker {
             syncAlarmReactions();
 
             //TODO:: maybe move in the future to a separate worker?
-            updatePaymentStatus();
+            //updatePaymentStatus();
 
             return WorkerResult.SUCCESS;
         }

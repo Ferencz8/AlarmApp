@@ -16,6 +16,11 @@ public interface AlarmDao extends BaseDao<Alarm>{
     @Query("SELECT * FROM Alarm WHERE id =:alarmId")
     Alarm getById(int alarmId);
 
+    @Query("SELECT Alarm.* FROM Alarm\n" +
+            "INNER JOIN AlarmReaction ON AlarmReaction.alarmId = Alarm.id\n" +
+            "WHERE AlarmReaction.id =:alarmReactionId")
+    Alarm getByAlarmReactionId(int alarmReactionId);
+
     @Query("SELECT * FROM Alarm WHERE isSynced =0")
     List<Alarm> getUnSynced();
 

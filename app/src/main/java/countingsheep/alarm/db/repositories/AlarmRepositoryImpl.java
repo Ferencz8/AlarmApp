@@ -74,6 +74,11 @@ public class AlarmRepositoryImpl implements AlarmRepository {
     }
 
     @Override
+    public Alarm getByAlarmReactionId(int alarmReactionId) {
+        return alarmDatabase.alarmDao().getByAlarmReactionId(alarmReactionId);
+    }
+
+    @Override
     public void get(int id, OnAsyncResponse<Alarm> onAsyncResponse) {
         new GetAlarmTask(alarmDatabase.alarmDao(), onAsyncResponse).execute(id);
     }
