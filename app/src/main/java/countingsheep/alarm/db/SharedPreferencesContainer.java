@@ -29,6 +29,7 @@ public class SharedPreferencesContainer {
     private final static String NeedToRequestSMSRoastCount = "NeedToRequestSMSRoastCount";
     private final static String NeedToRequestRoastCount="NeedToRequestRoastCount";
     private final static String UserInitiatedShare = "UserInitiatedShare";
+    private final static String UsernameTokens = "UsernameTokens";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
     private final static String Popup_ShowedAskForPhoneNo = "ShowedAskForPhoneNo";
@@ -38,6 +39,19 @@ public class SharedPreferencesContainer {
     @Inject
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
+    }
+
+    public void increaseUsernameTokensCount() {
+        int currentValue = getUsernameTokensCount();
+        changePreferenceValue(UsernameTokens, ++currentValue);
+    }
+
+    public int getUsernameTokensCount() {
+        return this.sharedPreferences.getInt(UsernameTokens, 0);
+    }
+
+    public void resetUsernameTokensCount() {
+        changePreferenceValue(UsernameTokens, 0);
     }
 
     public void setUserInitiatedShare(boolean value){

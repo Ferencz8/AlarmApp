@@ -62,7 +62,7 @@ public class TimeHelper {
     public static long getTimeInMillisecondsAndDelayWithDays(int hour, int minute, int delayDays) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getTimeInMilliseconds(hour, minute));
-        calendar.add(Calendar.DAY_OF_MONTH, delayDays);
+        calendar.add(Calendar.HOUR_OF_DAY, 24* delayDays);
 
         return calendar.getTimeInMillis();
     }
@@ -77,7 +77,7 @@ public class TimeHelper {
     public static long delayMillisWithDays(long millis, int delayDays) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(millis);
-        calendar.add(Calendar.DAY_OF_MONTH, delayDays);
+        calendar.add(Calendar.HOUR_OF_DAY, 24* delayDays);
 
         return calendar.getTimeInMillis();
     }

@@ -261,6 +261,10 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
             adapter.markDaysAsSelected(Arrays.asList(alarm.getRepeatDays().split(",")));
 
             vibrateSwitch.setChecked(alarm.isVobrateOn());
+
+            snoozeAdapter.selectedItem = getSnoozeItemFromSnoozeAmount(alarm.getSnoozeAmount());
+            String min = alarm.getSnoozeAmount() == 1 ? "minute" : "minutes";
+            selectedSnooze.setText(alarm.getSnoozeAmount() + min);
         } else {
             time = this.getFormattedTime(7, 5);
         }
@@ -596,6 +600,23 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
                 return 30;
             default:
                 return 1;
+        }
+    }
+
+    private int getSnoozeItemFromSnoozeAmount(int snoozeValue) {
+        switch (snoozeValue) {
+            case 1:
+                return 0;
+            case 5:
+                return 1;
+            case 10:
+                return 2;
+            case 15:
+                return 3;
+            case 30:
+                return 4;
+            default:
+                return 0;
         }
     }
 

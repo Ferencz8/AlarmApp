@@ -207,7 +207,9 @@ public class AlarmsFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
+
                 Alarm alarm = adapter.getAlarm(swipedPosition);
+                alarmLaunchHandler.cancelAlarm(alarm.getId());
                 alarmService.delete(alarm.getId());
                 adapter.remove(swipedPosition);
             }

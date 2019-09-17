@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -150,6 +151,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        sharedPreferencesContainer.resetUsernameTokensCount();
+
+    }
+
     private void bindViews(View view) {
         spentTextView = view.findViewById(R.id.spent);
         cashTextView = view.findViewById(R.id.cash_text);
@@ -157,6 +165,20 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         loadProfilePicture();
         username = view.findViewById(R.id.username);
         username.setText(this.sharedPreferencesContainer.getFullname());
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sharedPreferencesContainer.getUsernameTokensCount() >= 3){
+                    Toast.makeText(getContext(), "+10 credits", Toast.LENGTH_LONG).show();
+                    sharedPreferencesContainer.increaseFreeCredits(10);
+                    sharedPreferencesContainer.resetUsernameTokensCount();
+                }
+                else{
+                    sharedPreferencesContainer.increaseUsernameTokensCount();
+                }
+            }
+        });
+
         termsAndConditions = view.findViewById(R.id.terms_text);
         termsAndConditions.setOnClickListener(this);
         feedback = view.findViewById(R.id.feedback_text);
