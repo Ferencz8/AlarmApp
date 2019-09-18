@@ -11,10 +11,13 @@ import countingsheep.alarm.R;
 
 public class RoastListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
+    private TextView roastHour;
+    private TextView roastDate;
     private TextView contentView = null;
     private ImageView playVoiceoverImageView = null;
     private ConstraintLayout roastLayout = null;
     private ImageView shareImageView = null;
+    private ImageView downloadImageView = null;
 
     private boolean isClicked = true;
 
@@ -23,10 +26,13 @@ public class RoastListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         if(itemView != null)
         {
+            roastHour = (TextView)itemView.findViewById(R.id.roastHour);
+            roastDate = (TextView)itemView.findViewById(R.id.roastDate);
             contentView = (TextView)itemView.findViewById(R.id.roastContentId);
             playVoiceoverImageView = (ImageView) itemView.findViewById(R.id.playRoast);
             roastLayout = (ConstraintLayout) itemView.findViewById(R.id.roastItemLayout);
             shareImageView = (ImageView) itemView.findViewById(R.id.shareRoast);
+            downloadImageView = (ImageView) itemView.findViewById(R.id.downloadRoast);
         }
     }
 
@@ -44,6 +50,22 @@ public class RoastListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public void setRoastLayout(ConstraintLayout roastLayout) {
         this.roastLayout = roastLayout;
+    }
+
+    public TextView getRoastHour() {
+        return roastHour;
+    }
+
+    public void setRoastHour(TextView roastHour) {
+        this.roastHour = roastHour;
+    }
+
+    public TextView getRoastDate() {
+        return roastDate;
+    }
+
+    public void setRoastDate(TextView roastDate) {
+        this.roastDate = roastDate;
     }
 
     public TextView getContentView() {
@@ -68,5 +90,13 @@ public class RoastListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public void setShareImageView(ImageView shareImageView) {
         this.shareImageView = shareImageView;
+    }
+
+    public ImageView getDownloadImageView() {
+        return downloadImageView;
+    }
+
+    public void setDownloadImageView(ImageView downloadImageView) {
+        this.downloadImageView = downloadImageView;
     }
 }

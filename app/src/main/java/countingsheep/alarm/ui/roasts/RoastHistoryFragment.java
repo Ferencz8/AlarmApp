@@ -69,7 +69,7 @@ public class RoastHistoryFragment extends Fragment {
         // Set layout manager.
         recyclerView.setLayoutManager(mLayoutManager);
 
-        // Create car recycler view data adapter with car item list.
+        // Create recycler view data adapter with item list.
         adapter = new RoastListRecyclerViewDataAdapter(getActivity(), roasts, messageService, sharedPreferencesContainer);
 
         // Set data adapter.

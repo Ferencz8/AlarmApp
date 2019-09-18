@@ -13,4 +13,9 @@
     <color name="background_color">#141414</color>
     <color name="white_text_color">#CACACA</color>
     <color name="colorSecondary">#404040</color>
+
+    <!-- Roast -->
+    <color name="date_text_color">#CACACA</color>
+    <color name="hour_text_color">#fff</color>
+
 </resources>

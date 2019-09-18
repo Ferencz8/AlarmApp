@@ -6,7 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TimeHelper {
 
@@ -182,5 +184,17 @@ public class TimeHelper {
         DateFormat shortdf = new SimpleDateFormat("HH:mm");
 
         return shortdf.format(calendar.getTime());
+    }
+
+    public static String getDateStringFromDateObject(Date date) {
+        return date == null
+                ? null
+                :   new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(date);
+    }
+
+    public static String getHourStringFromDateObject(Date date) {
+        return date == null
+                ? null
+                : new SimpleDateFormat("HH:mm", Locale.US).format(date);
     }
 }

@@ -2,4 +2,18 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <!-- General -->
+    <dimen name="xsmall_margin">4dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="large_margin">24dp</dimen>
+
+    <dimen name="default_textsize">16sp</dimen>
+    <dimen name="large_textsize">20sp</dimen>
+
+    <!-- Roast List -->
+    <dimen name="item_roast_radius">8dp</dimen>
+    <dimen name="item_roast_elevation">2dp</dimen>
+    <dimen name="item_roast_icon_size">40dp</dimen>
 </resources>

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.share.Share;
 
+import java.util.Date;
 import java.util.List;
 
 import countingsheep.alarm.R;
@@ -17,6 +18,9 @@ import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.infrastructure.ShareHelper;
+
+import static countingsheep.alarm.util.TimeHelper.getDateStringFromDateObject;
+import static countingsheep.alarm.util.TimeHelper.getHourStringFromDateObject;
 
 public class RoastListRecyclerViewDataAdapter extends RecyclerView.Adapter<RoastListRecyclerViewHolder> {
 
@@ -37,7 +41,7 @@ public class RoastListRecyclerViewDataAdapter extends RecyclerView.Adapter<Roast
         // Get LayoutInflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         // Inflate the RecyclerView item layout xml.
-        View itemView = layoutInflater.inflate(R.layout.content_roast_list_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.content_roast_list_item_v2, parent, false);
 
         // Create and return our customRecycler View Holder object.
         RoastListRecyclerViewHolder ret = new RoastListRecyclerViewHolder(itemView);
@@ -48,43 +52,30 @@ public class RoastListRecyclerViewDataAdapter extends RecyclerView.Adapter<Roast
     @Override
     public void onBindViewHolder(final RoastListRecyclerViewHolder holder, int position) {
         if (viewItemList != null) {
-            // Get car item dto in list.
             final Message viewItem = viewItemList.get(position);
 
             if (viewItem != null) {
 
                 holder.getContentView().setText(viewItem.getContent());
-                holder.getRoastLayout().setBackgroundColor(activity.getResources().getColor(R.color.colorSecondary, null));
 
-                View.OnClickListener shareClickListener = new View.OnClickListener() {
+                Date seenAt = viewItem.getSeenAt();
+                if (seenAt != null) {
+                    holder.getRoastDate().setText(getDateStringFromDateObject(seenAt));
 
-                    @Override
-                    public void onClick(View v) {
-                        sharedPreferencesContainer.setUserInitiatedShare(true);
-                        ShareHelper shareHelper = new ShareHelper(activity);
-                        shareHelper.displayShare("Hello", "This is the Santa Clause of Roasting App");
-                        messageService.markMessageShared(v.getId());
-                    }
-                };
+                    holder.getRoastHour().setText(getHourStringFromDateObject(seenAt));
+                }
 
-                holder.getShareImageView().setOnClickListener(shareClickListener);
+                holder.getShareImageView().setOnClickListener(v -> {
+                    sharedPreferencesContainer.setUserInitiatedShare(true);
+                    ShareHelper shareHelper = new ShareHelper(activity);
+                    shareHelper.displayShare("Hello", "This is the Santa Clause of Roasting App");
+                    messageService.markMessageShared(v.getId());
+                });
 
-                holder.getPlayVoiceoverImageView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                holder.getPlayVoiceoverImageView().setOnClickListener(v -> {
+                });
 
-                        if (holder.isClicked()) {
-                            holder.setClicked(false);
-
-                            holder.getPlayVoiceoverImageView().setImageResource(R.drawable.ic_sheepoff);
-                            //TODO:: Pause THE SOUND
-                        }
-                        else {
-                            holder.setClicked(true);
-                            holder.getPlayVoiceoverImageView().setImageResource(R.drawable.ic_sheepon);
-                            //TODO:: Play THE SOUND
-                        }
-                    }
+                holder.getDownloadImageView().setOnClickListener(v -> {
                 });
             }
         }

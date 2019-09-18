@@ -10,6 +10,7 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 
+import countingsheep.alarm.BuildConfig;
 import countingsheep.alarm.util.TimestampConverter;
 
 @Entity
@@ -96,6 +97,9 @@ public class Message extends DbEntity implements Serializable {
     }
 
     public Date getSeenAt() {
+        if (BuildConfig.DEBUG && seenAt == null) {
+            return new Date(System.currentTimeMillis());
+        }
         return seenAt;
     }
 
