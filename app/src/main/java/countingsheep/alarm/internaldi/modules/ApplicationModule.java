@@ -11,10 +11,12 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 
 import countingsheep.alarm.AlarmApplication;
+import countingsheep.alarm.BuildConfig;
 import countingsheep.alarm.util.Constants;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,11 +50,21 @@ public class ApplicationModule {
 
 //        //TODO:: this is for Testing
 
-        final OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+        final OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient().newBuilder()
                 .callTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
-                .connectTimeout(120, TimeUnit.SECONDS)
+                .connectTimeout(120, TimeUnit.SECONDS);
+
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            okHttpClientBuilder.interceptors().add(httpLoggingInterceptor);
+        }
+
+        final OkHttpClient okHttpClient = okHttpClientBuilder
                 .build();
+
 //        okHttpClient.setReadTimeout(120, TimeUnit.SECONDS);
 //        okHttpClient.setConnectTimeout(120, TimeUnit.SECONDS);
 
