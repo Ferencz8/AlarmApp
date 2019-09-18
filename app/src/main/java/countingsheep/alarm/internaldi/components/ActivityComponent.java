@@ -7,6 +7,7 @@ import countingsheep.alarm.internaldi.modules.InfrastructureModule;
 import countingsheep.alarm.internaldi.modules.NetworkModule;
 import countingsheep.alarm.ui.alarmLaunch.AlarmRefundActivity;
 import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
+import countingsheep.alarm.ui.roasts.RoastZoneFragment;
 import countingsheep.alarm.ui.settings.AlarmHistoryActivity;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
 import countingsheep.alarm.ui.settings.ProfileActivity;
@@ -42,6 +43,8 @@ public interface ActivityComponent {
     void inject(AlarmsFragment alarmsFragment);
 
     void inject(SettingsFragment settingsFragment);
+
+    void inject(RoastZoneFragment roastZoneFragment);
 
     void inject(RoastHistoryFragment roastHistoryFragment);
 

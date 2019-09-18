@@ -34,6 +34,7 @@ import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.infrastructure.NetworkStateReceiver;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
+import countingsheep.alarm.ui.roasts.RoastZoneFragment;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
@@ -80,16 +81,14 @@ public class MainActivity extends BaseActivity {
                                 hideHeaderBar(false);
                                 break;
                             case R.id.action_item2:
-                                selectedFragment = RoastHistoryFragment.newInstance();
+                                selectedFragment = RoastZoneFragment.newInstance();
                                 hideHeaderBar(false);
                                 break;
                             case R.id.action_item3:
                                 selectedFragment = SettingsFragment.newInstance();
                                 break;
                         }
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, selectedFragment);
-                        transaction.commit();
+                        setFragment(selectedFragment);
                         return true;
                     }
                 });
@@ -118,6 +117,19 @@ public class MainActivity extends BaseActivity {
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(networkStateReceiverListener);
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    public void setFragment(Fragment fragment) {
+        setFragment(fragment, false);
+    }
+
+    public void setFragment(Fragment fragment, boolean addToBackstack) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+        if (addToBackstack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     @Override

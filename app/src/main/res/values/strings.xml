@@ -108,5 +108,14 @@
     <string name="action_settings">Settings</string>
     <string name="creditsLeft">Credits Left</string>
     <string name="spent">Spent</string>
+
     <string name="DefaultSnoozeDisplayedValue">5 minutes</string>
+    
+    <!-- Roast Zone -->
+    <string name="your_roasts_title">Your Roasts</string>
+    <string name="roast_friend_title">Roast a Friend</string>
+    <string name="leaderboard_title">Leaderboard</string>
+    <string name="roast_chat_title">Roast Chat</string>
+    <string name="battle_field_title">Battle Field</string>
+
 </resources>
