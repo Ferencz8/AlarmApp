@@ -84,5 +84,6 @@ public class RoastZoneFragment extends Fragment implements RoastZoneRecyclerView
     }
 
     private void showLocked() {
+        new LockedFeatureDialog(requireContext()).show();
     }
 }

@@ -118,4 +118,7 @@
     <string name="roast_chat_title">Roast Chat</string>
     <string name="battle_field_title">Battle Field</string>
 
+    <!-- Locked Feature Dialog -->
+    <string name="locked_feature_title">Error 404! Feature in development\nWhat do you think of it?</string>
+
 </resources>
