@@ -1,6 +1,7 @@
 package countingsheep.alarm.ui.settings;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,8 +29,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wallet.AutoResolveHelper;
+import com.google.android.gms.wallet.IsReadyToPayRequest;
+import com.google.android.gms.wallet.PaymentData;
+import com.google.android.gms.wallet.PaymentDataRequest;
+import com.google.android.gms.wallet.PaymentsClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.json.JSONObject;
+
+import java.util.Objects;
+
+import countingsheep.alarm.BuildConfig;
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
@@ -45,8 +58,11 @@ import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
 import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
 import countingsheep.alarm.util.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
+import countingsheep.alarm.payment.google_pay.GooglePaymentsUtil;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "SettingsFragment";
+
     protected FirebaseAnalytics firebaseAnalytics;
     private CircleImageView userPhoto;
     private TextView username;
@@ -61,7 +77,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView alarmCount;
     private TextView snoozeRate;
     private TextView profile;
+    private TextView googlePayBtn;
     private ProgressBar loadingSpinner;
+
+    private PaymentsClient paymentsClient;
+    public static final int GOOGLE_PAY_REQUEST_CODE = 100;
 
     @Inject
     AuthenticationService authenticationService;
@@ -148,6 +168,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        paymentsClient = GooglePaymentsUtil.createPaymentsClient(requireActivity());
+        canShowGooglePayButton();
+
         return view;
     }
 
@@ -197,6 +220,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         loadingSpinner.setVisibility(View.INVISIBLE);
         profile = view.findViewById(R.id.profile_text);
         profile.setOnClickListener(this);
+        googlePayBtn = view.findViewById(R.id.get_credits);
     }
 
     @Override
@@ -250,13 +274,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 }).execute();
             }
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-
-        braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -363,4 +380,135 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             currentWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
     }
+
+
+    //--- PAYMENT
+    private void canShowGooglePayButton() {
+        final JSONObject isReadyToPayJson = GooglePaymentsUtil.getIsReadyToPayRequest();
+
+        if (isReadyToPayJson == null) {
+            return;
+        }
+
+        IsReadyToPayRequest request = IsReadyToPayRequest.fromJson(isReadyToPayJson.toString());
+        if (request == null) {
+            return;
+        }
+
+        Task<Boolean> task = GooglePaymentsUtil.createPaymentsClient(requireActivity()).isReadyToPay(request);
+        task.addOnCompleteListener(requireActivity(),
+                availabilityTask -> {
+                    if (availabilityTask.isSuccessful()) {
+                        setGooglePayAvailable(Objects.requireNonNull(availabilityTask.getResult()));
+                    } else {
+                        Log.e(TAG, "Payment through Google Pay cannot be started:\n" + availabilityTask.getException());
+                    }
+                });
+    }
+
+    private void setGooglePayAvailable(boolean isAvailable) {
+        if (isAvailable) {
+            googlePayBtn.setVisibility(View.VISIBLE);
+
+            googlePayBtn.setOnClickListener(v -> startPayment());
+        } else {
+            // TODO flow if Google Pay is not available
+            googlePayBtn.setVisibility(View.GONE);
+        }
+    }
+
+    private void startPayment() {
+        String price = "1"; // TODO use real price
+
+        JSONObject paymentDataRequestJson = GooglePaymentsUtil.getPaymentDataRequest(price);
+        if (paymentDataRequestJson == null) {
+            return;
+        }
+
+        PaymentDataRequest request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString());
+        if (request != null) {
+            AutoResolveHelper.resolveTask(
+                    paymentsClient.loadPaymentData(request), requireActivity(), GOOGLE_PAY_REQUEST_CODE);
+        }
+
+        // disable the button until payment is completed
+        googlePayBtn.setClickable(false);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    PaymentData paymentData = PaymentData.getFromIntent(data);
+
+                    onPaymentSuccess(paymentData);
+
+                    break;
+                case Activity.RESULT_CANCELED:
+                    // user cancelled the payment
+                    break;
+                case AutoResolveHelper.RESULT_ERROR:
+                    Status status = AutoResolveHelper.getStatusFromIntent(data);
+
+                    onPaymentError(status != null ? status.getStatusCode() : -1);
+
+                    break;
+            }
+        } else {
+            braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
+        }
+
+        // re-enable gpay button
+        googlePayBtn.setClickable(true);
+    }
+
+    private void onPaymentSuccess(PaymentData paymentData) {
+        //TODO flow if Google Pay payment was successful
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(requireContext(), "Master gave Dobby money; Dobby is a free elf", Toast.LENGTH_LONG).show();
+        }
+
+        //TODO add real number of credits
+        int credits = sharedPreferencesContainer.getFreeCredits();
+        credits += 50;
+        sharedPreferencesContainer.setFreeCredits(credits);
+        this.cashTextView.setText(credits + " $");
+
+
+        // obtain payment info
+        String paymentInformation = paymentData.toJson();
+
+        if (paymentInformation == null) {
+            return;
+        }
+
+        JSONObject paymentMethodData;
+
+        try {
+            paymentMethodData = new JSONObject(paymentInformation).getJSONObject("paymentMethodData");
+            // ENV_TEST - dummy token is "examplePaymentMethodToken" for "example" merchant
+
+            JSONObject tokenizationData = paymentMethodData.getJSONObject("tokenizationData");
+            String token = tokenizationData.getString("token");
+            Log.d(TAG, "token obtained = " + token);
+
+
+            JSONObject billingData = paymentMethodData.getJSONObject("info");
+            String cardNetwork = billingData.getString("cardNetwork");
+            String cardLastDigits = billingData.getString("cardDetails");
+            Log.d(TAG, "card = " + cardNetwork + cardLastDigits);
+        } catch (Exception e) {
+            Log.e(TAG, "Error handling payment success");
+            e.printStackTrace();
+        }
+    }
+
+    private void onPaymentError(int statusCode) {
+        //TODO flow if Google Pay payment failed
+
+        Log.e(TAG, "Payment failed with status code " + statusCode);
+    }
+    //------ END PAYMENT
 }

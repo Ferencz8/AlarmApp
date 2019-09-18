@@ -83,6 +83,11 @@
             android:showOnLockScreen="true" />
         <activity android:name=".ui.freecredits.FreeCreditsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.alarmLaunch.AlarmRefundActivity" android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
     </application>
 
 </manifest>

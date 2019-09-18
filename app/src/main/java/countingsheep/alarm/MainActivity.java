@@ -40,6 +40,8 @@ import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
 
+import static countingsheep.alarm.ui.settings.SettingsFragment.GOOGLE_PAY_REQUEST_CODE;
+
 public class MainActivity extends BaseActivity {
     ConstraintLayout headerBar;
     TextView titleTextView;
@@ -248,6 +250,13 @@ public class MainActivity extends BaseActivity {
             }
 
         }
+        if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            if (fragment != null && fragment instanceof SettingsFragment) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

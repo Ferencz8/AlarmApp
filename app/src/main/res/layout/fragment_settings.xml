@@ -191,6 +191,20 @@
             app:layout_constraintTop_toBottomOf="@+id/view1" />
 
         <TextView
+            android:id="@+id/get_credits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Get Credits"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="@+id/profile_text"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/profile_text"
+            app:layout_constraintTop_toBottomOf="@+id/profile_text" />
+
+        <TextView
             android:id="@+id/terms_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -199,10 +213,10 @@
             android:paddingBottom="10dp"
             android:text="Terms and Conditions"
             android:textColor="@color/white_text_color"
-            app:layout_constraintEnd_toEndOf="@+id/profile_text"
+            app:layout_constraintEnd_toEndOf="@+id/get_credits"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/profile_text"
-            app:layout_constraintTop_toBottomOf="@+id/profile_text" />
+            app:layout_constraintStart_toStartOf="@+id/get_credits"
+            app:layout_constraintTop_toBottomOf="@+id/get_credits" />
 
         <TextView
             android:id="@+id/feedback_text"
