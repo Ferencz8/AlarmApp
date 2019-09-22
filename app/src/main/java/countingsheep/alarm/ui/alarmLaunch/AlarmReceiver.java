@@ -75,7 +75,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         context.startService(intent);
                         startAlarmUserExperience(alarmDb.getId());
                     } else {
-                        //this needs to send current day,hour,minute, without snooze
+                        //this needs to set current day,hour,minute, without snooze
                         alarmLaunchHandler.registerAlarm(alarmDb.getId(), TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
                         Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm delayed");
                         Bundle bundle = new Bundle();

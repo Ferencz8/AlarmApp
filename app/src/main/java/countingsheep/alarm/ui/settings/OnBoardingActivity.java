@@ -132,6 +132,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
             case R.id.slideBackBtn:
                 if (reachedPaymentSlide && this.sharedPreferencesContainer.shouldGiveFreeCredits()) {
                     firebaseAnalytics.logEvent("onboarding_payment_not_now", null);
+                    finish();
                     Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
                     startActivity(intent);
                 }
@@ -168,6 +169,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
             public void onSuccess() {
                 loadingSpinner.setVisibility(View.INVISIBLE);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                finish();
                 Intent intent = new Intent(OnBoardingActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -177,6 +179,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
                 loadingSpinner.setVisibility(View.INVISIBLE);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 if (sharedPreferencesContainer.shouldGiveFreeCredits()) {
+                    finish();
                     Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
                     startActivity(intent);
                 }
@@ -189,13 +192,15 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
 
         super.onActivityResult(requestCode, resultCode, data);
 
+        braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_CANCELED && this.sharedPreferencesContainer.shouldGiveFreeCredits()) {
             loadingSpinner.setVisibility(View.INVISIBLE);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             firebaseAnalytics.logEvent("onboarding_payment_now_canceled", null);
+
+            finish();
             Intent intent = new Intent(OnBoardingActivity.this, FreeCreditsActivity.class);
             startActivity(intent);
         }
-        braintreePaymentInteractor.onActivityResult(requestCode, resultCode, data);
     }
 }

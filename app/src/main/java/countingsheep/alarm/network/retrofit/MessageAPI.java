@@ -11,12 +11,12 @@ import retrofit2.http.Query;
 public interface MessageAPI {
 
     //Used to update messages once they have been seen with properties such as dateseen, liked and shared
-    //@POST("/alarm/api/message")
-    @POST("/alarm/api/message")
+    //@POST("/api/message")
+    @POST("/api/message")
     Call<String> markMessages(@Body UserWrappedEntities<Message> messages);
 
 
     @Headers({"Accept: application/json"})
-    @GET("/alarm/api/message/GetOneForUser")
+    @GET("/api/message/GetOneForUser")
     Call<Message> getRoastMessage(@Query("userId")int userId);
 }

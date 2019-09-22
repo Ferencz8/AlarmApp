@@ -8,11 +8,11 @@ import retrofit2.http.POST;
 public interface AlarmReactionAPI {
 
 
-    //@POST("/alarm/api/alarm")
-    @POST("/alarm/api/alarmreaction")
+    //@POST("/api")
+    @POST("/apireaction")
     Call<String> addAlarm(@Body UserWrappedEntity<AlarmReaction> wrappedAlarmReaction);
 
-    //@POST("/alarm/api/alarm/addmany")
-    @POST("/alarm/api/alarmreaction/addmany")
+    //@POST("/api/addmany")
+    @POST("/apireaction/addmany")
     Call<String> addAlarmReactionRange(@Body UserWrappedEntities<AlarmReaction> wrappedAlarmReactions);
 }

@@ -263,7 +263,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
             vibrateSwitch.setChecked(alarm.isVobrateOn());
 
             snoozeAdapter.selectedItem = getSnoozeItemFromSnoozeAmount(alarm.getSnoozeAmount());
-            String min = alarm.getSnoozeAmount() == 1 ? "minute" : "minutes";
+            String min = alarm.getSnoozeAmount() == 1 ? " minute" : " minutes";
             selectedSnooze.setText(alarm.getSnoozeAmount() + min);
         } else {
             time = this.getFormattedTime(7, 5);
@@ -457,9 +457,10 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
 
         alarm.setSnoozeAmount(getSnoozeAmount());
 
-        final long timeToStartAlarm = calculateTimeToStartAlarm(alarm.getRepeatDays());
+        //TODO:: check here and use simple logic with just one day delay
+        final long calculatedTimeToStartAlarm = calculateTimeToStartAlarm(alarm.getRepeatDays());
 
-        Toast.makeText(activity, TimeHelper.getTimeDifference(timeToStartAlarm), Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, TimeHelper.getTimeDifference(calculatedTimeToStartAlarm), Toast.LENGTH_LONG).show();
 
         String debuglog = "Save alarm with " + alarm.getHour() + " H : " + alarm.getMinutes() + " M, with snooze of " + alarm.getSnoozeAmount() + " and repeat days: " + alarm.getRepeatDays();
         Crashlytics.log(99, AddAlarmActivity.class.getName(), debuglog);
@@ -476,7 +477,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
 
                     alarmLaunchHandler.cancelAlarm(alarm.getId());
 
-                    alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+                    alarmLaunchHandler.registerAlarm(response.intValue(), calculatedTimeToStartAlarm);
 
                     finish();
                 }
@@ -486,7 +487,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
                 @Override
                 public void processResponse(Long response) {
 
-                    alarmLaunchHandler.registerAlarm(response.intValue(), timeToStartAlarm);
+                    alarmLaunchHandler.registerAlarm(response.intValue(), calculatedTimeToStartAlarm);
 
                     finish();
 
@@ -511,7 +512,7 @@ public class AddAlarmActivity extends BaseActivity implements View.OnClickListen
             }
         }
         else {//calculate based on the current day vs available repeat days
-            int delayDays = TimeHelper.getDaysUntilRepeatDay(repeatDays);
+            int delayDays = TimeHelper.getDaysUntilRepeatDay(repeatDays, TimeHelper.isTimeInThePast(alarm.getHour(), alarm.getMinutes()));
 
             startRingingTime = TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarm.getHour(), alarm.getMinutes(), delayDays);
         }

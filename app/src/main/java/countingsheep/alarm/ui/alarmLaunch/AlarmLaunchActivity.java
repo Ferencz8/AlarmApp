@@ -1,6 +1,5 @@
 package countingsheep.alarm.ui.alarmLaunch;
 
-import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +10,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,25 +22,18 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
-import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
-import countingsheep.alarm.core.services.TimeService;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Alarm;
-import countingsheep.alarm.db.entities.Message;
-import countingsheep.alarm.infrastructure.NetworkStateInteractor;
-import countingsheep.alarm.infrastructure.NetworkStateReceiver;
-import countingsheep.alarm.infrastructure.NotificationHelper;
 import countingsheep.alarm.ui.BaseActivity;
-import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
-import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 
 public class AlarmLaunchActivity extends BaseActivity {
@@ -122,29 +111,54 @@ public class AlarmLaunchActivity extends BaseActivity {
 
     private void initAutomaticSnooze() {
 
-        alarmService.getSnoozesCount(alarmId, (snoozeCount) -> {
+//        alarmService.getSnoozesCount(alarmId, (snoozeCount) -> {
+//
+//            final Handler handler = new Handler();
+//            handler.postDelayed(() -> {
+//                if (isProcessing)
+//                    return;
+//
+//                isProcessing = true;
+//
+//                switch (snoozeCount) {
+//                    case 0: {
+//                        delayTheAlarmForFree();
+//                        break;
+//                    }
+//                    case 1:
+//                    default: {
+//                        sendStopPlayerEvent();
+//                        activity.finish();
+//                        break;
+//                    }
+//                }
+//            }, 1000 * 60 * 3);//3 min
+//        });
 
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> {
+        boolean canDelay = sharedPreferencesContainer.getDelayTheAlarmForFree();
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            try {
                 if (isProcessing)
                     return;
 
                 isProcessing = true;
 
-                switch (snoozeCount) {
-                    case 0: {
-                        delayTheAlarmForFree();
-                        break;
-                    }
-                    case 1:
-                    default: {
-                        sendStopPlayerEvent();
-                        activity.finish();
-                        break;
-                    }
+                sendStopPlayerEvent();
+
+                //delays the alarm for free only once
+                if (canDelay) {
+                    sharedPreferencesContainer.setDelayTheAlarmForFree(false);
+                    delayTheAlarmForFree();
+                } else {
+                    sharedPreferencesContainer.setDelayTheAlarmForFree(true);
                 }
-            }, 1000 * 60 * 3);
-        });
+                activity.finish();
+            }
+            catch (Exception ex){
+                Crashlytics.logException(ex);
+            }
+        }, 1000 * 60 * 3);//3 min
     }
 
     private void delayTheAlarmForFree() {
@@ -188,11 +202,13 @@ public class AlarmLaunchActivity extends BaseActivity {
                 isProcessing = true;
 
                 sendStopPlayerEvent();
-                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmRefundActivity.class);
-                intent.putExtra("alarmId",alarmId);
-                startActivity(intent);
-                isProcessing = false;
+
+                sharedPreferencesContainer.setDelayTheAlarmForFree(true);
+
                 activity.finish();
+                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmCountdownActivity.class);
+                intent.putExtra("alarmId", alarmId);
+                startActivity(intent);
             }
         });
 
@@ -209,15 +225,28 @@ public class AlarmLaunchActivity extends BaseActivity {
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Awake clicked");
                 firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
 
-                //register the awake
-                alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
+                sendStopPlayerEvent();
+
+                sharedPreferencesContainer.setDelayTheAlarmForFree(true);
+
+                alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
                     @Override
-                    public void processResponse(Void response) {
-                        sendStopPlayerEvent();
+                    public void processResponse(Alarm alarmDb) {
 
-                        isProcessing = false;
+                        if(!alarmDb.getRepeatDays().isEmpty()){
+                            alarmLaunchHandler.registerAlarm(alarmId,  TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
+                        }
 
-                        activity.finish();
+                        //register the awake
+                        alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
+                            @Override
+                            public void processResponse(Void response) {
+
+                                activity.finish();
+                                Intent intent = new Intent(AlarmLaunchActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 });
             }

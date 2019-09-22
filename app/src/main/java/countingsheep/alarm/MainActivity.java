@@ -15,8 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -101,6 +103,7 @@ public class MainActivity extends BaseActivity {
 
             //transaction.replace(R.id.frame_layout, RoastHistoryFragment.newInstance());
             bottomNavigationView.setSelectedItemId(R.id.action_item2);
+            this.setFragment(RoastHistoryFragment.newInstance(), true);
         }
         else {
             transaction.replace(R.id.frame_layout, AlarmsFragment.newInstance());

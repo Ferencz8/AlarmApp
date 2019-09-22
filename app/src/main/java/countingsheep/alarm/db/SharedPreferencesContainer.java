@@ -30,6 +30,7 @@ public class SharedPreferencesContainer {
     private final static String NeedToRequestRoastCount="NeedToRequestRoastCount";
     private final static String UserInitiatedShare = "UserInitiatedShare";
     private final static String UsernameTokens = "UsernameTokens";
+    private final static String DelayTheAlarmForFree = "DelayTheAlarmForFree";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
     private final static String Popup_ShowedAskForPhoneNo = "ShowedAskForPhoneNo";
@@ -40,6 +41,15 @@ public class SharedPreferencesContainer {
     public SharedPreferencesContainer(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
     }
+
+    public void setDelayTheAlarmForFree(boolean value){
+        this.changePreferenceValue(DelayTheAlarmForFree, value);
+    }
+
+    public boolean getDelayTheAlarmForFree() {
+        return this.sharedPreferences.getBoolean(DelayTheAlarmForFree, true);
+    }
+
 
     public void increaseUsernameTokensCount() {
         int currentValue = getUsernameTokensCount();

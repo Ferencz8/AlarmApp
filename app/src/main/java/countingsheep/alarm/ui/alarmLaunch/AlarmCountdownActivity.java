@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
@@ -30,14 +31,14 @@ import countingsheep.alarm.util.StringFormatter;
 import countingsheep.alarm.util.TimeHelper;
 import io.fabric.sdk.android.services.common.Crash;
 
-public class AlarmRefundActivity extends BaseActivity {
+public class AlarmCountdownActivity extends BaseActivity {
 
 
     private TextView countdownTimerView;
     private TextView refundBtn;
     private ProgressBar timerCircle;
 
-    private int timeCountdownInSeconds = 30;
+    private int timeCountdownInSeconds = 3;
     private long timeCountInMilliSeconds;
     private CountDownTimer countDownTimer;
 
@@ -83,8 +84,7 @@ public class AlarmRefundActivity extends BaseActivity {
                     countdownTimerView.setText("00:" + StringFormatter.getFormattedTimeDigits(secondsLeft));
 
                     timerCircle.setProgress((int) millisUntilFinished / 1000);
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                     Crashlytics.logException(ex);
                 }
             }
@@ -105,14 +105,14 @@ public class AlarmRefundActivity extends BaseActivity {
 
     private void bindViews() {
         countdownTimerView = findViewById(R.id.timerTextViewId);
-        countdownTimerView.setText("00:30");
+        countdownTimerView.setText("00:03");
         timeCountInMilliSeconds = timeCountdownInSeconds * 1000;
         timerCircle = findViewById(R.id.timerCircleId);
         timerCircle.setMax((int) timeCountInMilliSeconds / 1000);
         timerCircle.setProgress((int) timeCountInMilliSeconds / 1000);
 
         refundBtn = findViewById(R.id.nevermindSnoozeId);
-        refundBtn.setText("Nevermind, I'm OK.");
+        refundBtn.setText("Nevermind, I'm awake.");
         refundBtn.setOnClickListener(getRefundListener());
     }
 
@@ -131,12 +131,22 @@ public class AlarmRefundActivity extends BaseActivity {
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Awake clicked");
                 firebaseAnalytics.logEvent("AlarmLaunchActivity", bundle);
 
-                //register the awake
-                alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
+                //TODO:: duplicate code with AlarmLaunchActivity - future refactor
+                //register again if repeatable
+                alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
                     @Override
-                    public void processResponse(Void response) {
+                    public void processResponse(Alarm alarmDb) {
+                        if (!alarmDb.getRepeatDays().isEmpty()) {
+                            alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
+                        }
+                        //register the awake
+                        alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
+                            @Override
+                            public void processResponse(Void response) {
 
-                        activity.finish();
+                                redirectToMainScreen();
+                            }
+                        });
                     }
                 });
             }
@@ -158,7 +168,7 @@ public class AlarmRefundActivity extends BaseActivity {
                 alarmLaunchHandler.registerAlarm(alarmId, ringingTime);
                 Toast.makeText(activity, TimeHelper.getTimeDifference(ringingTime), Toast.LENGTH_LONG).show();
 
-                //persists the snooze
+                //register the snooze
                 alarmReactionService.add(alarmId, true, null);
 
                 messageService.getRoastMessage(new OnResult<Message>() {
@@ -172,37 +182,27 @@ public class AlarmRefundActivity extends BaseActivity {
                                 NotificationHelper notificationHelper = new NotificationHelper(activity);
                                 notificationHelper.displayNotification("Your roast is here!!", "");
 
-                                activity.finish();
+                                redirectToMainScreen();
                             }
                         });
                     }
-                    @Override
-                    public void onFailure(){
 
-                        activity.finish();
+                    @Override
+                    public void onFailure(String message) {
+
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        redirectToMainScreen();
                     }
                 });
             }
         });
+    }
 
+    private void redirectToMainScreen(){
 
-//                if (!sharedPreferencesContainer.getShowedAskForPhoneNoPopup()) {
-//
-//                    Toast.makeText(activity, "Phone No is required for Roast.", Toast.LENGTH_LONG).show();
-//                } else {
-//
-//                    smsService.sendToSelf(new OnResult() {
-//                        @Override
-//                        public void onSuccess(Object result) {
-//                            Toast.makeText(activity, "Roast is on it's way!", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void onFailure(String message) {
-//                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
+        activity.finish();
+        Intent intent = new Intent(AlarmCountdownActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void extractParameters(Bundle savedInstanceState) {

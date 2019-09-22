@@ -5,11 +5,12 @@ import javax.inject.Singleton;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.internaldi.modules.InfrastructureModule;
 import countingsheep.alarm.internaldi.modules.NetworkModule;
-import countingsheep.alarm.ui.alarmLaunch.AlarmRefundActivity;
+import countingsheep.alarm.ui.alarmLaunch.AlarmCountdownActivity;
 import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
 import countingsheep.alarm.ui.roasts.RoastZoneFragment;
 import countingsheep.alarm.ui.settings.AlarmHistoryActivity;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
+import countingsheep.alarm.ui.settings.PermissionsFragment;
 import countingsheep.alarm.ui.settings.ProfileActivity;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
@@ -48,9 +49,11 @@ public interface ActivityComponent {
 
     void inject(RoastHistoryFragment roastHistoryFragment);
 
+    void inject(PermissionsFragment permissionsFragment);
+
     void inject(AlarmLaunchActivity alarmLaunchActivity);
 
-    void inject(AlarmRefundActivity alarmRefundActivity);
+    void inject(AlarmCountdownActivity alarmCountdownActivity);
 
     void inject(OnBoardingActivity onBoardingActivity);
 

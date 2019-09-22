@@ -20,30 +20,30 @@ public interface PaymentAPI {
     * If customerId is null then the token which will be provided will help create a new customer account
     * It it is not null, then it will display the vault of the linked customer
     * */
-    //@GET("/alarm/api/payments/generatetoken")
+    //@GET("/api/payments/generatetoken")
     @Headers({"Accept: application/json"})
-    @GET("/alarm/api/payment/generatetoken")
+    @GET("/api/payment/generatetoken")
     Call<String> generateToken(@Query("customerId") String customerId);
 
-    @POST("/alarm/api/payment/Checkout")
+    @POST("/api/payment/Checkout")
     //@Headers({ "Content-Type: application/json;charset=UTF-8"})
     Call<String> checkout(@Body Checkout checkout);
 
-    @POST("/alarm/api/payment/ProcessSnooze")
+    @POST("/api/payment/ProcessSnooze")
         //@Headers({ "Content-Type: application/json;charset=UTF-8"})
     Call<String> checkout2(@Body Checkout2 checkout);
 
 
-    @POST("/alarm/api/payment/Register")
+    @POST("/api/payment/Register")
     @Headers({"Accept: application/json"})
     Call<Customer> register(@Body CustomerRegistration customerRegistration);
 
 
-    @POST("/alarm/api/payment/addOrUpdatePaymentMethod")
+    @POST("/api/payment/addOrUpdatePaymentMethod")
     @Headers({"Accept: application/json"})
     Call<String> addOrUpdatePaymentMethod(@Body PaymentRegistration paymentRegistration);
 
     @Headers({"Accept: application/json"})
-    @GET("/alarm/api/payment/GetPaymentStatus")
+    @GET("/api/payment/GetPaymentStatus")
     Call<PaymentStatus> getPaymentStatus(@Query("transactionId") String transactionId);
 }

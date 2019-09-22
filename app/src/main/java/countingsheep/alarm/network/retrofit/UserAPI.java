@@ -1,5 +1,6 @@
 package countingsheep.alarm.network.retrofit;
 
+import countingsheep.alarm.core.domain.Comment;
 import countingsheep.alarm.core.domain.SavePhoneNoReq;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.domain.UserRegistration;
@@ -13,14 +14,18 @@ import retrofit2.http.Query;
 public interface UserAPI {
 
 
-    @POST("/alarm/api/user/register")
-    //@POST("/alarm/api/user/register")
+    @POST("/api/user/register")
+    //@POST("/api/user/register")
     Call<UserRegistration> register(@Body User user);
 
     @Headers({"Accept: application/json"})
-    @GET("/alarm/api/user/GetCredits")
+    @GET("/api/user/GetCredits")
     Call<Integer> getFreeCredits(@Query("id")int userId);
 
-    @POST("/alarm/api/user/saveNumber")
+    @POST("/api/user/saveNumber")
     Call<Void> savePhoneNumber(@Body SavePhoneNoReq savePhoneNoReq);
+
+    @POST("/api/user/AddComment")
+        //@POST("/api/user/register")
+    Call<Void> addComment(@Body Comment comment);
 }

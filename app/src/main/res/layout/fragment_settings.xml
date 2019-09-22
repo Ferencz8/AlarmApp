@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,30 +52,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username" />
 
-    <ImageView
-        android:id="@+id/cash_icon"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/cash_icon"
-        app:layout_constraintEnd_toStartOf="@+id/alarm_icon"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        <ImageView
+            android:id="@+id/cash_icon"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/cash_icon"
+            app:layout_constraintEnd_toStartOf="@+id/alarm_icon"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <TextView
-        android:id="@+id/cash_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="10 $"
-        android:textColor="@color/white_text_color"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/cash_icon"
-        app:layout_constraintStart_toStartOf="@+id/cash_icon"
-        app:layout_constraintTop_toBottomOf="@+id/cash_icon" />
+        <TextView
+            android:id="@+id/cash_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="10 $"
+            android:textColor="@color/white_text_color"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/cash_icon"
+            app:layout_constraintStart_toStartOf="@+id/cash_icon"
+            app:layout_constraintTop_toBottomOf="@+id/cash_icon" />
 
         <TextView
             android:id="@+id/spent"
@@ -89,92 +90,92 @@
             app:layout_constraintStart_toStartOf="@+id/cash_text"
             app:layout_constraintTop_toBottomOf="@+id/cash_text" />
 
-    <ImageView
-        android:id="@+id/alarm_icon"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/alarm_icon"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        <ImageView
+            android:id="@+id/alarm_icon"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/alarm_icon"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <TextView
-        android:id="@+id/alarm_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="45"
-        android:textColor="@color/white_text_color"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/alarm_icon"
-        app:layout_constraintStart_toStartOf="@+id/alarm_icon"
-        app:layout_constraintTop_toBottomOf="@+id/alarm_icon" />
+        <TextView
+            android:id="@+id/alarm_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="45"
+            android:textColor="@color/white_text_color"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/alarm_icon"
+            app:layout_constraintStart_toStartOf="@+id/alarm_icon"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_icon" />
 
-    <TextView
-        android:id="@+id/alarms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Alarms"
-        android:textColor="@color/white_text_color"
-        app:layout_constraintEnd_toEndOf="@+id/alarm_text"
-        app:layout_constraintStart_toStartOf="@+id/alarm_text"
-        app:layout_constraintTop_toBottomOf="@+id/alarm_text" />
+        <TextView
+            android:id="@+id/alarms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Alarms"
+            android:textColor="@color/white_text_color"
+            app:layout_constraintEnd_toEndOf="@+id/alarm_text"
+            app:layout_constraintStart_toStartOf="@+id/alarm_text"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_text" />
 
-    <ImageView
-        android:id="@+id/snooze_icon"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/snooze_icon"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toEndOf="@+id/alarm_icon"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        <ImageView
+            android:id="@+id/snooze_icon"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/snooze_icon"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintStart_toEndOf="@+id/alarm_icon"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <TextView
-        android:id="@+id/snooze_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="45 %"
-        android:textColor="@color/white_text_color"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/snooze_icon"
-        app:layout_constraintStart_toStartOf="@+id/snooze_icon"
-        app:layout_constraintTop_toBottomOf="@+id/snooze_icon" />
+        <TextView
+            android:id="@+id/snooze_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="45 %"
+            android:textColor="@color/white_text_color"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/snooze_icon"
+            app:layout_constraintStart_toStartOf="@+id/snooze_icon"
+            app:layout_constraintTop_toBottomOf="@+id/snooze_icon" />
 
-    <TextView
-        android:id="@+id/snooze_rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Snooze Rate"
-        android:textColor="@color/white_text_color"
-        app:layout_constraintEnd_toEndOf="@+id/snooze_text"
-        app:layout_constraintStart_toStartOf="@+id/snooze_text"
-        app:layout_constraintTop_toBottomOf="@+id/snooze_text" />
+        <TextView
+            android:id="@+id/snooze_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Snooze Rate"
+            android:textColor="@color/white_text_color"
+            app:layout_constraintEnd_toEndOf="@+id/snooze_text"
+            app:layout_constraintStart_toStartOf="@+id/snooze_text"
+            app:layout_constraintTop_toBottomOf="@+id/snooze_text" />
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@color/white_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spent" />
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@color/white_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spent" />
 
         <TextView
             android:id="@+id/profile_text"
@@ -185,6 +186,7 @@
             android:paddingBottom="10dp"
             android:text="Profile"
             android:textColor="@color/white_text_color"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/view1"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/view1"
@@ -199,9 +201,9 @@
             android:paddingBottom="10dp"
             android:text="Get Credits"
             android:textColor="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="@+id/profile_text"
+            app:layout_constraintEnd_toEndOf="@+id/view1"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/profile_text"
+            app:layout_constraintStart_toStartOf="@+id/view1"
             app:layout_constraintTop_toBottomOf="@+id/profile_text" />
 
         <TextView
@@ -279,16 +281,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="Logout"
             android:textColor="@color/white_text_color"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/view1"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/view1"
-            app:layout_constraintTop_toBottomOf="@+id/history_text" />
+            app:layout_constraintTop_toBottomOf="@+id/permissions_text" />
 
         <ProgressBar
             android:id="@+id/settingsProgressBar"
@@ -305,6 +304,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/permissions_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Permissions"
+            android:textColor="@color/white_text_color"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/view1"
+            app:layout_constraintStart_toStartOf="@+id/view1"
+            app:layout_constraintTop_toBottomOf="@+id/history_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

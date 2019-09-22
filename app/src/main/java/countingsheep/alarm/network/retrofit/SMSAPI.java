@@ -8,9 +8,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface SMSAPI {
-    @POST("/alarm/api/sms/send")
+    @POST("/api/sms/send")
     Call<String> sendRoastSMS(@Body SMSRoastMessageReq roastMessageReq);
 
-    @POST("/alarm/api/sms/SendToFriend")
+    @POST("/api/sms/SendToFriend")
     Call<String> sendRoastSMSToFriend(@Body SMSScheduledRoast smsScheduledRoast);
 }

@@ -179,6 +179,48 @@ public class TimeHelper {
         return daysCount;
     }
 
+    public static int getDaysUntilRepeatDay(String repeatDays, boolean requestedTimeForTodayPassed) {
+        if (TextUtils.isEmpty(repeatDays))
+            return 0;
+
+        int daysCount = 0;
+        Calendar calendar = Calendar.getInstance();
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+
+        List<RepeatDayOfWeek> repeasDaysList = new ArrayList<>();
+
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("Su"), Calendar.SUNDAY));
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("Mo"), Calendar.MONDAY));
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("Tu"), Calendar.TUESDAY));
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("We"), Calendar.WEDNESDAY));
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("Th"), Calendar.THURSDAY));
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("Fr"), Calendar.FRIDAY));
+        repeasDaysList.add(new RepeatDayOfWeek(repeatDays.contains("Sa"), Calendar.SATURDAY));
+
+        for (int index = today - 1; index < repeasDaysList.size(); index++) {
+            RepeatDayOfWeek repeatDayOfWeek = repeasDaysList.get(index);
+            if (!repeatDayOfWeek.IsRepeatable)
+                daysCount++;
+            else
+            {
+                if(requestedTimeForTodayPassed)
+                    daysCount++;
+                else
+                    return daysCount;
+            }
+        }
+        if (today != 1) {
+            for (int index = 0; index < today - 1; index++) {
+                RepeatDayOfWeek repeatDayOfWeek = repeasDaysList.get(index);
+                if (!repeatDayOfWeek.IsRepeatable)
+                    daysCount++;
+                else
+                    return daysCount;
+            }
+        }
+        return daysCount;
+    }
+
     public static String getCurrentShortTime() {
         Calendar calendar = Calendar.getInstance();
         DateFormat shortdf = new SimpleDateFormat("HH:mm");

@@ -182,12 +182,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, user.email);
                             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
 
-                            if(sharedPreferencesContainer.getCustomerId()!=null && sharedPreferencesContainer.getCustomerId()!=""){
+                            if(sharedPreferencesContainer.getCurrentUserId()!=0){
+//                            if(sharedPreferencesContainer.getCustomerId()!=null && sharedPreferencesContainer.getCustomerId()!=""){
+                                finish();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
                             else {
-
+                                finish();
                                 Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
                                 startActivity(intent);
                             }
@@ -195,7 +197,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                             spinner.setVisibility(View.INVISIBLE);
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                            finish();
                         }
 
                         @Override

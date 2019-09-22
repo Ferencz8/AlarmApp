@@ -20,8 +20,8 @@
 
     <TextView
         android:id="@+id/popupTextId"
-        android:layout_width="155dp"
-        android:layout_height="53dp"
+        android:layout_width="174dp"
+        android:layout_height="66dp"
         android:layout_marginTop="40dp"
         android:text="To delete alarm swipe"
         android:textAlignment="center"

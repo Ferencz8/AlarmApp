@@ -40,6 +40,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import countingsheep.alarm.BuildConfig;
@@ -77,6 +78,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView alarmCount;
     private TextView snoozeRate;
     private TextView profile;
+    private TextView permissions;
     private TextView googlePayBtn;
     private ProgressBar loadingSpinner;
 
@@ -118,7 +120,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         Injector.getActivityComponent(getActivity()).inject(this);
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-        firebaseAnalytics.logEvent("settings",null);
+        firebaseAnalytics.logEvent("settings", null);
     }
 
     @Nullable
@@ -161,7 +163,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         alarmReactionService.getSnoozeRate(new OnAsyncResponse<Integer>() {
             @Override
             public void processResponse(Integer response) {
-                if(response == null){
+                if (response == null) {
                     response = 0;
                 }
                 snoozeRate.setText(String.valueOf(response * 100) + " %");
@@ -186,17 +188,29 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         cashTextView = view.findViewById(R.id.cash_text);
         userPhoto = view.findViewById(R.id.user_photo);
         loadProfilePicture();
+        permissions = view.findViewById(R.id.permissions_text);
+        if (!doesManufacturerNeedSpecialPermissions()) {
+            permissions.setVisibility(View.GONE);
+        } else {
+            permissions.setVisibility(View.VISIBLE);
+            permissions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity act = (MainActivity) getActivity();
+                    if (act != null) act.setFragment(PermissionsFragment.newInstance(), true);
+                }
+            });
+        }
         username = view.findViewById(R.id.username);
         username.setText(this.sharedPreferencesContainer.getFullname());
         username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sharedPreferencesContainer.getUsernameTokensCount() >= 3){
+                if (sharedPreferencesContainer.getUsernameTokensCount() >= 3) {
                     Toast.makeText(getContext(), "+10 credits", Toast.LENGTH_LONG).show();
                     sharedPreferencesContainer.increaseFreeCredits(10);
                     sharedPreferencesContainer.resetUsernameTokensCount();
-                }
-                else{
+                } else {
                     sharedPreferencesContainer.increaseUsernameTokensCount();
                 }
             }
@@ -221,6 +235,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         profile = view.findViewById(R.id.profile_text);
         profile.setOnClickListener(this);
         googlePayBtn = view.findViewById(R.id.get_credits);
+    }
+
+    private boolean doesManufacturerNeedSpecialPermissions() {
+        ArrayList<String> specialManufacturers = new ArrayList<String>();
+        specialManufacturers.add("xiaomi");
+        specialManufacturers.add("huawei");
+        return specialManufacturers.contains(android.os.Build.MANUFACTURER.toLowerCase());
     }
 
     @Override
@@ -277,7 +298,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         Log.e(SettingsFragment.class.getName(), "onResume");
     }
@@ -286,35 +307,35 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.terms_text:
-                firebaseAnalytics.logEvent("terms_and_conditions",null);
+                firebaseAnalytics.logEvent("terms_and_conditions", null);
                 Intent intent = new Intent(getActivity(), TermsAndConditionsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.feedback_text:
-                firebaseAnalytics.logEvent("feedback",null);
+                firebaseAnalytics.logEvent("feedback", null);
                 this.eMailService.SendFeedbackEMail("");
                 break;
             case R.id.onBoarding_text:
-                firebaseAnalytics.logEvent("onboarding",null);
+                firebaseAnalytics.logEvent("onboarding", null);
                 Intent intent1 = new Intent(getActivity(), OnBoardingActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.history_text:
-                firebaseAnalytics.logEvent("alarm_history",null);
-                Intent i  = new Intent(getActivity(), AlarmHistoryActivity.class);
+                firebaseAnalytics.logEvent("alarm_history", null);
+                Intent i = new Intent(getActivity(), AlarmHistoryActivity.class);
                 startActivity(i);
                 break;
             case R.id.logout_text:
-                firebaseAnalytics.logEvent("logout",null);
+                firebaseAnalytics.logEvent("logout", null);
                 showLogoutPopup();
                 break;
             case R.id.payment_text:
-                firebaseAnalytics.logEvent("settings_payments",null);
+                firebaseAnalytics.logEvent("settings_payments", null);
                 displayPayment();
                 break;
             case R.id.profile_text:
-                firebaseAnalytics.logEvent("settings_profile",null);
-                Intent intent2  = new Intent(getActivity(), ProfileActivity.class);
+                firebaseAnalytics.logEvent("settings_profile", null);
+                Intent intent2 = new Intent(getActivity(), ProfileActivity.class);
                 startActivity(intent2);
                 break;
             default:
@@ -325,7 +346,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void displayPayment() {
         loadingSpinner.setVisibility(View.VISIBLE);
         Window currentWindow = getActivity().getWindow();
-        if(currentWindow!=null) {
+        if (currentWindow != null) {
             currentWindow.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             currentWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
@@ -373,10 +394,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
-    private void dismissLoadingCircle(){
+    private void dismissLoadingCircle() {
         loadingSpinner.setVisibility(View.INVISIBLE);
         Window currentWindow = getActivity().getWindow();
-        if(currentWindow!=null) {
+        if (currentWindow != null) {
             currentWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
     }

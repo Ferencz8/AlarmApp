@@ -18,7 +18,7 @@ import countingsheep.alarm.util.Constants;
 
 public class BaseActivity extends AppCompatActivity {
 
-    protected Activity activity;
+    protected AppCompatActivity activity;
     private static boolean customExceptionHandlerAttached = false;
     protected FirebaseAnalytics firebaseAnalytics;
 

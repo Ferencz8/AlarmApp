@@ -127,7 +127,7 @@ public class AlarmsFragment extends Fragment {
 
                 if(sharedPreferencesContainer.getFreeCredits() == 0 && !sharedPreferencesContainer.doesAllPaymentInformationExist()){
 
-                    dialogInteractor.displayInfoDialog(R.drawable.ic_icon_clock, "You have no more credits left. Please add a valid payment method.");
+                    dialogInteractor.displayInfoDialog(R.drawable.ic_icon_alert_layer, "You have no credits left. Add more in order to add an alarm.");
                 }
                 else{
                     Intent intent = new Intent(getView().getContext(), AddAlarmActivity.class);
