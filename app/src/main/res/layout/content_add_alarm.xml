@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,6 @@
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:clipToPadding="false"
             android:orientation="horizontal"
@@ -88,8 +87,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/snoozeTextView"
-            app:layout_constraintVertical_bias="0.84" />
+            app:layout_constraintTop_toBottomOf="@+id/snoozeTextView" />
 
         <TextView
             android:id="@+id/vibrateTextView"
@@ -164,13 +162,13 @@
             android:id="@+id/selectedRingtoneTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="20dp"
             android:text="None"
             android:textColor="@color/white_text_color"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/RingtoneText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/daysRecyclerView" />
+            app:layout_constraintTop_toTopOf="@+id/RingtoneText" />
 
         <TextView
             android:id="@+id/timeTextID"
@@ -195,7 +193,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="60dp"
             android:background="@drawable/add_alarm_title_border"
             android:ems="10"

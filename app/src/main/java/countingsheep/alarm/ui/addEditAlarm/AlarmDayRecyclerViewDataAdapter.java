@@ -2,12 +2,17 @@ package countingsheep.alarm.ui.addEditAlarm;
 
 import android.app.Activity;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import countingsheep.alarm.R;
@@ -24,6 +29,8 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
     private Activity activity;
 
     public List<String> getClickedItemsList() {
+        CustomComparator comparator = new CustomComparator();
+        Collections.sort(clickedItemsList, comparator);
         return clickedItemsList;
     }
 
@@ -40,7 +47,7 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
 
     public void markDaysAsSelected(List<String> itemsText) {
         for (AlarmDayRecyclerViewItem item : this.viewItemList) {
-            if(itemsText.contains(item.getText())) {
+            if (itemsText.contains(item.getText())) {
                 item.setImageResourceId(DaySelectedImage);
             }
         }
@@ -87,7 +94,7 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
 
 
                 //for edit repeat days
-                if(viewItem.getImageResourceId() > 0){
+                if (viewItem.getImageResourceId() > 0) {
                     markSelected(holder);
                     clickedItemsList.add(viewItem.getText());
                 }
@@ -95,14 +102,14 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
         }
     }
 
-    public void markUnSelected(AlarmDayRecyclerViewHolder holder){
+    public void markUnSelected(AlarmDayRecyclerViewHolder holder) {
         holder.setClicked(false);
 
         holder.getDayImageView().setImageResource(DayNotSelectedImage);
         holder.getTextView().setTextColor(activity.getResources().getColor(R.color.white_text_color, null));
     }
 
-    private void markSelected(AlarmDayRecyclerViewHolder holder){
+    private void markSelected(AlarmDayRecyclerViewHolder holder) {
         holder.setClicked(true);
         holder.getDayImageView().setImageResource(DaySelectedImage);
         holder.getTextView().setTextColor(activity.getResources().getColor(R.color.bt_color_primary_dark, null));
@@ -115,5 +122,23 @@ public class AlarmDayRecyclerViewDataAdapter extends RecyclerView.Adapter<AlarmD
             ret = viewItemList.size();
         }
         return ret;
+    }
+
+    public final class CustomComparator implements Comparator<String> {
+
+        private String[] items = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
+
+        @Override
+        public int compare(String a, String b) {
+            int ai = items.length, bi = items.length;
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].equalsIgnoreCase(a))
+                    ai = i;
+                if (items[i].equalsIgnoreCase(b))
+                    bi = i;
+            }
+            return ai - bi;
+        }
+
     }
 }
