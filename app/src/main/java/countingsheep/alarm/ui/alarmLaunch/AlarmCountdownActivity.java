@@ -8,6 +8,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -201,8 +203,8 @@ public class AlarmCountdownActivity extends BaseActivity {
     private void redirectToMainScreen(){
 
         activity.finish();
-        Intent intent = new Intent(AlarmCountdownActivity.this, MainActivity.class);
-        startActivity(intent);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack();
     }
 
     private void extractParameters(Bundle savedInstanceState) {
