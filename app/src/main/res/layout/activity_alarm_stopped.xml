@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/alarm_with_sheep_dialog_background">
+
+    <ImageView
+        android:id="@+id/sheep"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.45"
+        android:adjustViewBounds="true"
+        android:src="@drawable/sheep"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.35"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/dialogBg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_dialog"
+        android:adjustViewBounds="true"
+        app:layout_constraintWidth_percent="0.75"
+        android:layout_marginTop="@dimen/xlarge_margin"
+        app:layout_constraintTop_toBottomOf="@+id/sheep"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/dialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/xlarge_margin"
+        android:padding="@dimen/large_padding"
+        android:text="@string/dummy_sheep_awake_text"
+        android:textSize="@dimen/large_textsize"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@+id/dialogBg"
+        app:layout_constraintLeft_toLeftOf="@+id/dialogBg"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogBg"
+        app:layout_constraintRight_toRightOf="@+id/dialogBg"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

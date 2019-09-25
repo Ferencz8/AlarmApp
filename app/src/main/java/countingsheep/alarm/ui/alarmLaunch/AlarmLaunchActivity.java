@@ -243,7 +243,8 @@ public class AlarmLaunchActivity extends BaseActivity {
                             public void processResponse(Void response) {
 
                                 activity.finish();
-                                Intent intent = new Intent(AlarmLaunchActivity.this, MainActivity.class);
+//                                Intent intent = new Intent(AlarmLaunchActivity.this, MainActivity.class);
+                                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmStoppedActivity.class);
                                 startActivity(intent);
                             }
                         });

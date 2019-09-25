@@ -144,7 +144,8 @@ public class AlarmCountdownActivity extends BaseActivity {
                             @Override
                             public void processResponse(Void response) {
 
-                                redirectToMainScreen();
+                                //redirectToMainScreen();
+                                redirectToAwakeScreen();
                             }
                         });
                     }
@@ -179,10 +180,12 @@ public class AlarmCountdownActivity extends BaseActivity {
                         messageService.add(result, new OnAsyncResponse<Long>() {
                             @Override
                             public void processResponse(Long response) {
-                                NotificationHelper notificationHelper = new NotificationHelper(activity);
-                                notificationHelper.displayNotification("Your roast is here!!", "");
+//                                NotificationHelper notificationHelper = new NotificationHelper(activity);
+//                                notificationHelper.displayNotification("Your roast is here!!", "");
+//
+//                                redirectToMainScreen();
 
-                                redirectToMainScreen();
+                                redirectToRoastScreen(result.getId(), result.getContent());
                             }
                         });
                     }
@@ -202,6 +205,19 @@ public class AlarmCountdownActivity extends BaseActivity {
 
         activity.finish();
         Intent intent = new Intent(AlarmCountdownActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void redirectToAwakeScreen() {
+        finish();
+        startActivity(new Intent(this, AlarmStoppedActivity.class));
+    }
+
+    private void redirectToRoastScreen(int id, String roast) {
+        finish();
+        Intent intent = new Intent(this, AlarmRoastActivity.class);
+        intent.putExtra(AlarmRoastActivity.ARG_EXTRA_MSG_ID, id);
+        intent.putExtra(AlarmRoastActivity.ARG_EXTRA_ROAST, roast);
         startActivity(intent);
     }
 

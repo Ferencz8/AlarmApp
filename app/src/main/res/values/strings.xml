@@ -132,4 +132,10 @@
     <string name="price_template">$%d</string>
     <string name="dummy_credits_package_title">title</string>
     <string name="dummy_credits_package_description">It will last you one week</string>
+
+    <!-- Alarm Sheep Dialog -->
+    <string name="dummy_sheep_awake_text">Lorem ipsum dolor es, bravo te-ai trezit, cool, gg, sa fii sanatos</string>
+    <string name="reply">Reply</string>
+    <string name="send">Send</string>
+    <string name="type_your_message">Type ypur message here</string>
 </resources>

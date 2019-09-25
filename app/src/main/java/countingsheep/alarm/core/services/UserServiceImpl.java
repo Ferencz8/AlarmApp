@@ -5,6 +5,9 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.firestore.v1.TargetOrBuilder;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.domain.Comment;
 import countingsheep.alarm.core.domain.enums.CommentType;
@@ -17,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+@Singleton
 public class UserServiceImpl implements UserService {
     private String TAG = this.getClass().getName();
     private Retrofit retrofit;
@@ -24,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private NetworkStateInteractor networkStateInteractor;
     private TimeService timeService;
 
-
+    @Inject
     public UserServiceImpl(Retrofit retrofit, SharedPreferencesContainer sharedPreferencesContainer, NetworkStateInteractor networkStateInteractor, TimeService timeService) {
         this.retrofit = retrofit;
         this.sharedPreferencesContainer = sharedPreferencesContainer;
