@@ -1,4 +1,4 @@
-package countingsheep.alarm.payment.google_pay;
+package countingsheep.alarm.ui.payment;
 
 import android.app.Activity;
 
@@ -49,6 +49,10 @@ public class GooglePaymentsUtil {
 
     private static JSONObject getMerchantInfo() throws JSONException {
         return new JSONObject().put("merchantName", "Example Merchant");
+
+//        return new JSONObject()
+//                .put("merchantName", "Dark Sheep") // TODO check info and set for PROD
+//                .put("merchantId", "04066343836641766162");
     }
     //--------> END PAYMENT TRANSACTION
 

@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/large_textsize"
+            android:textSize="@dimen/xlarge_textsize"
             android:fontFamily="sans-serif"
             android:text="@string/locked_feature_title"
             android:padding="@dimen/default_margin"

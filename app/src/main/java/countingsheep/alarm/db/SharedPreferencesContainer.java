@@ -19,6 +19,7 @@ public class SharedPreferencesContainer {
     private final static String Token = "Token";
     private final static String DefaultSnoozePrice="DefaultSnoozePrice";
     private final static String FreeCredits="FreeCredits";
+    private final static String HasEndlessAccount="HasEndlessAccount";
     private final static String MoneySpentOnSnooze = "MoneySpentOnSnooze";
     private final static String ProfilePictureUrl = "ProfilePictureUrl";
     private final static String ProfilePicturePath = "ProfilePicturePath";
@@ -150,6 +151,14 @@ public class SharedPreferencesContainer {
 
     public void setFreeCredits(int amount) {
         changePreferenceValue(FreeCredits, amount);
+    }
+
+    public boolean hasEndlessAccount(){
+        return this.sharedPreferences.getBoolean(HasEndlessAccount, false);
+    }
+
+    public void setHasEndlessAccount(boolean hasEndlessAccount) {
+        changePreferenceValue(HasEndlessAccount, hasEndlessAccount);
     }
 
     public boolean doesAllPaymentInformationExist(){

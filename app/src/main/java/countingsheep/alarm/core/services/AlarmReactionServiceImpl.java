@@ -63,9 +63,12 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
 
                 if (isSnooze) {
                     int freeCreditsAmount = this.sharedPreferencesContainer.getFreeCredits();
+                    boolean hasEndlessAccount = sharedPreferencesContainer.hasEndlessAccount();
 
-                    if (freeCreditsAmount > 0) {
-                        this.sharedPreferencesContainer.setFreeCredits(--freeCreditsAmount);
+                    if (freeCreditsAmount > 0 || hasEndlessAccount) {
+                        if (!hasEndlessAccount) {
+                            this.sharedPreferencesContainer.setFreeCredits(--freeCreditsAmount);
+                        }
                         alarmReaction.setPayable(false);
                         alarmReactionRepository.insert(alarmReaction);
                     } else {
