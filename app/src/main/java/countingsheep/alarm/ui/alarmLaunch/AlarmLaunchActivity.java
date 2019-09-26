@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Handler;
@@ -243,7 +245,14 @@ public class AlarmLaunchActivity extends BaseActivity {
                             public void processResponse(Void response) {
 
                                 activity.finish();
-                                Intent intent = new Intent(AlarmLaunchActivity.this, MainActivity.class);
+
+//                                Intent intent = new Intent(AlarmLaunchActivity.this, MainActivity.class);
+
+                                //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                                FragmentManager fragmentManager = getSupportFragmentManager();
+//                                fragmentManager.popBackStack();
+
+                                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmStoppedActivity.class);
                                 startActivity(intent);
                             }
                         });

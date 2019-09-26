@@ -199,8 +199,8 @@
             android:layout_marginTop="24dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="Get Credits"
-            android:textColor="@color/colorAccent"
+            android:text="@string/get_credits"
+            android:textColor="@color/white_text_color"
             app:layout_constraintEnd_toEndOf="@+id/view1"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/view1"
@@ -215,9 +215,9 @@
             android:paddingBottom="10dp"
             android:text="Terms and Conditions"
             android:textColor="@color/white_text_color"
-            app:layout_constraintEnd_toEndOf="@+id/get_credits"
+            app:layout_constraintEnd_toEndOf="@+id/view1"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/get_credits"
+            app:layout_constraintStart_toStartOf="@+id/view1"
             app:layout_constraintTop_toBottomOf="@+id/get_credits" />
 
         <TextView

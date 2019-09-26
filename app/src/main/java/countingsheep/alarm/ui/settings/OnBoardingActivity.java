@@ -27,6 +27,7 @@ import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.adapters.SliderAdapter;
 import countingsheep.alarm.ui.freecredits.FreeCreditsActivity;
 import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
+import countingsheep.alarm.ui.payment.GetCreditsActivity;
 import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
 
 public class OnBoardingActivity extends BaseActivity implements View.OnClickListener {
@@ -141,7 +142,11 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
             case R.id.slideNextBtn:
                 if (reachedPaymentSlide) {
                     firebaseAnalytics.logEvent("onboarding_payment_now", null);
-                    displayPaymentDropIn();
+                    //displayPaymentDropIn();
+
+                    finish();
+                    startActivity(new Intent(OnBoardingActivity.this, MainActivity.class));
+                    startActivity(new Intent(OnBoardingActivity.this, GetCreditsActivity.class));
                 }
 
                 if (viewPager.getCurrentItem() < pagerAdapter.getCount() - 1) {

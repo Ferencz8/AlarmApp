@@ -5,28 +5,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import javax.inject.Inject;
 
@@ -35,14 +26,14 @@ import countingsheep.alarm.core.services.interfaces.SMSService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.infrastructure.NetworkStateReceiver;
 import countingsheep.alarm.ui.BaseActivity;
+import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
 import countingsheep.alarm.ui.roasts.RoastZoneFragment;
 import countingsheep.alarm.ui.settings.SettingsFragment;
-import countingsheep.alarm.ui.alarmList.AlarmsFragment;
 import countingsheep.alarm.ui.shared.DialogInteractor;
 import countingsheep.alarm.util.Constants;
 
-import static countingsheep.alarm.ui.settings.SettingsFragment.GOOGLE_PAY_REQUEST_CODE;
+import static countingsheep.alarm.ui.payment.GetCreditsActivity.GOOGLE_PAY_REQUEST_CODE;
 
 public class MainActivity extends BaseActivity {
     ConstraintLayout headerBar;

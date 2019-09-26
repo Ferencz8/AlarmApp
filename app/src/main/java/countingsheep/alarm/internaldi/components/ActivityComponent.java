@@ -6,6 +6,8 @@ import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.internaldi.modules.InfrastructureModule;
 import countingsheep.alarm.internaldi.modules.NetworkModule;
 import countingsheep.alarm.ui.alarmLaunch.AlarmCountdownActivity;
+import countingsheep.alarm.ui.alarmLaunch.AlarmRoastActivity;
+import countingsheep.alarm.ui.payment.GetCreditsActivity;
 import countingsheep.alarm.ui.roasts.RoastHistoryFragment;
 import countingsheep.alarm.ui.roasts.RoastZoneFragment;
 import countingsheep.alarm.ui.settings.AlarmHistoryActivity;
@@ -55,6 +57,8 @@ public interface ActivityComponent {
 
     void inject(AlarmCountdownActivity alarmCountdownActivity);
 
+    void inject(AlarmRoastActivity alarmRoastActivity);
+
     void inject(OnBoardingActivity onBoardingActivity);
 
     void inject(FreeCreditsActivity freeCreditsActivity);
@@ -62,4 +66,6 @@ public interface ActivityComponent {
     void inject(AlarmHistoryActivity alarmHistoryActivity);
     //void inject(CardActivity cardActivity);
     void inject(ProfileActivity profileActivity);
+
+    void inject(GetCreditsActivity getCreditsActivity);
 }

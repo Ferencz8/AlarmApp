@@ -122,4 +122,20 @@
     <!-- Locked Feature Dialog -->
     <string name="locked_feature_title">Error 404! Feature in development\nWhat do you think of it?</string>
 
+    <!-- Get Credits -->
+    <string name="get_credits">Get Credits</string>
+    <string name="error_no_credits_package_selected">Please select a package to continue</string>
+    <string name="success_credits_updated">Your payment was successful! The credits are added to your balance</string>
+    <string name="endless">endless</string>
+    <string name="snoozes">snoozes</string>
+    <string name="snoozes_number_template">%s snoozes</string>
+    <string name="price_template">$%d</string>
+    <string name="dummy_credits_package_title">title</string>
+    <string name="dummy_credits_package_description">It will last you one week</string>
+
+    <!-- Alarm Sheep Dialog -->
+    <string name="dummy_sheep_awake_text">Lorem ipsum dolor es, bravo te-ai trezit, cool, gg, sa fii sanatos</string>
+    <string name="reply">Reply</string>
+    <string name="send">Send</string>
+    <string name="type_your_message">Type ypur message here</string>
 </resources>

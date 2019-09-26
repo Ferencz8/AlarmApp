@@ -67,6 +67,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
 
                 if (isSnooze) {
                     int freeCreditsAmount = this.sharedPreferencesContainer.getFreeCredits();
+                    boolean hasEndlessAccount = sharedPreferencesContainer.hasEndlessAccount();
 
                     boolean eternalCredits = this.sharedPreferencesContainer.getEternalCredits();
                     if(eternalCredits){

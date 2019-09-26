@@ -5,6 +5,9 @@ import com.crashlytics.android.Crashlytics;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.domain.Comment;
 import countingsheep.alarm.core.domain.CreditsDto;
@@ -25,7 +28,6 @@ public class UserServiceImpl implements UserService {
     private SharedPreferencesContainer sharedPreferencesContainer;
     private NetworkStateInteractor networkStateInteractor;
     private TimeService timeService;
-
 
     @Inject
     public UserServiceImpl(Retrofit retrofit, SharedPreferencesContainer sharedPreferencesContainer, NetworkStateInteractor networkStateInteractor, TimeService timeService) {
