@@ -2,8 +2,12 @@ package countingsheep.alarm.db;
 
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import countingsheep.alarm.core.domain.CreditsDto;
 
 @Singleton
 public class SharedPreferencesContainer {
@@ -31,6 +35,7 @@ public class SharedPreferencesContainer {
     private final static String UserInitiatedShare = "UserInitiatedShare";
     private final static String UsernameTokens = "UsernameTokens";
     private final static String DelayTheAlarmForFree = "DelayTheAlarmForFree";
+    private final static String EternalCredits = "EternalCredits";
 
     private final static String Popup_ShowedRemoveAlarm = "ShowedRemoveAlarm";
     private final static String Popup_ShowedAskForPhoneNo = "ShowedAskForPhoneNo";
@@ -50,6 +55,16 @@ public class SharedPreferencesContainer {
         return this.sharedPreferences.getBoolean(DelayTheAlarmForFree, true);
     }
 
+
+
+    public void setEternalCredits() {
+
+        changePreferenceValue(EternalCredits, true);
+    }
+
+    public boolean getEternalCredits() {
+        return this.sharedPreferences.getBoolean(EternalCredits, false);
+    }
 
     public void increaseUsernameTokensCount() {
         int currentValue = getUsernameTokensCount();

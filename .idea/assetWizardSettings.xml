@@ -84,9 +84,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundImage" value="D:\Programming\GitHub\AlarmApp\extras\askForPhoneNo.svg" />
-                                      <entry key="foregroundLayerName" value="ic_ask_phone_no_layer" />
-                                      <entry key="outputName" value="ic_ask_phone_no" />
+                                      <entry key="foregroundImage" value="D:\Programming\GitHub\AlarmApp\extras\ic_icon_alert.svg" />
+                                      <entry key="foregroundLayerName" value="ic_icon_alert_layer" />
+                                      <entry key="outputName" value="ic_icon_alert" />
                                     </map>
                                   </option>
                                 </PersistentState>

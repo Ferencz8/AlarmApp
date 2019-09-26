@@ -1,12 +1,13 @@
 package countingsheep.alarm.core.services;
 
-import android.widget.Toast;
-
 import com.crashlytics.android.Crashlytics;
-import com.google.firestore.v1.TargetOrBuilder;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.domain.Comment;
+import countingsheep.alarm.core.domain.CreditsDto;
 import countingsheep.alarm.core.domain.enums.CommentType;
 import countingsheep.alarm.core.services.interfaces.UserService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
@@ -17,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+@Singleton
 public class UserServiceImpl implements UserService {
     private String TAG = this.getClass().getName();
     private Retrofit retrofit;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private TimeService timeService;
 
 
+    @Inject
     public UserServiceImpl(Retrofit retrofit, SharedPreferencesContainer sharedPreferencesContainer, NetworkStateInteractor networkStateInteractor, TimeService timeService) {
         this.retrofit = retrofit;
         this.sharedPreferencesContainer = sharedPreferencesContainer;
@@ -90,6 +93,25 @@ public class UserServiceImpl implements UserService {
             if(onResult!=null){
                 onResult.onFailure("No Internet connection detected.");
             }
+        }
+    }
+
+    @Override
+    public void syncCredits() {
+        if(this.networkStateInteractor.isNetworkAvailable()){
+
+            int credits = sharedPreferencesContainer.getFreeCredits();
+            boolean isEternal = sharedPreferencesContainer.getEternalCredits();
+            retrofit.create(UserAPI.class).updateCredits(sharedPreferencesContainer.getCurrentUserId(), credits, isEternal).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Crashlytics.logException(t);
+                }
+            });
         }
     }
 }

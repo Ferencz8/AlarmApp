@@ -125,7 +125,8 @@ public class AlarmsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(sharedPreferencesContainer.getFreeCredits() == 0 && !sharedPreferencesContainer.doesAllPaymentInformationExist()){
+                if(!sharedPreferencesContainer.getEternalCredits() && sharedPreferencesContainer.getFreeCredits() == 0){
+//                else if(sharedPreferencesContainer.getFreeCredits() == 0 && !sharedPreferencesContainer.doesAllPaymentInformationExist()){
 
                     dialogInteractor.displayInfoDialog(R.drawable.ic_icon_alert_layer, "You have no credits left. Add more in order to add an alarm.");
                 }

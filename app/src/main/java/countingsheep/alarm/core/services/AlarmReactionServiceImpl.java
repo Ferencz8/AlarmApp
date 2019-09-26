@@ -14,6 +14,7 @@ import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
 import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.core.services.interfaces.PaymentService;
+import countingsheep.alarm.core.services.interfaces.UserService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.AlarmHistoryEmbedded;
 import countingsheep.alarm.db.entities.AlarmReaction;
@@ -29,6 +30,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
     private TimeService timeService;
     private PaymentService paymentService;
     private SharedPreferencesContainer sharedPreferencesContainer;
+    private UserService userService;
 
     @Inject
     public AlarmReactionServiceImpl(AlarmReactionRepository alarmReactionRepository,
@@ -36,13 +38,15 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
                                     MessageService messageService,
                                     TimeService timeService,
                                     PaymentService paymentService,
-                                    SharedPreferencesContainer sharedPreferencesContainer) {
+                                    SharedPreferencesContainer sharedPreferencesContainer,
+                                    UserService userService) {
         this.alarmReactionRepository = alarmReactionRepository;
         this.alarmRepository = alarmRepository;
         this.messageService = messageService;
         this.timeService = timeService;
         this.paymentService = paymentService;
 
+        this.userService = userService;
         this.sharedPreferencesContainer = sharedPreferencesContainer;
     }
 
@@ -64,10 +68,16 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
                 if (isSnooze) {
                     int freeCreditsAmount = this.sharedPreferencesContainer.getFreeCredits();
 
-                    if (freeCreditsAmount > 0) {
+                    boolean eternalCredits = this.sharedPreferencesContainer.getEternalCredits();
+                    if(eternalCredits){
+                        alarmReaction.setPayable(false);
+                        alarmReactionRepository.insert(alarmReaction);
+                    }
+                    else if (freeCreditsAmount > 0) {
                         this.sharedPreferencesContainer.setFreeCredits(--freeCreditsAmount);
                         alarmReaction.setPayable(false);
                         alarmReactionRepository.insert(alarmReaction);
+                        this.userService.syncCredits();
                     } else {
                         alarmReaction.setPayable(true);
                         alarmReactionRepository.insert(alarmReaction, dbAlarmReactionId ->

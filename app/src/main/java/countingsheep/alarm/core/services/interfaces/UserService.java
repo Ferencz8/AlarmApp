@@ -7,4 +7,6 @@ public interface UserService {
     void sendRoastFeedback(int messageId, String content, OnResult onResult);
 
     void sendGeneralFeedback(String content, OnResult onResult);
+
+    void syncCredits();
 }

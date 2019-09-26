@@ -28,4 +28,7 @@ public interface UserAPI {
     @POST("/api/user/AddComment")
         //@POST("/api/user/register")
     Call<Void> addComment(@Body Comment comment);
+
+    @POST("/api/user/UpdateCredits")
+    Call<Void> updateCredits(@Query("userId")int userId, @Query("credits") int credits, @Query("isEternal")boolean isEternal);
 }
