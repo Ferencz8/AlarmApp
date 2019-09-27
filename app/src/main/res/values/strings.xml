@@ -129,7 +129,7 @@
     <string name="endless">endless</string>
     <string name="snoozes">snoozes</string>
     <string name="snoozes_number_template">%s snoozes</string>
-    <string name="price_template">$%d</string>
+    <string name="price_template">%d$</string>
     <string name="dummy_credits_package_title">title</string>
     <string name="dummy_credits_package_description">It will last you one week</string>
 

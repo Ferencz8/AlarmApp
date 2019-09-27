@@ -11,7 +11,10 @@ import javax.inject.Singleton;
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.domain.Comment;
 import countingsheep.alarm.core.domain.CreditsDto;
+import countingsheep.alarm.core.domain.FeatureDto;
 import countingsheep.alarm.core.domain.enums.CommentType;
+import countingsheep.alarm.core.domain.enums.Feature;
+import countingsheep.alarm.core.domain.enums.FeatureReaction;
 import countingsheep.alarm.core.services.interfaces.UserService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.infrastructure.NetworkStateInteractor;
@@ -114,6 +117,38 @@ public class UserServiceImpl implements UserService {
                     Crashlytics.logException(t);
                 }
             });
+        }
+    }
+
+    @Override
+    public void addFeatureReaction(Feature feature, FeatureReaction featureReaction, OnResult onResult) {
+        if(this.networkStateInteractor.isNetworkAvailable()){
+            FeatureDto featureDto = new FeatureDto();
+            featureDto.setFeature(feature);
+            featureDto.setFeatureReaction(featureReaction);
+            featureDto.setUserId(sharedPreferencesContainer.getCurrentUserId());
+            retrofit.create(UserAPI.class).addFeature(featureDto).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(onResult!=null){
+                        onResult.onSuccess(response);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                    Crashlytics.logException(t);
+                    if(onResult!=null) {
+                        onResult.onFailure();
+                    }
+                }
+            });
+        }
+        else{
+            if(onResult!=null){
+                onResult.onFailure("Internet connection not available!");
+            }
         }
     }
 }

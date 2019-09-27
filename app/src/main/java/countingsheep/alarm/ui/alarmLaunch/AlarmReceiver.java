@@ -60,10 +60,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                     }
 
                     if (shouldAlarmBeStarted(alarmDb)) {
-                        if(TextUtils.isEmpty(alarmDb.getRepeatDays()))
-                        {   //this was a one time alarm => turn it off after ringing
-                            alarmService.switchOnOf(alarmId, false);
-                        }
+//                        if(TextUtils.isEmpty(alarmDb.getRepeatDays()))
+//                        {   //this was a one time alarm => turn it off after ringing
+//                            alarmService.switchOnOf(alarmId, false);
+//                        }
 
                         Crashlytics.log(99, AlarmReceiver.class.getName(), "Alarm starting");
                         Bundle bundle = new Bundle();

@@ -141,6 +141,9 @@ public class AlarmCountdownActivity extends BaseActivity {
                         if (!alarmDb.getRepeatDays().isEmpty()) {
                             alarmLaunchHandler.registerAlarm(alarmId, TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
                         }
+                        else{
+                            alarmService.switchOnOf(alarmId, false);
+                        }
                         //register the awake
                         alarmReactionService.add(alarmId, false, new OnAsyncResponse<Void>() {
                             @Override

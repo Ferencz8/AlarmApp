@@ -63,14 +63,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private TextView payment;
     private TextView alarmHistory;
     private TextView logout;
-    private TextView spentTextView;
-    private TextView cashTextView;
+    private TextView cashSpentAmount;
+    private TextView creditsAmount;
     private TextView alarmCount;
     private TextView snoozeRate;
     private TextView profile;
     private TextView permissions;
     private TextView getCredits;
     private ProgressBar loadingSpinner;
+
 
     @Inject
     AuthenticationService authenticationService;
@@ -123,6 +124,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         getCredits.setOnClickListener(v -> startActivity(new Intent(requireActivity(), GetCreditsActivity.class)));
 
         checkCredits();
+        checkSpent();
 
         alarmReactionService.getAlarmsCount(new OnAsyncResponse<Integer>() {
             @Override
@@ -147,6 +149,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -155,8 +159,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void bindViews(View view) {
-        spentTextView = view.findViewById(R.id.spent);
-        cashTextView = view.findViewById(R.id.cash_text);
+        cashSpentAmount = view.findViewById(R.id.cash_text);
+        creditsAmount = view.findViewById(R.id.creditsTxtViewId);
         userPhoto = view.findViewById(R.id.user_photo);
         loadProfilePicture();
         permissions = view.findViewById(R.id.permissions_text);
@@ -278,29 +282,30 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private void checkCredits() {
         if (sharedPreferencesContainer != null) {
-            if (sharedPreferencesContainer.getFreeCredits() != 0) {
-                this.spentTextView.setText(getString(R.string.creditsLeft));
-                this.cashTextView.setText(getString(R.string.price_template, sharedPreferencesContainer.getFreeCredits()));
-            } else {
-                this.spentTextView.setText(getString(R.string.spent));
-                //TODO:: add real spent money
-                paymentService.getSumAmount(new OnAsyncResponse<Integer>() {
-                    @Override
-                    public void processResponse(Integer response) {
-                        if (response == null) {
-                            response = 0;
-                        }
-                        cashTextView.setText(getString(R.string.price_template, response));
-
-                    }
-                });
-            }
 
             if (sharedPreferencesContainer.hasEndlessAccount()) {
                 getCredits.setVisibility(View.GONE);
-                cashTextView.setText(getString(R.string.endless));
+
+                creditsAmount.setText(getString(R.string.endless));
+            }
+            else {
+                creditsAmount.setText(String.valueOf(sharedPreferencesContainer.getFreeCredits()));
             }
         }
+    }
+
+    private void checkSpent() {
+
+        //TODO:: add real spent money
+        paymentService.getSumAmount(new OnAsyncResponse<Integer>() {
+            @Override
+            public void processResponse(Integer response) {
+                if (response == null) {
+                    response = 0;
+                }
+                cashSpentAmount.setText(getString(R.string.price_template, response));
+            }
+        });
     }
 
     @Override

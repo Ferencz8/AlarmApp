@@ -1,6 +1,8 @@
 package countingsheep.alarm.core.services.interfaces;
 
 import countingsheep.alarm.core.contracts.OnResult;
+import countingsheep.alarm.core.domain.enums.Feature;
+import countingsheep.alarm.core.domain.enums.FeatureReaction;
 
 public interface UserService {
 
@@ -9,4 +11,6 @@ public interface UserService {
     void sendGeneralFeedback(String content, OnResult onResult);
 
     void syncCredits();
+
+    void addFeatureReaction(Feature feature, FeatureReaction featureReaction, OnResult onResult);
 }

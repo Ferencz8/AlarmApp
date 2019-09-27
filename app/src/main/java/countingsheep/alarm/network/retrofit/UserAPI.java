@@ -4,6 +4,7 @@ import countingsheep.alarm.core.domain.Comment;
 import countingsheep.alarm.core.domain.SavePhoneNoReq;
 import countingsheep.alarm.core.domain.User;
 import countingsheep.alarm.core.domain.UserRegistration;
+import countingsheep.alarm.core.domain.FeatureDto;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -31,4 +32,7 @@ public interface UserAPI {
 
     @POST("/api/user/UpdateCredits")
     Call<Void> updateCredits(@Query("userId")int userId, @Query("credits") int credits, @Query("isEternal")boolean isEternal);
+
+    @POST("/api/User/AddFeatureReaction")
+    Call<Void> addFeature(@Body FeatureDto featureDto);
 }

@@ -13,9 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import javax.inject.Inject;
+
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.domain.enums.Feature;
+import countingsheep.alarm.core.services.interfaces.UserService;
 
 import static countingsheep.alarm.db.entities.RoastZoneItem.OPT_BATTLE_FIELD;
 import static countingsheep.alarm.db.entities.RoastZoneItem.OPT_LEADERBOARD;
@@ -27,6 +31,9 @@ public class RoastZoneFragment extends Fragment implements RoastZoneRecyclerView
     protected FirebaseAnalytics firebaseAnalytics;
     private RecyclerView recyclerView;
     private RoastZoneRecyclerViewAdapter adapter;
+
+    @Inject
+    UserService userService;
 
     private static RoastZoneFragment fragment;
     public static synchronized RoastZoneFragment newInstance() {
@@ -69,21 +76,21 @@ public class RoastZoneFragment extends Fragment implements RoastZoneRecyclerView
                 if (act != null) act.setFragment(RoastHistoryFragment.newInstance(), true);
                 break;
             case OPT_ROAST_FRIEND:
-                showLocked();
+                showLocked(Feature.RoastAFriend);
                 break;
             case OPT_LEADERBOARD:
-                showLocked();
+                showLocked(Feature.LeaderBoard);
                 break;
             case OPT_ROAST_CHAT:
-                showLocked();
+                showLocked(Feature.RoastChat);
                 break;
             case OPT_BATTLE_FIELD:
-                showLocked();
+                showLocked(Feature.Battle);
                 break;
         }
     }
 
-    private void showLocked() {
-        new LockedFeatureDialog(requireContext()).show();
+    private void showLocked(Feature feature) {
+        new LockedFeatureDialog(requireContext(), userService, feature).show();
     }
 }

@@ -231,12 +231,17 @@ public class AlarmLaunchActivity extends BaseActivity {
 
                 sharedPreferencesContainer.setDelayTheAlarmForFree(true);
 
+
+
                 alarmService.get(alarmId, new OnAsyncResponse<Alarm>() {
                     @Override
                     public void processResponse(Alarm alarmDb) {
 
                         if(!alarmDb.getRepeatDays().isEmpty()){
                             alarmLaunchHandler.registerAlarm(alarmId,  TimeHelper.getTimeInMillisecondsAndDelayWithDays(alarmDb.getHour(), alarmDb.getMinutes(), 1));
+                        }
+                        else{
+                            alarmService.switchOnOf(alarmId, false);
                         }
 
                         //register the awake
