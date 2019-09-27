@@ -22,8 +22,6 @@ import countingsheep.alarm.ui.BaseActivity;
 public class AlarmRoastActivity extends BaseActivity {
     private Group roastLayout;
     private TextView roast;
-    private ImageView share;
-    private TextView reply;
     private Group replyLayout;
     private EditText replyText;
     private TextView send;
@@ -62,18 +60,14 @@ public class AlarmRoastActivity extends BaseActivity {
     private void bindViews() {
         roastLayout = findViewById(R.id.roastLayout);
         roast = findViewById(R.id.roast);
-        reply = findViewById(R.id.reply);
-        share = findViewById(R.id.share);
         replyLayout = findViewById(R.id.replyLayout);
         replyText = findViewById(R.id.replyText);
         send = findViewById(R.id.send);
 
         roast.setText(roastMsg);
         roast.setTypeface(font);
-        reply.setTypeface(font);
         replyText.setTypeface(font);
-        
-        reply.setOnClickListener(v -> replyLayout.setVisibility(View.VISIBLE));
+
         
         if (isFeedback) {
             roastLayout.setVisibility(View.VISIBLE);
