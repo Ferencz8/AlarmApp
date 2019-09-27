@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/alarm_with_sheep_dialog_background">
+    android:background="@drawable/new_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,32 +15,30 @@
             android:id="@+id/roastLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="sheep,dialogBg,roast,share,reply" />
+            app:constraint_referenced_ids="sheep,dialogBg,roast" />
 
         <ImageView
             android:id="@+id/sheep"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/sheep"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.467"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.128"
-            app:layout_constraintWidth_percent="0.4"
+            android:layout_marginStart="@dimen/xlarge_margin"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/little_sheep"
+            app:layout_constraintTop_toBottomOf="@id/dialogBg"
+            app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/dialogBg"
-            android:layout_width="286dp"
-            android:layout_height="235dp"
-            android:layout_marginLeft="36dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/xlarge_margin"
+            android:layout_marginTop="80dp"
             android:adjustViewBounds="true"
             android:src="@drawable/bg_dialog"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheep"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.7"
             tools:ignore="ContentDescription" />
 
@@ -50,52 +48,20 @@
             android:layout_height="127dp"
             android:layout_marginTop="@dimen/large_margin"
             android:padding="@dimen/default_padding"
-            android:textColor="@android:color/black"
+            tools:text="@string/dummy_sheep_awake_text"
             android:textSize="@dimen/default_textsize"
-            app:layout_constraintBottom_toTopOf="@+id/reply"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintLeft_toLeftOf="@+id/dialogBg"
-            app:layout_constraintRight_toRightOf="@+id/dialogBg"
+            android:textColor="@android:color/white"
             app:layout_constraintTop_toTopOf="@+id/dialogBg"
-            app:layout_constraintVertical_bias="1.0"
-            tools:text="@string/dummy_sheep_awake_text" />
-
-        <TextView
-            android:id="@+id/reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_round_solid_accent"
-            android:paddingLeft="@dimen/large_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingRight="@dimen/large_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:text="@string/reply"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/large_textsize"
-            app:layout_constraintBottom_toBottomOf="@+id/dialogBg"
-            app:layout_constraintRight_toRightOf="@+id/dialogBg" />
-
-        <ImageView
-            android:id="@+id/share"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            android:padding="@dimen/small_padding"
-            android:src="@drawable/ic_share"
-            app:layout_constraintBottom_toBottomOf="@+id/reply"
-            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintLeft_toLeftOf="@+id/dialogBg"
-            app:layout_constraintRight_toLeftOf="@+id/reply"
-            app:layout_constraintTop_toTopOf="@+id/reply"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintRight_toRightOf="@+id/dialogBg"/>
+
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/replyLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="replyBg,replyText,send"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/replyBg"
@@ -103,9 +69,9 @@
             android:layout_height="wrap_content"
             android:src="@drawable/reply_bg_dialog"
             android:adjustViewBounds="true"
-            app:layout_constraintWidth_percent="0.6"
+            app:layout_constraintWidth_percent="0.65"
             android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/xlarge_margin"
             app:layout_constraintTop_toBottomOf="@+id/dialogBg"
             app:layout_constraintBottom_toTopOf="@+id/send"
             app:layout_constraintRight_toRightOf="parent"
@@ -117,7 +83,7 @@
             android:layout_height="0dp"
             android:hint="@string/type_your_message"
             android:textSize="@dimen/default_textsize"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="@dimen/large_padding"
             android:paddingTop="@dimen/small_padding"
             android:paddingBottom="@dimen/default_padding"
@@ -125,6 +91,7 @@
             android:paddingRight="@dimen/default_padding"
             android:gravity="start|top"
             android:importantForAutofill="no"
+            android:textColorHint="@color/white_text_color"
             android:inputType="textMultiLine"
             android:background="@null"
             app:layout_constraintLeft_toLeftOf="@+id/replyBg"
@@ -136,20 +103,21 @@
             android:id="@+id/send"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.6"
-            android:text="@string/send"
-            android:textSize="@dimen/large_textsize"
-            android:textColor="@color/colorAccent"
-            android:background="@drawable/btn_round_solid_black"
-            android:paddingStart="64dp"
-            android:paddingEnd="64dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center"
             android:layout_margin="@dimen/large_margin"
+            android:background="@drawable/save_border"
+            android:gravity="center"
+            android:paddingStart="64dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="64dp"
+            android:paddingBottom="10dp"
+            android:text="@string/send"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/large_textsize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/replyBg"
+            app:layout_constraintWidth_percent="0.6" />
 
         <TextView
             android:id="@+id/darkSheepTxtView"
