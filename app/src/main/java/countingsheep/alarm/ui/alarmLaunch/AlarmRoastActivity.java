@@ -76,7 +76,7 @@ public class AlarmRoastActivity extends BaseActivity {
         reply.setOnClickListener(v -> replyLayout.setVisibility(View.VISIBLE));
         
         if (isFeedback) {
-            roastLayout.setVisibility(View.INVISIBLE);
+            roastLayout.setVisibility(View.VISIBLE);
             replyLayout.setVisibility(View.VISIBLE);
         }
 
