@@ -2,10 +2,16 @@ package countingsheep.alarm.ui.payment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +47,10 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
     private RecyclerView packagesGrid;
     private Button getPackage;
 
+    private ConstraintLayout headerBar;
+    private ImageView backBtn;
+    private TextView titleTv;
+
     private PaymentsClient paymentsClient;
     public static final int GOOGLE_PAY_REQUEST_CODE = 100;
     private CreditsPackage selectedPackage;
@@ -68,6 +78,19 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
 
         packagesGrid = findViewById(R.id.packagesGrid);
         getPackage = findViewById(R.id.getPackage);
+
+        headerBar = findViewById(R.id.headerBar);
+        backBtn = headerBar.findViewById(R.id.backBtn);
+        titleTv = headerBar.findViewById(R.id.titleTv);
+        Typeface bold_font = Typeface.createFromAsset(this.getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
+        titleTv.setTypeface(bold_font);
+        titleTv.setText(R.string.get_credits);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         packagesGrid.setLayoutManager(new GridLayoutManager(this, 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);

@@ -5,9 +5,12 @@
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
+.idea/*
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 /app/build
+/app/debug
+/app/release
 .idea/codeStyles/Project.xml

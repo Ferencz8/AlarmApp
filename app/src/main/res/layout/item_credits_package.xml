@@ -16,15 +16,14 @@
             android:id="@+id/packageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="title"
-            android:textSize="@dimen/large_textsize"
-            android:textColor="@color/colorSecondary"
             android:background="@drawable/bg_credits_package_title"
-            android:padding="@dimen/small_padding"
             android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/large_textsize"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="title" />
 
         <TextView
             android:id="@+id/packageCredits"
