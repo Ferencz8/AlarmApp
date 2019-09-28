@@ -26,12 +26,14 @@ import countingsheep.alarm.R;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Message;
+import countingsheep.alarm.ui.shared.EmptyAdapterDataObserver;
 
 public class RoastHistoryFragment extends Fragment {
     protected FirebaseAnalytics firebaseAnalytics;
     private List<Message> roasts;
     private RecyclerView recyclerView;
     private RoastListRecyclerViewDataAdapter adapter;
+    EmptyAdapterDataObserver dataObserver;
 
     @Inject
     MessageService messageService;
@@ -74,6 +76,8 @@ public class RoastHistoryFragment extends Fragment {
 
         // Set data adapter.
         recyclerView.setAdapter(adapter);
+        dataObserver = new EmptyAdapterDataObserver(adapter, view.findViewById(R.id.emptyList), recyclerView);
+        adapter.registerAdapterDataObserver(dataObserver);
 
         initRoasts();
 
@@ -102,6 +106,7 @@ public class RoastHistoryFragment extends Fragment {
         Log.e(RoastHistoryFragment.class.getName(), "InitRoasts");
         messageService.getRoastMessageHistory(response -> {
             adapter.updateData(response);
+            dataObserver.onChanged();
             recyclerView.scrollToPosition(1);
             Log.e(RoastHistoryFragment.class.getName(), "InitRoasts 2");
         });

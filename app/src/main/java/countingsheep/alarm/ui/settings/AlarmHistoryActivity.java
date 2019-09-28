@@ -25,6 +25,7 @@ import countingsheep.alarm.infrastructure.NotificationHelper;
 import countingsheep.alarm.ui.BaseActivity;
 import countingsheep.alarm.ui.adapters.AlarmHistoryRecyclerAdapter;
 import countingsheep.alarm.ui.settings.models.AlarmHistory;
+import countingsheep.alarm.ui.shared.EmptyAdapterDataObserver;
 
 public class AlarmHistoryActivity extends BaseActivity implements View.OnClickListener {
 
@@ -34,6 +35,7 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
     private ConstraintLayout headerBar;
     private ImageView backBtn;
     private TextView titleTv;
+    EmptyAdapterDataObserver dataObserver;
 
     @Inject
     AlarmReactionService alarmReactionService;
@@ -61,8 +63,10 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         });
-        adapter = new AlarmHistoryRecyclerAdapter(this,alarms );
+        adapter = new AlarmHistoryRecyclerAdapter(this, alarms);
         recyclerView.setAdapter(adapter);
+        dataObserver = new EmptyAdapterDataObserver(adapter, findViewById(R.id.emptyList), recyclerView);
+        adapter.registerAdapterDataObserver(dataObserver);
     }
 
     private void bindViews(){
@@ -82,6 +86,5 @@ public class AlarmHistoryActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
         }
-
     }
 }

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.protobuf.Empty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ import countingsheep.alarm.db.entities.PaymentStatus;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchHandler;
 import countingsheep.alarm.ui.shared.DialogInteractor;
+import countingsheep.alarm.ui.shared.EmptyAdapterDataObserver;
 import retrofit2.Retrofit;
 
 public class AlarmsFragment extends Fragment {
@@ -46,6 +48,7 @@ public class AlarmsFragment extends Fragment {
     RecyclerView recyclerView;
 
     AlarmListRecyclerViewDataAdapter adapter;
+    EmptyAdapterDataObserver dataObserver;
     List<Alarm> alarms = new ArrayList<Alarm>();
     ImageView addAlarm;
 
@@ -104,6 +107,9 @@ public class AlarmsFragment extends Fragment {
 
         // Set data adapter.
         recyclerView.setAdapter(adapter);
+
+        dataObserver = new EmptyAdapterDataObserver(adapter, view.findViewById(R.id.emptyList), recyclerView);
+        adapter.registerAdapterDataObserver(dataObserver);
 
 
         initAlarms();
@@ -165,6 +171,7 @@ public class AlarmsFragment extends Fragment {
         Log.e(AlarmsFragment.class.getName(), "initAlarms");
         alarmService.getAll(response -> {
             adapter.updateData(response);
+            dataObserver.onChanged();
             recyclerView.scrollToPosition(1);
             Log.e(AlarmsFragment.class.getName(), "initAlarms 2");
         });
