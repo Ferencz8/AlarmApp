@@ -14,6 +14,7 @@ import countingsheep.alarm.ui.settings.AlarmHistoryActivity;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
 import countingsheep.alarm.ui.settings.PermissionsFragment;
 import countingsheep.alarm.ui.settings.ProfileActivity;
+import countingsheep.alarm.ui.settings.RoastUsActivity;
 import countingsheep.alarm.ui.settings.SettingsFragment;
 import countingsheep.alarm.ui.addEditAlarm.AddAlarmActivity;
 import countingsheep.alarm.ui.alarmLaunch.AlarmLaunchActivity;
@@ -58,6 +59,8 @@ public interface ActivityComponent {
     void inject(AlarmCountdownActivity alarmCountdownActivity);
 
     void inject(AlarmRoastActivity alarmRoastActivity);
+
+    void inject(RoastUsActivity roastUsActivity);
 
     void inject(OnBoardingActivity onBoardingActivity);
 

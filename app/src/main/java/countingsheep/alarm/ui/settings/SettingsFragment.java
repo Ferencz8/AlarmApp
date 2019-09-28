@@ -42,14 +42,12 @@ import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.infrastructure.EMailServiceImpl;
 import countingsheep.alarm.network.tasks.ProfilePictureTask;
 import countingsheep.alarm.network.tasks.ProfilePictureTaskResponse;
-import countingsheep.alarm.ui.alarmLaunch.AlarmRoastActivity;
 import countingsheep.alarm.ui.payment.BraintreePaymentInteractor;
 import countingsheep.alarm.ui.payment.GetCreditsActivity;
 import countingsheep.alarm.ui.payment.OnPaymentInteractionResult;
 import countingsheep.alarm.util.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static countingsheep.alarm.ui.alarmLaunch.AlarmRoastActivity.ARG_IS_FEEDBACK;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "SettingsFragment";
@@ -319,8 +317,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.feedback_text:
                 firebaseAnalytics.logEvent("feedback", null);
 //                this.eMailService.SendFeedbackEMail("");
-                Intent feedbackIntent = new Intent(getActivity(), AlarmRoastActivity.class);
-                feedbackIntent.putExtra(ARG_IS_FEEDBACK, true);
+                Intent feedbackIntent = new Intent(getActivity(), RoastUsActivity.class);
                 startActivity(feedbackIntent);
                 break;
             case R.id.onBoarding_text:

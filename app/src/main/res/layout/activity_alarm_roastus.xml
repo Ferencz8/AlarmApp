@@ -11,39 +11,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/roastLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="sheep,dialogBg,roast" />
+        <include
+            android:id="@+id/headerBar"
+            layout="@layout/header_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/sheep"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:layout_marginStart="@dimen/xlarge_margin"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/little_sheep"
-            app:layout_constraintTop_toBottomOf="@id/dialogBg"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialogBg"
             tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/dialogBg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/xlarge_margin"
-            android:layout_marginTop="80dp"
+            android:layout_width="274dp"
+            android:layout_height="170dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="80dp"
             android:adjustViewBounds="true"
             android:src="@drawable/bg_dialog"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headerBar"
             app:layout_constraintWidth_percent="0.7"
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/roast"
+            android:id="@+id/roastusTxtId"
             android:layout_width="286dp"
             android:layout_height="127dp"
             android:layout_marginTop="@dimen/large_margin"
@@ -56,48 +58,47 @@
             app:layout_constraintRight_toRightOf="@+id/dialogBg"/>
 
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/replyLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="replyBg,replyText,send"
-            android:visibility="visible"/>
-
         <ImageView
             android:id="@+id/replyBg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/reply_bg_dialog"
+            android:layout_width="274dp"
+            android:layout_height="175dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="16dp"
             android:adjustViewBounds="true"
-            app:layout_constraintWidth_percent="0.65"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/xlarge_margin"
-            app:layout_constraintTop_toBottomOf="@+id/dialogBg"
+            android:src="@drawable/reply_bg_dialog"
             app:layout_constraintBottom_toTopOf="@+id/send"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialogBg"
+            app:layout_constraintWidth_percent="0.65"
             tools:ignore="ContentDescription" />
 
         <EditText
             android:id="@+id/replyText"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="@string/type_your_message"
-            android:textSize="@dimen/default_textsize"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="@dimen/large_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingBottom="@dimen/default_padding"
-            android:paddingLeft="@dimen/default_padding"
-            android:paddingRight="@dimen/default_padding"
-            android:gravity="start|top"
-            android:importantForAutofill="no"
-            android:textColorHint="@color/white_text_color"
-            android:inputType="textMultiLine"
+            android:layout_width="287dp"
+            android:layout_height="108dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="48dp"
             android:background="@null"
+            android:gravity="start|top"
+            android:hint="@string/type_your_message"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingRight="@dimen/default_padding"
+            android:paddingBottom="@dimen/default_padding"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/white_text_color"
+            android:textSize="@dimen/default_textsize"
+            app:layout_constraintBottom_toBottomOf="@+id/replyBg"
+            app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintLeft_toLeftOf="@+id/replyBg"
             app:layout_constraintRight_toRightOf="@+id/replyBg"
             app:layout_constraintTop_toTopOf="@+id/replyBg"
-            app:layout_constraintBottom_toBottomOf="@+id/replyBg"/>
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/send"
@@ -118,18 +119,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/replyBg"
             app:layout_constraintWidth_percent="0.6" />
-
-        <TextView
-            android:id="@+id/darkSheepTxtView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="DarkSheep:"
-            android:textColor="@color/background_color"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="53dp"
-            tools:layout_editor_absoluteY="240dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
