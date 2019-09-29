@@ -8,6 +8,8 @@
     <string name="roastus">Roast us</string>
     <string name="facebook_app_id">475075089689482</string>
     <string name="fb_login_protocol_scheme">fb475075089689482</string>
+    <string name="merchantId">04066343836641766162</string>
+    <string name="merchantName">DarkSheep</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_set_alarm">SetAlarmActivity</string>
     <string name="dark_sheep">DarkSheep</string>

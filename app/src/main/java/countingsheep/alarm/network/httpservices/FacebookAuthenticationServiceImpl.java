@@ -60,7 +60,7 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
     }
 
     public boolean isUserLoggedIn(){
-        return AccessToken.getCurrentAccessToken() != null;
+        return AccessToken.getCurrentAccessToken() != null && sharedPreferencesContainer.getCurrentUserId() != 0;
     }
 
     @Override

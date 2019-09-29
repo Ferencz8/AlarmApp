@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import countingsheep.alarm.R;
+
 import static com.google.android.gms.wallet.WalletConstants.ENVIRONMENT_TEST;
 
 public class GooglePaymentsUtil {
@@ -48,11 +50,11 @@ public class GooglePaymentsUtil {
     }
 
     private static JSONObject getMerchantInfo() throws JSONException {
-        return new JSONObject().put("merchantName", "Example Merchant");
+        //return new JSONObject().put("merchantName", "Example Merchant");
 
-//        return new JSONObject()
-//                .put("merchantName", "Dark Sheep") // TODO check info and set for PROD
-//                .put("merchantId", "04066343836641766162");
+        return new JSONObject()
+                .put("merchantName", "DarkSheep") // TODO check info and set for PROD
+                .put("merchantId", "04066343836641766162");
     }
     //--------> END PAYMENT TRANSACTION
 

@@ -104,13 +104,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         activity = this;
 
         if (socialAuthenticationService.isUserLoggedIn()) {
+            finish();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
-            finish();
         }
 
         setContentView(R.layout.activity_login);
-        printKeyHash();
+        //printKeyHash();
         bindViews();
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
         final Drawable drawableOff = getDrawable(R.drawable.ic_checked_box);
