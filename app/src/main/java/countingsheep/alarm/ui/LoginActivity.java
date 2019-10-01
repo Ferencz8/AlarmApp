@@ -56,6 +56,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Inject
     SocialAuthenticationService socialAuthenticationService;
+
     @Inject
     AuthenticationService authenticationService;
 

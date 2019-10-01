@@ -54,12 +54,13 @@
             android:id="@+id/shareRoast"
             android:layout_width="@dimen/item_roast_icon_size"
             android:layout_height="@dimen/item_roast_icon_size"
+            android:layout_marginTop="@dimen/default_margin"
             android:adjustViewBounds="true"
             android:padding="@dimen/small_margin"
-            app:srcCompat="@drawable/ic_share"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintTop_toBottomOf="@+id/roastContentId"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roastContentId"
+            app:srcCompat="@drawable/ic_share"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -67,12 +68,12 @@
             android:layout_width="@dimen/item_roast_icon_size"
             android:layout_height="@dimen/item_roast_icon_size"
             android:adjustViewBounds="true"
-            android:layout_marginEnd="@dimen/xsmall_margin"
             android:padding="@dimen/small_margin"
-            app:srcCompat="@drawable/ic_play"
-            app:layout_constraintTop_toTopOf="@+id/shareRoast"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/shareRoast"
             app:layout_constraintRight_toLeftOf="@+id/downloadRoast"
+            app:layout_constraintTop_toTopOf="@+id/shareRoast"
+            app:srcCompat="@drawable/ic_play"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -81,10 +82,11 @@
             android:layout_height="@dimen/item_roast_icon_size"
             android:adjustViewBounds="true"
             android:padding="@dimen/small_margin"
-            app:srcCompat="@drawable/ic_download"
-            app:layout_constraintTop_toTopOf="@+id/shareRoast"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/shareRoast"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/shareRoast"
+            app:srcCompat="@drawable/ic_download"
             tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

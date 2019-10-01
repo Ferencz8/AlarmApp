@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.381"
-        app:srcCompat="@drawable/ic_facebook_signup1" />
+        app:srcCompat="@drawable/ol5c2" />
 
 
     <RelativeLayout

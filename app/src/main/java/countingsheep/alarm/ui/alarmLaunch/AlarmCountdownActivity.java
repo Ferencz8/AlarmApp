@@ -188,9 +188,9 @@ public class AlarmCountdownActivity extends BaseActivity {
 //                                NotificationHelper notificationHelper = new NotificationHelper(activity);
 //                                notificationHelper.displayNotification("Your roast is here!!", "");
 //
-//                                redirectToMainScreen();
+                                redirectToMainScreen();
 
-                                redirectToRoastScreen(result.getId(), result.getContent());
+                                //redirectToRoastScreen(result.getId(), result.getContent());
                             }
                         });
                     }
@@ -208,9 +208,10 @@ public class AlarmCountdownActivity extends BaseActivity {
 
     private void redirectToMainScreen(){
 
-        activity.finish();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
+        finish();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.popBackStack();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void redirectToAwakeScreen() {

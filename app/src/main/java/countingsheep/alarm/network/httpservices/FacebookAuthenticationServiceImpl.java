@@ -40,8 +40,10 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
     private TimeService timeService;
     private List<OnSocialLoginResult> callbacks;
     private CallbackManager callbackManager;
-    private List<String> FacebookPermissions = Arrays.asList("email", "public_profile", "user_location", "user_hometown", "user_gender", "user_birthday");
-    private String FacebookUserFields = "id,email,last_name,first_name, picture, location, hometown, gender, birthday";
+    //private List<String> FacebookPermissions = Arrays.asList("email", "public_profile", "user_location", "user_hometown", "user_gender", "user_birthday");
+    private List<String> FacebookPermissions = Arrays.asList("email", "public_profile");
+//    private String FacebookUserFields = "id,email,last_name,first_name, picture, location, hometown, gender, birthday";
+    private String FacebookUserFields = "id,email,last_name,first_name, picture";
 
 
     @Inject
@@ -155,9 +157,9 @@ public class FacebookAuthenticationServiceImpl implements SocialAuthenticationSe
         user.firstName = object.optString("first_name", null);
         user.lastName = object.optString("last_name", null);
         user.email = object.optString("email", null);
-        user.gender = object.optString("gender", null);
-        user.location = object.optString("location", null);
-        user.birthday = this.timeService.getDateFromString(object.optString("birthday", null));
+//        user.gender = object.optString("gender", null);
+//        user.location = object.optString("location", null);
+//        user.birthday = this.timeService.getDateFromString(object.optString("birthday", null));
         return user;
     }
 }
