@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import javax.inject.Inject;
@@ -107,7 +108,6 @@ public class MainActivity extends BaseActivity {
         Injector.getActivityComponent(this).inject(this);
 
         askBootPermission();
-
 
         networkStateReceiverListener =  messageService.getRoastMessageNetworkStateListener(this);//smsService.getSMSNetworkStateListener();
         networkStateReceiver = new NetworkStateReceiver();

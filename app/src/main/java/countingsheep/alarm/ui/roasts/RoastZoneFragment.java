@@ -20,6 +20,7 @@ import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.domain.enums.Feature;
 import countingsheep.alarm.core.services.interfaces.UserService;
+import countingsheep.alarm.ui.shared.EmptyAdapterDataObserver;
 
 import static countingsheep.alarm.db.entities.RoastZoneItem.OPT_BATTLE_FIELD;
 import static countingsheep.alarm.db.entities.RoastZoneItem.OPT_LEADERBOARD;
@@ -31,6 +32,7 @@ public class RoastZoneFragment extends Fragment implements RoastZoneRecyclerView
     protected FirebaseAnalytics firebaseAnalytics;
     private RecyclerView recyclerView;
     private RoastZoneRecyclerViewAdapter adapter;
+    EmptyAdapterDataObserver dataObserver;
 
     @Inject
     UserService userService;
@@ -64,7 +66,8 @@ public class RoastZoneFragment extends Fragment implements RoastZoneRecyclerView
 
         adapter = new RoastZoneRecyclerViewAdapter(getActivity(), this);
         recyclerView.setAdapter(adapter);
-
+        dataObserver = new EmptyAdapterDataObserver(adapter, view.findViewById(R.id.emptyList), recyclerView);
+        adapter.registerAdapterDataObserver(dataObserver);
         return view;
     }
 
