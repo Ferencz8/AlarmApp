@@ -127,8 +127,11 @@
 
     <!-- Get Credits -->
     <string name="get_credits">Get Credits</string>
+    <string name="paid_in_local_currency">(in local currency)</string>
     <string name="error_no_credits_package_selected">Please select a package to continue</string>
     <string name="success_credits_updated">Your payment was successful! The credits are added to your balance</string>
+    <string name="payment_error">There was an error with the payment. Please choose another payment method or try again later</string>
+    <string name="error_no_credits_package_available">Sorry, there are no credits packages available</string>
     <string name="endless">endless</string>
     <string name="snoozes">snoozes</string>
     <string name="snoozes_number_template">%s snoozes</string>

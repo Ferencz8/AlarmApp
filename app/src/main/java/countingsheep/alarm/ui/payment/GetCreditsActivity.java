@@ -1,32 +1,32 @@
 package countingsheep.alarm.ui.payment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.wallet.AutoResolveHelper;
-import com.google.android.gms.wallet.IsReadyToPayRequest;
-import com.google.android.gms.wallet.PaymentData;
-import com.google.android.gms.wallet.PaymentDataRequest;
-import com.google.android.gms.wallet.PaymentsClient;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import org.json.JSONObject;
-
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,10 +37,8 @@ import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.CreditsPackage;
 import countingsheep.alarm.ui.BaseActivity;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
-public class GetCreditsActivity extends BaseActivity implements CreditsPackagesAdapter.CreditsPackageListener {
+public class GetCreditsActivity extends BaseActivity
+        implements CreditsPackagesAdapter.CreditsPackageListener, PurchasesUpdatedListener, ConsumeResponseListener {
     private static final String TAG = "GetCreditsActivity";
     protected FirebaseAnalytics firebaseAnalytics;
 
@@ -51,9 +49,10 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
     private ImageView backBtn;
     private TextView titleTv;
 
-    private PaymentsClient paymentsClient;
     public static final int GOOGLE_PAY_REQUEST_CODE = 100;
     private CreditsPackage selectedPackage;
+    private BillingClient billingClient;
+    private List<SkuDetails> skuDetailsList;
 
     @Inject
     SharedPreferencesContainer sharedPreferencesContainer;
@@ -65,6 +64,7 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
         setContentView(R.layout.fragment_get_credits);
 
         bindViews();
+        initPayment();
 
         Injector.getActivityComponent(this).inject(GetCreditsActivity.this);
 
@@ -73,9 +73,6 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
     }
 
     private void bindViews() {
-        paymentsClient = GooglePaymentsUtil.createPaymentsClient(this);
-        canShowGooglePayButton();
-
         packagesGrid = findViewById(R.id.packagesGrid);
         getPackage = findViewById(R.id.getPackage);
 
@@ -85,12 +82,7 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
         Typeface bold_font = Typeface.createFromAsset(this.getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         titleTv.setTypeface(bold_font);
         titleTv.setText(R.string.get_credits);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backBtn.setOnClickListener(v -> finish());
 
         packagesGrid.setLayoutManager(new GridLayoutManager(this, 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
@@ -110,89 +102,132 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
 
 
     //--- PAYMENT
-    private void canShowGooglePayButton() {
-        final JSONObject isReadyToPayJson = GooglePaymentsUtil.getIsReadyToPayRequest();
+    private int billingConnectionRetries = 0;
+    private void initPayment() {
+        billingClient = BillingClient
+                .newBuilder(this)
+                .enablePendingPurchases()
+                .setListener(this)
+                .build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // BillingClient is ready
+                    updateProductList();
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // BillingClient disconnected; try to restart the connection
+                if (billingConnectionRetries < 3) {
+                    billingConnectionRetries += 1;
 
-        if (isReadyToPayJson == null) {
-            return;
-        }
-
-        IsReadyToPayRequest request = IsReadyToPayRequest.fromJson(isReadyToPayJson.toString());
-        if (request == null) {
-            return;
-        }
-
-        Task<Boolean> task = GooglePaymentsUtil.createPaymentsClient(this).isReadyToPay(request);
-        task.addOnCompleteListener(this,
-                availabilityTask -> {
-                    if (availabilityTask.isSuccessful()) {
-                        setGooglePayAvailable(Objects.requireNonNull(availabilityTask.getResult()));
-                    } else {
-                        Log.e(TAG, "Payment through Google Pay cannot be started:\n" + availabilityTask.getException());
-                    }
-                });
+                    initPayment();
+                }
+            }
+        });
     }
 
-    private void setGooglePayAvailable(boolean isAvailable) {
-        if (isAvailable) {
-            getPackage.setVisibility(VISIBLE);
-        } else {
-            // TODO flow if Google Pay is not available
-            getPackage.setVisibility(GONE);
-        }
+    private void updateProductList() {
+        List<String> skuList = new ArrayList<>();
+        skuList.add("5credits"); skuList.add("25credits");
+        skuList.add("50credits"); skuList.add("eternalcredits");
+
+        // for testing purposes; TODO remove
+//        if (BuildConfig.DEBUG) {
+//            skuList.add("android.test.purchased");
+//            skuList.add("android.test.canceled");
+//            skuList.add("android.test.item_unavailable");
+//        }
+
+        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+        billingClient.querySkuDetailsAsync(params.build(), (billingResult, skuDetailsList) -> {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                this.skuDetailsList = skuDetailsList;
+            } else {
+                Log.e(TAG, "There are no credits packages defined in dev console");
+
+                Toast.makeText(this, getString(R.string.error_no_credits_package_available), Toast.LENGTH_LONG).show();
+
+                finish();
+            }
+        });
     }
 
     private void startPayment(CreditsPackage selectedPackage) {
-        JSONObject paymentDataRequestJson = GooglePaymentsUtil.getPaymentDataRequest(selectedPackage.getCost() + "");
-        if (paymentDataRequestJson == null) {
+        if (skuDetailsList == null || skuDetailsList.size() == 0) {
+            Log.e(TAG, "The list of credits packages is empty");
+
+            Toast.makeText(this, getString(R.string.error_no_credits_package_available), Toast.LENGTH_LONG).show();
+
             return;
         }
 
-        PaymentDataRequest request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString());
-        if (request != null) {
-            AutoResolveHelper.resolveTask(
-                    paymentsClient.loadPaymentData(request), this, GOOGLE_PAY_REQUEST_CODE);
+        String selectedSku = "";
+        switch (selectedPackage.getCredits()) {
+            case 5: selectedSku = "5credits"; break;
+            case 25: selectedSku = "25credits"; break;
+            case 50: selectedSku = "50credits"; break;
+            case 1000: selectedSku = "eternalcredits"; break;
         }
-    }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        for (SkuDetails skuDetail: skuDetailsList) {
+            // for testing purposes; TODO remove
+//            if (BuildConfig.DEBUG) {
+//                if (selectedSku.equals("5credits")) {
+//                    selectedSku = "android.test.purchased";
+//                }
+//                if (selectedSku.equals("25credits")) {
+//                    selectedSku = "android.test.canceled";
+//                }
+//                if (selectedSku.equals("50credits")) {
+//                    selectedSku = "android.test.item_unavailable";
+//                }
+//            }
 
-        if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    PaymentData paymentData = PaymentData.getFromIntent(data);
-
-                    onPaymentSuccess(paymentData);
-
-                    break;
-                case Activity.RESULT_CANCELED:
-                    // user cancelled the payment
-                    break;
-                case AutoResolveHelper.RESULT_ERROR:
-                    Status status = AutoResolveHelper.getStatusFromIntent(data);
-
-                    onPaymentError(status != null ? status.getStatusCode() : -1);
-
-                    break;
+            if (selectedSku.equals(skuDetail.getSku())) {
+                launchBillingFlow(skuDetail);
+                return;
             }
         }
     }
 
-    private void onPaymentSuccess(PaymentData paymentData) {
-        //TODO flow if Google Pay payment was successful
-        if (BuildConfig.DEBUG) {
-            Toast.makeText(this, "Master gave Dobby money; Dobby is a free elf", Toast.LENGTH_LONG).show();
+    private void launchBillingFlow(SkuDetails skuDetails) {
+        BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                .setSkuDetails(skuDetails)
+                .build();
+
+        billingClient.launchBillingFlow(this, flowParams);
+    }
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (Purchase purchase : purchases) {
+                consumePurchase(purchase.getPurchaseToken());
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Log.d(TAG, "User canceled the payment");
+        } else {
+            Log.e(TAG, "Payment failed with status code " + billingResult.getResponseCode());
+
+            Toast.makeText(this, getString(R.string.payment_error), Toast.LENGTH_LONG).show();
         }
+    }
 
+    private void consumePurchase(String purchaseToken) {
+        ConsumeParams consumeParams = ConsumeParams.newBuilder()
+                .setPurchaseToken(purchaseToken)
+                .build();
 
-        // obtain payment info
-        String paymentInformation = paymentData.toJson();
+        billingClient.consumeAsync(consumeParams, this);
+    }
 
-        if (paymentInformation == null) {
-            return;
-        }
-
+    @Override
+    public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+        // payment was consumed; give credits to user
         if (selectedPackage != null) {
             if (selectedPackage.isEndless()) {
                 //TODO sync with server and User entity
@@ -204,35 +239,9 @@ public class GetCreditsActivity extends BaseActivity implements CreditsPackagesA
             }
         }
 
-        JSONObject paymentMethodData;
-
-        try {
-            paymentMethodData = new JSONObject(paymentInformation).getJSONObject("paymentMethodData");
-            // ENV_TEST - dummy token is "examplePaymentMethodToken" for "example" merchant
-
-            JSONObject tokenizationData = paymentMethodData.getJSONObject("tokenizationData");
-            String token = tokenizationData.getString("token");
-            Log.d(TAG, "token obtained = " + token);
-
-
-            JSONObject billingData = paymentMethodData.getJSONObject("info");
-            String cardNetwork = billingData.getString("cardNetwork");
-            String cardLastDigits = billingData.getString("cardDetails");
-            Log.d(TAG, "card = " + cardNetwork + cardLastDigits);
-        } catch (Exception e) {
-            Log.e(TAG, "Error handling payment success");
-            e.printStackTrace();
-        }
-
         Toast.makeText(this, getString(R.string.success_credits_updated), Toast.LENGTH_LONG).show();
 
         GetCreditsActivity.this.finish();
-    }
-
-    private void onPaymentError(int statusCode) {
-        //TODO flow if Google Pay payment failed
-
-        Log.e(TAG, "Payment failed with status code " + statusCode);
     }
 
     @Override

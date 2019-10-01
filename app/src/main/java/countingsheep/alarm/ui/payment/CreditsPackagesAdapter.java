@@ -33,6 +33,7 @@ public class CreditsPackagesAdapter extends RecyclerView.Adapter<CreditsPackages
 
     private Typeface regularFont;
     private Typeface boldFont;
+    private Typeface italicFont;
 
     public CreditsPackagesAdapter(Context ctx, CreditsPackageListener listener) {
         this.ctx = ctx;
@@ -43,6 +44,7 @@ public class CreditsPackagesAdapter extends RecyclerView.Adapter<CreditsPackages
 
         regularFont = Typeface.createFromAsset(ctx.getAssets(), "fonts/AvenirNextLTPro-Regular.otf");
         boldFont = Typeface.createFromAsset(ctx.getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
+        italicFont = Typeface.createFromAsset(ctx.getAssets(), "fonts/AvenirNextLTPro-It.otf");
     }
 
     @NonNull
@@ -75,6 +77,8 @@ public class CreditsPackagesAdapter extends RecyclerView.Adapter<CreditsPackages
                 holder.price.setTypeface(boldFont);
                 holder.price.setText(ctx.getString(R.string.price_template, item.getCost()));
 
+                holder.priceHint.setTypeface(italicFont);
+
                 holder.selector.setVisibility(selectedPosition == position ? VISIBLE : GONE);
 
                 holder.itemView.setOnClickListener( v -> {
@@ -99,6 +103,7 @@ public class CreditsPackagesAdapter extends RecyclerView.Adapter<CreditsPackages
         TextView credits;
         TextView description;
         TextView price;
+        TextView priceHint;
         Group selector;
 
         CreditsPackageViewHolder(View itemView) {
@@ -108,6 +113,7 @@ public class CreditsPackagesAdapter extends RecyclerView.Adapter<CreditsPackages
             credits = itemView.findViewById(R.id.packageCredits);
             description = itemView.findViewById(R.id.packageDescription);
             price = itemView.findViewById(R.id.packagePrice);
+            priceHint = itemView.findViewById(R.id.packagePriceHint);
             selector = itemView.findViewById(R.id.selector);
         }
     }

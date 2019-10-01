@@ -65,8 +65,19 @@
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
             android:layout_marginTop="@dimen/default_margin"
-            android:paddingBottom="@dimen/default_padding"
             app:layout_constraintTop_toBottomOf="@+id/packageDescription"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/packagePriceHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paid_in_local_currency"
+            android:textSize="10sp"
+            android:textColor="@color/white_text_color"
+            android:paddingBottom="@dimen/default_padding"
+            app:layout_constraintTop_toBottomOf="@+id/packagePrice"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
