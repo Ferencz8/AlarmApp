@@ -85,7 +85,7 @@
             android:id="@+id/selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="selectorView, selectorCheck"
+            app:constraint_referenced_ids="selectorView,selectorCheck"
             android:visibility="gone" />
 
         <View
