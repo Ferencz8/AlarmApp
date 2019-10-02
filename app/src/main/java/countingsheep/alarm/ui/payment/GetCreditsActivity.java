@@ -85,9 +85,6 @@ public class GetCreditsActivity extends BaseActivity
         titleTv.setTypeface(bold_font);
         titleTv.setText(R.string.get_credits);
         backBtn.setOnClickListener(v -> {
-            if(sharedPreferencesContainer.shouldGiveFreeCredits())
-                startActivity(new Intent(GetCreditsActivity.this, FreeCreditsActivity.class));
-            else
                 finish();
         });
 
@@ -106,15 +103,6 @@ public class GetCreditsActivity extends BaseActivity
             }
         });
     }
-
-    @Override
-    public void onBackPressed() {
-        if(sharedPreferencesContainer.shouldGiveFreeCredits())
-            startActivity(new Intent(GetCreditsActivity.this, FreeCreditsActivity.class));
-        else
-            super.onBackPressed();
-    }
-
 
     //--- PAYMENT
     private int billingConnectionRetries = 0;

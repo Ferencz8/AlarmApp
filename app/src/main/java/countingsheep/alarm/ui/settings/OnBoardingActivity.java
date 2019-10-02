@@ -144,8 +144,8 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
                     firebaseAnalytics.logEvent("onboarding_payment_now", null);
                     //displayPaymentDropIn();
 
-                    finish();
-                    startActivity(new Intent(OnBoardingActivity.this, MainActivity.class));
+                    //finish();
+                    //startActivity(new Intent(OnBoardingActivity.this, MainActivity.class));
                     startActivity(new Intent(OnBoardingActivity.this, GetCreditsActivity.class));
                 }
 
