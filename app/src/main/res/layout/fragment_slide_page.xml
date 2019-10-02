@@ -28,7 +28,7 @@
         android:text="@string/i_agree_to_the_privacy_policy_nand_terms_of_service"
         android:textColor="@color/white_text_color"
         android:lineSpacingExtra="5dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
