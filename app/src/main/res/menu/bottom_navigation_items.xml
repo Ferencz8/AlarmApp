@@ -6,7 +6,7 @@
         android:title="Alarms"/>
     <item
         android:id="@+id/action_item2"
-        android:icon="@drawable/ic_bottom_menu_roast_zone"
+        android:icon="@drawable/flame_icon"
         android:title="Roast Zone"/>
     <item
         android:id="@+id/action_item3"

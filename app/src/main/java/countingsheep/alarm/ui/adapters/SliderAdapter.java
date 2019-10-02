@@ -27,12 +27,9 @@ public class SliderAdapter extends PagerAdapter {
     };
 
     private String[] slide_texts = {
-            "Basically, this is an alarm app. You" +
-                    "set the time you want to wake up" +
-            "at, and go to sleep. The good part"+
-            "comes in the morning.",
-            "Cause if you “Snooze”, you lose. " + "Money (credits), and some dignity." + "After snoozing, we also roast you." + "Hope that’s ok." + "We’ll have so much fun (on you).",
-            "Buy your first credits and let’s get" + "morning roasted! Or whatever, if" + "you’re poor, take the free trial." + "Anyway, see you in the morning!"
+            "Basically, this is an alarm app.\nYou set the time you want to wake\nup at, and go to sleep. The good\npart comes in the morning.",
+            "Cause if you “Snooze”, you lose.\nMoney (credits), and some dignity.\nAfter snoozing, we will also roast you.\nHope that’s ok.",
+            "Let's get started by buying credits!\nOr whatever, if you’re poor, take the\nfree trial. Anyway, see you in the\nmorning!"
     };
 
     public SliderAdapter(Context context, boolean displayPayment){
