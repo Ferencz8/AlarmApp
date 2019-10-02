@@ -14,28 +14,24 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:src="@mipmap/ic_sheep"
-        app:layout_constraintBottom_toTopOf="@+id/slideText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.688" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <TextView
         android:id="@+id/slideText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="@string/i_agree_to_the_privacy_policy_nand_terms_of_service"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textColor="@color/white_text_color"
+        android:lineSpacingExtra="5dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slideImage" />
+        app:layout_constraintTop_toBottomOf="@+id/slideImage"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
