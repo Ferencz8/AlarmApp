@@ -125,7 +125,7 @@ public class CreditsPackagesAdapter extends RecyclerView.Adapter<CreditsPackages
         String dummyDescription = ctx.getString(R.string.dummy_credits_package_description);
 
         CreditsPackage item1 = new CreditsPackage("Hookup", 5, false, "Poor \n Estimated 1 week relationship.", 5);
-        CreditsPackage item2 = new CreditsPackage("Friend Zone", 25, false, "Good start for a creeper, 1 month relationship.", 20);
+        CreditsPackage item2 = new CreditsPackage("Friend Zone", 25, false, "Good start for a creeper, 1 month relationship.\n", 20);
         CreditsPackage item3 = new CreditsPackage("Lucky Strike", 50, false, "Damn, you really snooze! Pull my finger.", 40);
         CreditsPackage item4 = new CreditsPackage("Marriage", 1000, true, "All you can or cannot eat, roasted for life!", 100);
 
