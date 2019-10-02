@@ -140,7 +140,8 @@
     <string name="dummy_credits_package_description">It will last you one week</string>
 
     <!-- Alarm Sheep Dialog -->
-    <string name="dummy_sheep_awake_text">Lorem ipsum dolor es, bravo te-ai trezit, cool, gg, sa fii sanatos</string>
+    <string name="dummy_sheep_awake_text">Poor man, if you had more money, you’d probably be sleeping right now. Anyway, congrats, go do your things &amp; see you tomorrow!</string>
+    <string name="dummy_sheep_roast_text">Well you know one thing. The saying &quot;Who gets up early gets far in life&quot; does not apply to you.</string>
     <string name="reply">Reply</string>
     <string name="send">Send</string>
     <string name="type_your_message">Type your message here</string>
