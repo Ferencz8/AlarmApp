@@ -256,10 +256,9 @@ public class AlarmLaunchActivity extends BaseActivity {
                                 //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //                                FragmentManager fragmentManager = getSupportFragmentManager();
 //                                fragmentManager.popBackStack();
-                                Intent intent = new Intent(AlarmLaunchActivity.this, MainActivity.class);
+
+                                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmStoppedActivity.class);
                                 startActivity(intent);
-//                                Intent intent = new Intent(AlarmLaunchActivity.this, AlarmStoppedActivity.class);
-//                                startActivity(intent);
                             }
                         });
                     }

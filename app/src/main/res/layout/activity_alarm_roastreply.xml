@@ -15,7 +15,7 @@
             android:id="@+id/roastLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="sheep,dialogBg,roast,share,reply" />
+            app:constraint_referenced_ids="sheep,dialogBg,roast" />
 
         <ImageView
             android:id="@+id/sheep"
@@ -36,24 +36,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="60dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/bg_dialog_bright"
             android:translationY="-30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sheep"
             app:layout_constraintWidth_percent="0.7"
-            tools:ignore="ContentDescription" />
+            app:srcCompat="@drawable/roast_msg_box"
+            tools:ignore="ContentDescription"
+            tools:srcCompat="@drawable/roast_msg_box" />
 
         <TextView
             android:id="@+id/roast"
-            android:layout_width="249dp"
-            android:layout_height="96dp"
+            android:layout_width="261dp"
+            android:layout_height="93dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@android:color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/dialogBg"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/dialogBg"
             app:layout_constraintTop_toBottomOf="@+id/darkSheepTxtView"
             tools:text="@string/dummy_sheep_awake_text" />
@@ -71,8 +73,10 @@
             android:text="@string/reply"
             android:textColor="@android:color/black"
             android:textSize="@dimen/large_textsize"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/dialogBg"
-            app:layout_constraintRight_toRightOf="@+id/dialogBg" />
+            app:layout_constraintRight_toRightOf="@+id/dialogBg"
+            tools:visibility="gone" />
 
         <ImageView
             android:id="@+id/share"
@@ -81,6 +85,7 @@
             android:adjustViewBounds="true"
             android:padding="@dimen/small_padding"
             android:src="@drawable/ic_share"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/reply"
             app:layout_constraintLeft_toLeftOf="@+id/dialogBg"
             app:layout_constraintRight_toLeftOf="@+id/reply"
@@ -91,7 +96,7 @@
             android:id="@+id/replyLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="replyBg,replyText,send" />
 
         <ImageView
@@ -158,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="8dp"
             android:text="DarkSheep:"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"

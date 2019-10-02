@@ -190,6 +190,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 startActivity(intent);
                             }
                             else {
+                                sharedPreferencesContainer.setCurrentUserId(user.id);
                                 finish();
                                 Intent intent = new Intent(LoginActivity.this, OnBoardingActivity.class);
                                 startActivity(intent);

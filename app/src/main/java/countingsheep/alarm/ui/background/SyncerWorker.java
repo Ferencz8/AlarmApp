@@ -1,6 +1,8 @@
 package countingsheep.alarm.ui.background;
 
 import androidx.annotation.NonNull;
+
+import android.content.Context;
 import android.util.Log;
 
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -59,15 +62,19 @@ public class SyncerWorker extends Worker {
     @Inject()
     PaymentDetailsRepository paymentDetailsRepository;
 
+    public SyncerWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+
 
     @NonNull
     @Override
-    public WorkerResult doWork() {
+    public Result doWork() {
 
         Injector.getServiceComponent(this.getApplicationContext()).inject(this);
 
         userId = this.sharedPreferencesContainer.getCurrentUserId();
-        if(userId==0) return WorkerResult.RETRY; //TODO:: CHECK MEANING, NEEDS SUCCESS?
+        if(userId==0) return Result.retry(); //TODO:: CHECK MEANING, NEEDS SUCCESS?
 
         try{
 
@@ -78,12 +85,12 @@ public class SyncerWorker extends Worker {
             //TODO:: maybe move in the future to a separate worker?
             //updatePaymentStatus();
 
-            return WorkerResult.SUCCESS;
+            return Result.success();
         }
         catch (Exception exception){
 
             Crashlytics.logException(exception);
-            return WorkerResult.FAILURE;
+            return Result.failure();
         }
     }
 

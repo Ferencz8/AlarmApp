@@ -65,8 +65,10 @@ public class AlarmRoastActivity extends BaseActivity {
         replyLayout.setVisibility(View.GONE);
         replyText = findViewById(R.id.replyText);
         replyBtn = findViewById(R.id.reply);
+        replyBtn.setVisibility(View.GONE);
         send = findViewById(R.id.send);
         share = findViewById(R.id.share);
+        share.setVisibility(View.GONE);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

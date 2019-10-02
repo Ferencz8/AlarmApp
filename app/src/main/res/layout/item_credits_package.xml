@@ -27,35 +27,35 @@
 
         <TextView
             android:id="@+id/packageCredits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="5 snoozes"
-            android:textSize="@dimen/large_textsize"
-            android:textColor="@color/colorAccent"
-            android:lines="2"
+            android:layout_width="147dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="@dimen/default_margin"
             android:gravity="center"
+            android:maxLines="2"
             android:paddingStart="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintTop_toBottomOf="@+id/packageTitle"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/packageTitle"
+            tools:text="5 snoozes" />
 
         <TextView
             android:id="@+id/packageDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="It will last you one week"
-            android:textSize="@dimen/small_textsize"
-            android:textColor="@color/colorAccent"
-            android:lines="2"
+            android:layout_marginTop="@dimen/default_margin"
             android:gravity="center"
+            android:maxLines="4"
             android:paddingStart="@dimen/large_padding"
             android:paddingEnd="@dimen/large_padding"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintTop_toBottomOf="@+id/packageCredits"
+            android:textColor="@color/colorAccent"
+            android:textSize="10sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/packageCredits"
+            tools:text="It will last you one week" />
 
         <TextView
             android:id="@+id/packagePrice"

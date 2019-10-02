@@ -54,15 +54,14 @@ public class ApiAuthenticationServiceImpl implements ApiAuthenticationService {
 
                         sharedPreferencesContainer.setFullname(registeredUser.getFullname());
                         sharedPreferencesContainer.setProfilePictureUrl(registeredUser.getProfilePictureUrl());
-                        sharedPreferencesContainer.setCustomerId(registeredUser.getCustomerId());
-                        sharedPreferencesContainer.setToken(registeredUser.getToken());
-                        if(!sharedPreferencesContainer.doesCustomerExist()){
-                            sharedPreferencesContainer.setDisplayPaymentInOnBoarding(true);
-                            sharedPreferencesContainer.allowFreeCredits(true);
-                        }
-                        sharedPreferencesContainer.setCurrentUserId(registeredUser.getUserId());
+
+                        sharedPreferencesContainer.setDisplayPaymentInOnBoarding(true);
+                        sharedPreferencesContainer.allowFreeCredits(true);
+
                         sharedPreferencesContainer.setMoneySpentOnSnooze(registeredUser.getMoneySpentOnSnooze());
 
+                        //todo:: hot fix
+                        user.id = registeredUser.getUserId();
                         if(onSocialLoginResult!=null) {
                             onSocialLoginResult.onSuccess(user);
                         }

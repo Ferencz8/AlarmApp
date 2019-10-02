@@ -8,24 +8,12 @@
     android:orientation="vertical">
 
 
-    <ImageView
-        android:id="@+id/freecreditImg"
-        android:layout_width="280dp"
-        android:layout_height="145dp"
-        android:layout_marginTop="80dp"
-        android:adjustViewBounds="false"
-        android:cropToPadding="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/freecreditTxt"
-        app:srcCompat="@drawable/ic_credits_3_dollars" />
-
     <TextView
         android:id="@+id/freecreditTxt"
         android:layout_width="334dp"
         android:layout_height="155dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:fontFamily=""
         android:text="@string/creditsText"
@@ -33,7 +21,7 @@
         android:textColor="@color/white_text_color"
         android:textSize="21sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.639"
+        app:layout_constraintHorizontal_bias="0.688"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/creditsText" />
@@ -43,13 +31,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/freecreditImg"
-        app:layout_constraintVertical_bias="0.67"
         app:srcCompat="@drawable/ic_gettingstartedbutton" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="161dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/gettingStartedBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/freecreditTxt"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_credits_3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -188,9 +188,9 @@ public class AlarmCountdownActivity extends BaseActivity {
 //                                NotificationHelper notificationHelper = new NotificationHelper(activity);
 //                                notificationHelper.displayNotification("Your roast is here!!", "");
 //
-                                redirectToMainScreen();
+                                //redirectToMainScreen();
 
-                                //redirectToRoastScreen(result.getId(), result.getContent());
+                                redirectToRoastScreen(result.getId(), result.getContent());
                             }
                         });
                     }
