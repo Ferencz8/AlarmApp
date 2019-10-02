@@ -13,6 +13,7 @@
     <dimen name="small_padding">@dimen/small_margin</dimen>
     <dimen name="default_padding">@dimen/default_margin</dimen>
     <dimen name="large_padding">@dimen/large_margin</dimen>
+    <dimen name="xlarge_padding">@dimen/xlarge_margin</dimen>
 
     <dimen name="small_textsize">14sp</dimen>
     <dimen name="default_textsize">16sp</dimen>
