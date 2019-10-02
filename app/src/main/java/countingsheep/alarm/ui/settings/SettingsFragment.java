@@ -183,6 +183,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "+10 credits", Toast.LENGTH_LONG).show();
                     sharedPreferencesContainer.increaseFreeCredits(10);
                     sharedPreferencesContainer.resetUsernameTokensCount();
+                    creditsAmount.setText(String.valueOf(sharedPreferencesContainer.getFreeCredits()));
                 } else {
                     sharedPreferencesContainer.increaseUsernameTokensCount();
                 }

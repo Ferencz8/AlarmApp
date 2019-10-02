@@ -88,11 +88,11 @@ public class RoastZoneRecyclerViewAdapter extends RecyclerView.Adapter<RoastZone
         Resources res = activity.getResources();
         String dummyText = res.getString(R.string.lorem_ipsum_small);
 
-        RoastZoneItem item1 = new RoastZoneItem(res.getString(R.string.your_roasts_title), dummyText, false);
-        RoastZoneItem item2 = new RoastZoneItem(res.getString(R.string.roast_friend_title), dummyText, true);
-        RoastZoneItem item3 = new RoastZoneItem(res.getString(R.string.leaderboard_title), dummyText, true);
-        RoastZoneItem item4 = new RoastZoneItem(res.getString(R.string.roast_chat_title), dummyText, true);
-        RoastZoneItem item5 = new RoastZoneItem(res.getString(R.string.battle_field_title), dummyText, true);
+        RoastZoneItem item1 = new RoastZoneItem(res.getString(R.string.your_roasts_title), "Remember all those jokes about you from mornings? Thank god they are all here.", false);
+        RoastZoneItem item2 = new RoastZoneItem(res.getString(R.string.roast_friend_title), "Not sure if it’s legal yet. But once we’ll find a way, you’ll be able to piss off your friends anonymously, so that doesn’t make you a bad friend.", true);
+        RoastZoneItem item3 = new RoastZoneItem(res.getString(R.string.leaderboard_title), "Here is your turn to roast DarkSheep! Do you feel funny enough to make me cry? If you succeed, your masterpiece will appear weekly in this section. ", true);
+        RoastZoneItem item4 = new RoastZoneItem(res.getString(R.string.roast_chat_title), "Wonder where you can find confused people similar to you? Roast chat will be the right place for you, roasting with others whenever & whatever bothers you.", true);
+        RoastZoneItem item5 = new RoastZoneItem(res.getString(R.string.battle_field_title), "Through this, you’ll be able to finally win something. Compete with friends on morning productivity and win what others are losing. Only money, dignity is irreversible in your case.\n", true);
 
         menuItems.add(item1); menuItems.add(item2); menuItems.add(item3); menuItems.add(item4); menuItems.add(item5);
 

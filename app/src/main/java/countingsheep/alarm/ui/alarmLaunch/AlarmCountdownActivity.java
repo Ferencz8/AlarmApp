@@ -149,8 +149,8 @@ public class AlarmCountdownActivity extends BaseActivity {
                             @Override
                             public void processResponse(Void response) {
 
-                                //redirectToMainScreen();
-                                redirectToAwakeScreen();
+                                redirectToMainScreen();
+                                //redirectToAwakeScreen();
                             }
                         });
                     }

@@ -51,7 +51,7 @@ public class FreeCreditsActivity extends BaseActivity {
 
     private void setFreeCredits() {
         if(this.sharedPreferencesContainer!=null && this.sharedPreferencesContainer.shouldGiveFreeCredits()){
-            this.sharedPreferencesContainer.setFreeCredits(5);
+            this.sharedPreferencesContainer.setFreeCredits(3);
             this.sharedPreferencesContainer.allowFreeCredits(false);
         }
     }

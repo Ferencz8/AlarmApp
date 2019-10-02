@@ -27,11 +27,12 @@ public class SliderAdapter extends PagerAdapter {
     };
 
     private String[] slide_texts = {
-            "Mornings aren’t fun for anybody. \n" +
-                    "Excessive snoozes? Try something which make you feel bad if you snooze.",
-            "Here is how we’re gonna kill \n" + "snoozes. Every snooze you’ll have is a dollar we’re gonna take from you. You can hate us, at least you’d be \n" + " awake.",
-            "Let’s get started! \n" +
-                    "Don’t panic & introduce your card details. We only charge the laziness. "
+            "Basically, this is an alarm app. You" +
+                    "set the time you want to wake up" +
+            "at, and go to sleep. The good part"+
+            "comes in the morning.",
+            "Cause if you “Snooze”, you lose. " + "Money (credits), and some dignity." + "After snoozing, we also roast you." + "Hope that’s ok." + "We’ll have so much fun (on you).",
+            "Buy your first credits and let’s get" + "morning roasted! Or whatever, if" + "you’re poor, take the free trial." + "Anyway, see you in the morning!"
     };
 
     public SliderAdapter(Context context, boolean displayPayment){

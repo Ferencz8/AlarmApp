@@ -111,7 +111,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 
         setContentView(R.layout.activity_login);
-        //printKeyHash();
+        printKeyHash();
         bindViews();
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
         final Drawable drawableOff = getDrawable(R.drawable.ic_checked_box);
