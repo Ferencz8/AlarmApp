@@ -120,11 +120,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    SignUpButton.setImageResource(R.drawable.ic_group_21);
+                    SignUpButton.setAlpha(1f);
                     checkBox.setBackground(drawable);
 
                 } else {
-                    SignUpButton.setImageResource(R.drawable.ic_facebook_signup1);
+                    SignUpButton.setAlpha(0.7f);
                     checkBox.setBackground(drawableOff);
                 }
             }
