@@ -1,18 +1,17 @@
 package countingsheep.alarm.ui.background;
 
-import androidx.annotation.NonNull;
-
 import android.content.Context;
 import android.util.Log;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.crashlytics.android.Crashlytics;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.core.contracts.data.OnAsyncResponse;
@@ -21,7 +20,9 @@ import countingsheep.alarm.core.services.interfaces.AlarmReactionService;
 import countingsheep.alarm.core.services.interfaces.AlarmService;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
+import countingsheep.alarm.db.entities.Alarm;
 import countingsheep.alarm.db.entities.AlarmReaction;
+import countingsheep.alarm.db.entities.Message;
 import countingsheep.alarm.db.entities.PaymentDetails;
 import countingsheep.alarm.db.entities.PaymentStatus;
 import countingsheep.alarm.network.retrofit.AlarmAPI;
@@ -29,8 +30,6 @@ import countingsheep.alarm.network.retrofit.AlarmReactionAPI;
 import countingsheep.alarm.network.retrofit.MessageAPI;
 import countingsheep.alarm.network.retrofit.PaymentAPI;
 import countingsheep.alarm.network.retrofit.UserWrappedEntities;
-import countingsheep.alarm.db.entities.Alarm;
-import countingsheep.alarm.db.entities.Message;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
