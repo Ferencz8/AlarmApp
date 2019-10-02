@@ -109,8 +109,8 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
                 slideBackBtn.setVisibility(View.VISIBLE);
 
                 if (viewPager.getCurrentItem() == pagerAdapter.getCount() - 1 && sharedPreferencesContainer.getDisplayPaymentInOnBoarding()) {
-                    slideBackBtn.setText("Not now");
-                    slideNextBtn.setText("Now");
+                    slideBackBtn.setText("Free trial");
+                    slideNextBtn.setText("Get Credits");
                     reachedPaymentSlide = true;
                 } else {
                     slideBackBtn.setText("Back");

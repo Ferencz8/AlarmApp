@@ -1,5 +1,6 @@
 package countingsheep.alarm.ui.payment;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,12 +31,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import countingsheep.alarm.BuildConfig;
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.CreditsPackage;
 import countingsheep.alarm.ui.BaseActivity;
+import countingsheep.alarm.ui.freecredits.FreeCreditsActivity;
 
 public class GetCreditsActivity extends BaseActivity
         implements CreditsPackagesAdapter.CreditsPackageListener, PurchasesUpdatedListener, ConsumeResponseListener {
@@ -82,7 +84,12 @@ public class GetCreditsActivity extends BaseActivity
         Typeface bold_font = Typeface.createFromAsset(this.getAssets(), "fonts/AvenirNextLTPro-Bold.otf");
         titleTv.setTypeface(bold_font);
         titleTv.setText(R.string.get_credits);
-        backBtn.setOnClickListener(v -> finish());
+        backBtn.setOnClickListener(v -> {
+            if(sharedPreferencesContainer.shouldGiveFreeCredits())
+                startActivity(new Intent(GetCreditsActivity.this, FreeCreditsActivity.class));
+            else
+                finish();
+        });
 
         packagesGrid.setLayoutManager(new GridLayoutManager(this, 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
@@ -98,6 +105,14 @@ public class GetCreditsActivity extends BaseActivity
                 startPayment(this.selectedPackage);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(sharedPreferencesContainer.shouldGiveFreeCredits())
+            startActivity(new Intent(GetCreditsActivity.this, FreeCreditsActivity.class));
+        else
+            super.onBackPressed();
     }
 
 
