@@ -97,6 +97,9 @@ public class AlarmRoastActivity extends BaseActivity {
                     public void onSuccess(Object result) {
                         Toast.makeText(activity, "Thank you for your comeback", Toast.LENGTH_SHORT).show();
                         AlarmRoastActivity.this.finish();
+                        Intent setIntent = new Intent(AlarmRoastActivity.this, MainActivity.class);
+                        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(setIntent);
                     }
 
                     @Override
