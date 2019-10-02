@@ -1,5 +1,6 @@
 package countingsheep.alarm.ui.alarmLaunch;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import androidx.constraintlayout.widget.Group;
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
+import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.services.interfaces.UserService;
@@ -65,7 +67,6 @@ public class AlarmRoastActivity extends BaseActivity {
         replyLayout.setVisibility(View.GONE);
         replyText = findViewById(R.id.replyText);
         replyBtn = findViewById(R.id.reply);
-        replyBtn.setVisibility(View.GONE);
         send = findViewById(R.id.send);
         share = findViewById(R.id.share);
         share.setVisibility(View.GONE);
@@ -96,6 +97,9 @@ public class AlarmRoastActivity extends BaseActivity {
                     public void onSuccess(Object result) {
                         Toast.makeText(activity, "Thank you for your comeback", Toast.LENGTH_SHORT).show();
                         AlarmRoastActivity.this.finish();
+                        Intent setIntent = new Intent(AlarmRoastActivity.this, MainActivity.class);
+                        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(setIntent);
                     }
 
                     @Override
@@ -105,5 +109,12 @@ public class AlarmRoastActivity extends BaseActivity {
                 });
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent setIntent = new Intent(AlarmRoastActivity.this, MainActivity.class);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
     }
 }
