@@ -120,14 +120,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
         final Drawable drawableOff = getDrawable(R.drawable.ic_checked_box);
 
+        privacyPolicyCheckBox.setBackground(drawableOff);
+        tccheckBox.setBackground(drawableOff);
         tccheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
+                    termsAndCondIsChecked = true;
                     tccheckBox.setBackground(drawable);
                 }
                 else
                 {
+                    termsAndCondIsChecked = false;
                     tccheckBox.setBackground(drawableOff);
                 }
 
@@ -145,10 +149,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
+                    privacyPolicyIsChecked = true;
                     privacyPolicyCheckBox.setBackground(drawable);
 
                 } else {
-
+                    privacyPolicyIsChecked = false;
                     privacyPolicyCheckBox.setBackground(drawableOff);
                 }
 
