@@ -29,8 +29,8 @@ public class AlarmApplication extends Application {
     private void startSyncWorkJob(){
 
         final PeriodicWorkRequest periodicSyncWorkRequest = new PeriodicWorkRequest
-                //.Builder(SyncerWorker.class, 24, TimeUnit.HOURS)
-                .Builder(SyncerWorker.class, 16, TimeUnit.MINUTES)
+                .Builder(SyncerWorker.class, 24, TimeUnit.HOURS)
+                //.Builder(SyncerWorker.class, 16, TimeUnit.MINUTES)
                 .addTag("periodic_sync_work")
                 .build();
         WorkManager.getInstance().enqueue(periodicSyncWorkRequest);

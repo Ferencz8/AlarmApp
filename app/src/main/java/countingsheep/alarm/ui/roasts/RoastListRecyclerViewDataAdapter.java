@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import countingsheep.alarm.R;
+import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Message;
@@ -28,12 +30,15 @@ public class RoastListRecyclerViewDataAdapter extends RecyclerView.Adapter<Roast
     private Activity activity;
     private MessageService messageService;
     private SharedPreferencesContainer sharedPreferencesContainer;
+    private ShareHelper shareHelper;
 
-    public RoastListRecyclerViewDataAdapter(Activity activity, List<Message> viewItemList, MessageService messageService, SharedPreferencesContainer sharedPreferencesContainer) {
+    public RoastListRecyclerViewDataAdapter(Activity activity, List<Message> viewItemList, MessageService messageService, SharedPreferencesContainer sharedPreferencesContainer,
+                                            ShareHelper shareHelper) {
         this.viewItemList = viewItemList;
         this.activity = activity;
         this.messageService= messageService;
         this.sharedPreferencesContainer = sharedPreferencesContainer;
+        this.shareHelper = shareHelper;
     }
 
     @Override
@@ -66,10 +71,20 @@ public class RoastListRecyclerViewDataAdapter extends RecyclerView.Adapter<Roast
                 }
 
                 holder.getShareImageView().setOnClickListener(v -> {
-                    sharedPreferencesContainer.setUserInitiatedShare(true);
-                    ShareHelper shareHelper = new ShareHelper(activity);
-                    shareHelper.displayShare("Hello", "This is the Santa Clause of Roasting App");
-                    messageService.markMessageShared(v.getId());
+                    shareHelper.displayShare("Hello", "This is the Santa Clause of Roasting App", new OnResult() {
+                        @Override
+                        public void onSuccess(Object result) {
+
+                            messageService.markMessageShared(v.getId());
+                            sharedPreferencesContainer.increaseFreeCredits(5);
+                            Toast.makeText(activity, "+ 5 Credits", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFailure(){
+                            Toast.makeText(activity, "Try again!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
 
                 holder.getPlayVoiceoverImageView().setOnClickListener(v -> {

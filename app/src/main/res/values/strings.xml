@@ -4,6 +4,7 @@
     <string name="i_have_read">I have read and agree to the</string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
     <string name="permissions">Permissions</string>
     <string name="roastus">Roast us</string>
     <string name="facebook_app_id">475075089689482</string>
@@ -16,99 +17,162 @@
     <string name="logout_text">Are you sure you want\n to <b>Log Out?</b></string>
     <string name="alarm_history">Alarm History</string>
     <string name="profile">Profile</string>
-    <string name="i_agree_to_the_privacy_policy_nand_terms_of_service">I agree to the Privacy policy and \nTerms of Service</string>
+    <string name="i_agree_to_the_terms_of_service">I have read and agree to the Terms of Service</string>
+    <string name="i_agree_to_the_privacy_policy">I have read and agree to the Privacy Policy</string>
     <string name="lorem_ipsum_small">Lorem ipsum dolor sit amet, sit accusata maiet statis an, vix congue exerci viderer</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="large_text">
-        "Material is the metaphor.\n\n"
+        1. About Us\n
+1.1       	Welcome to Counting Sheep SRL., with its registered office at Sfantu Gheorghe street 1 Decembrie 1918, number 32, Sfantu Gheorghe, Romania, trade register no 23106054. Counting Sheep SRL and affiliated companies will be referred to as “Darksheep Technologies”. These Terms of Use apply to your use of Darksheep web and mobile app and other offered content, websites and any related services (including servers, software and infrastructure) (hereinafter the “Service”). Use of the Service is also governed by Darksheep’s Privacy Policy or the Mobile App Privacy Policy, which are incorporated herein https://darksheep.app\n
+1.2       	Please read these Terms of Use carefully before you use the Service. By installing, using or otherwise accessing the Service you agree with the applicability and content of these Terms of Use as well as the applicable privacy policy. Certain parts of the Service, such as webpages or portals where you can download apps or pay for in-app credits, may include additional terms and conditions from us or our suppliers, licensors or other third parties, that supplement these Terms of Use. By using those services, you agree to comply with such additional terms and conditions. If you do not agree to the Terms of Use, the applicable Privacy Policy or additional terms and conditions, do not to use the Service.
+2. Registration and Account\n
+2.1       	Subject to your agreement and continuing compliance with these Terms of Use and any other relevant policies and terms and conditions, grants you a non-exclusive, non-transferable, non-sublicensable, revocable limited license subject to the limitations below to access and use the Service for your own entertainment purposes. You agree not to use the Service for any other purpose. \n\n
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
+Darksheep is an alarm app that provides digital content every time after the you press the snooze button. These snoozes are bought beforehand, with pre-paid packages that provide credits. The app are free to use unless indicated otherwise. However, you are solely responsible for any costs you may incur using the Service through any wireless or other communication services. In the app, you may purchase virtual items (virtual credits). For the processing of any payments on the Darksheep app or any other platform, Darksheep may use third-party payment providers as set out in Section 6. \n
+2.2 	Darksheep offers users only one way of registering: Via adoption by Darkshee of registration details provided by the user in the social networks Facebook: Log-in or Register via Facebook Connect requires the user to confirm that the selected details, which the user previously provided on Facebook, shall be adopted by the Darksheep network. \n
+2.3       	You may create an account on the Service (“Account”). By creating an Account, you confirm that you are 18 years of age or older. \n
+2.4       	A username is a unique identifier provided by the third party (name and surname and is used to identify you on the Service. You may only have one account on the Darksheep. Darksheep reserves the right to delete any of your accounts, in case you have multiple accounts. You may not sell, rent or give away your Account, create an Account using a false identity or information, or on behalf of someone other than yourself. Please notify us immediately if your Account has been unauthorized accessed and modify your login details immediately. You are solely responsible for maintaining the confidentiality of the login details, and for any purchases made through your Account, whether or not authorized by you. If you provided us with contact information, you shall keep it accurate and up-to-date. You shall only use your Account for non-commercial purposes. \n
+2.5       	Darksheep reserves the right to terminate and permanently deactivate your Account if it has been inactive for 180 days. In case of deactivation, we have no obligation to retain or provide any data or content related to, or refund any payments made through your (former) Account, and we may allow another user to register and use your former username. We also have no obligation to remove any public data, content, or other information that you uploaded or posted on the Service. \n
+2.5       	Without limiting any other remedies, Darksheep may limit, suspend terminate, modify, or delete accounts or access to the Service or portions thereof if you are, or Darksheep suspects that you are failing to comply with the Terms of Use or for any actual or suspected illegal or improper use of the Service, without notice to you. Darksheep is under no obligation to compensate you for any losses or results related to this, including but not limited to any benefits, privileges or virtual items associated with your use of the Service. \n\n
 
-        "Bold, graphic, intentional.\n\n"
+3. User-Generated Content\n
+3.1       	The Service may contain content from users (“User-Generated Content”), such as messages to us, feedback or replies to our digital content. We are not actively involved in the creation nor publication of such User Generated Content, and we do not endorse any User Generated Content, nor do we warrant that such content does not infringe any third party rights or is not (otherwise) unlawful. Your use of the Service is at your own risk. By using the Service, you may be exposed to User-Generated Content or Content that is offensive, indecent or otherwise not in line with your expectations. You bear all risks associated with the use of any User Generated Content available in connection with the Service. Darksheep is not responsible nor liable for any User Generated Content. \n
+3.2   	If you submit any User Generated Content yourself, you grant Darksheep a non-exclusive, irrevocable, perpetual, transferable, fully paid-up, royalty-free, worldwide license (including the right to sublicense and assign to third parties) to use, publish, reproduce, distribute, adjust, prepare derivative works of, or otherwise exploit in any manner whatsoever such submitted User Generated Content, or any portion thereof, by any and all means and in all forms of media, now known or hereafter developed. To the extent permitted by applicable laws, you hereby waive any moral rights or rights of publicity or privacy you may have regarding such User Generated Content. \n
+3.3       	Without prejudice to 3.2, you will retain possible ownership in your User Generated Content. We reserve the right to monitor any User-Generated Content and your activities in connection with the Service, but cannot monitor or prescreen all of the User Generated Content and do not attempt to do so. We have the right, but not the obligation, to edit, refuse to post, or remove any User Generated Content posted on the Service at our own discretion, for any reason whatsoever at any time. \n
+3.5           Upon the first request, you will cooperate with Darksheep to investigate any suspected unlawful, fraudulent or improper User Generated Content (whether from yourself or another user) or other activities on the Service. You indemnify Darksheep against any claims, related costs and damages arising out of or in any way connected with any disputes with Service users or other third parties that may arise on, or in connection with the Service. \n\n
 
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
+4. Advertisements and Third-Party Content\n
+4.1       	Darksheep does not provide advertisements for other products than Darksheep Technologies. \n
+4.2       	The Service may include links to websites of third parties, including links provided as automated search results. The existence of such links does not mean that we endorse these third-party sites or services. You acknowledge and agree that we are not responsible or liable for any content or other materials on these third-party sites. \n
 
-        "Motion provides meaning.\n\n"
+5. Conduct on the Service\n
+5.1       	You may use the Service offered on it only for lawful, personal, non-commercial purposes. To the extent any content is available for downloading, such content may only be downloaded for personal use, and may not be further reproduced or distributed. Any download is subject to the rules that accompany that particular content. \n
+5.2       	You may not: \n
+i) engage in any act that Darksheep deems to be in conflict with the spirit or intent of the Service\n
+ii) use cheats, exploits, automation software, bots, hacks, mods or any unauthorized third-party software designed to modify or interfere with the Service. \n
+iii) use the Service in a manner that exceeds the rights granted for your use; \n
+iv) use the Service for any data mining, robots, or similar data-gathering and -extraction tools on the content; frame any portion of the Service\n
+v) reproduce, copy, adjust, display, modify, translate, port, publish, (sub)license, transfer, or otherwise distribute or exploit the content available on the Service without our prior written consent; \n
+vi) reverse engineer, decompile, disassemble, decipher or otherwise attempt to derive the source code for any underlying software or other intellectual property used to provide the Service, or to obtain any information from the Service using any method not expressly permitted by Darksheep. \n
+vii) provide any false personal information, or any information, content, or material on account of a third party without permission; \n
+viii) use the Service in a manner that could damage, disable, or overburden our servers or networks; \n
+ix) interfere with any other party’s use and enjoyment of the Service; or\n
+x) circumvent any mechanisms included in the Service for preventing the unauthorized reproduction or distribution of any content on the Service. \n
+5.3       	You may not submit or transmit through the Service any information, content, or material or otherwise engage in any conduct that: \n
+i) is unlawful, threatening, abusive, harassing, defamatory, libelous, deceptive, fraudulent, invasive of another’s privacy, tortuous, contains explicit or graphic descriptions or accounts of sexual acts, or is pornographic; \n
+ii) contains viruses or any other computer code, files, or programs that interrupt, destroy, or limit the functionality of any software or hardware or telecommunications equipment, or that otherwise permit the unauthorized use of a computer or computer network; \n
+iii) encourages conduct that would constitute a criminal offense or give rise to civil liability; or \n
+vii) otherwise violates these Terms of Use, guidelines, or any policy posted on the Service.
+Darksheep reserves the right to determine what conduct it considers to be in violation of the Terms of Use or otherwise outside the intent or spirit of these Terms of Use. Darksheep reserves the right to take action as a result, which may include terminating your Account and prohibiting you from using the Service in whole or in part. \n
+5.4	Fraud protection. \n
+i) You must protect your account from unauthorized and fraudulent use. Please notify us immediately by email at team@darksheep.app of any unauthorized or fraudulent use of your account, or if you suspect that your account may be at risk. \n
+ii) Darkheep will not refund any amounts paid by you to Darksheep before you report unauthorized or fraudulent use of your account. \n
+iii) Darkheep has the right to close or cancel the account of any Registered User in the event of any unauthorized or fraudulent use of the account. \n
+5.5	Promotions and Free Offers. Darksheep may run promotions and free offers, which may be subject to additional terms or restrictions. These promotions and offers may not be transferred between users. \n\n
 
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+6. Virtual items and in-app purchases\n
+6.1       	Downloading and using CountingSheep app is free, but it commercializes managed in-app consumable products which is content the morning snooze is tapped. \n
+6.2	Within certain financial packs on the Service you may purchase a personal, non-transferable, non-sublicensable, revocable license for virtual items (credits for the morning snoozes), provided that you have registered an Account on the Service. You may only purchase Virtual Items from us or our authorized partners through the Service, and not in any other way. Darksheep may manage, regulate, control, modify, eliminate or change the price of virtual items and/or services at any time, with or without notice. Darksheep shall have no liability to you or any third party if Darksheep exercises any such rights. The transfer of virtual items is prohibited except where expressly authorized in the Service. Other than as expressly authorized in the Service, you shall not sell, redeem or otherwise transfer virtual items to any person or entity, including but not limited to Darksheep, another user or any third party. \n
+Any purchases via the Service require you to enter into an agreement with either Darksheep or the relevant Payment Service Provider (“PSP”) to carry out the payment (you will see on the payment screen which PSP you are concluding the transaction with). As a parent/legal guardian you are responsible for any payments made via credit card on the Service by a minor. \n
+6.1.1  	If the agreement is entered into with a PSP, Darksheep will never be held responsible for the communication between you and the PSP, and all information that you exchange with the PSP will be subject exclusively to the privacy policy and/or other terms and conditions of that PSP. By using a PSP for payments on the Service you indemnify Darksheep against reclaimed payments or other claims the PSP may have as a consequence of the non-performance of payment. In the event you pay via credit card, you may opt to enable the 1-click payment option if offered by your credit card provider. By enabling this option and using it you agree to all terms and conditions set by the payment provider and your credit card provider for the use of this option. Darksheep accepts no liability for the use of this payment option. \n
+6.1.2  	All information that we receive from you in the context of payments and supplying services on the Service are subject to the relevant Darjshee’ privacy policy. You agree to pay all applicable taxes and costs associated with your Account or anyone using an Account registered to you. \n
+6.2       	If you purchase credits via the Service, you will have no right to cancel your purchase and claim back any payments as your use commences upon supply, regardless of the moment your first spent your virtual items in a app. \n
+6.3       	Darksheep and/or its licensors may manage, regulate, control, modify or eliminate Paid Services at any time, with or without notice. Darksheep and/or its licensors shall not be liable to you or any third party in such event. \n
+6.4       	Once payment has been made for a Paid Service via the Service, there is no right to a refund. Darksheep reserves the right to cancel and delete all, or a part of (the balance of) the Paid Services you purchased on the Service if: \n
+2.	you have not used your Account for 180 consecutive days, as referred to in 2.4 above; \n
+3.	if we do no longer offer the content or Service that the (balance of) the Paid Services relates to, subject to prior notice by Darksheep to that extent; \n
+4.	you fail to comply with these Terms of Use. \n
+There is no right for refund or other compensation for unused Paid Services in this respect.
+If a Paid Service becomes unavailable following a transaction but prior to download, your sole remedy is limited to a refund of the price paid for the unavailable virtual product. If technical problems prevent or unreasonably delay delivery of your virtual product, your exclusive and sole remedy is either a replacement or a refund of the price paid, as determined by Darksheep. \n\n
 
-        "3D world.\n\n"
+6.5 	We do not provide and ship you physical products. \n
+6.6 	In order to save alarms, every user is required to have credits, even if the credits are bought or earned. \n
+6.7	In case of a mistaken press the Snooze button, Darksheep has a 10 seconds countdown from where the users cancel the snooze pressing button. Meaning that Darksheep will not charge credits or provide roast content. In case the you don’t press the “I was actually awake button”, we will charge one credit and provide the content. Every snoozed alarm is a delay of that alarm, so it rings again after 5 minutes. The same process is used for every alarm. \n
 
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
+7. Proprietary rights\n
+7.1       	The Service includes a variety of content, marks, data, works, and material of Darksheep and third parties (hereinafter together referred to as the “Content”), including but not limited to logo’s, trademarks, look &amp; feel, trade names, software, layouts, information, text, data, music, video, images, scripts, designs, graphics, button icons, instructions, and illustrations. \n
+Unless otherwise specified in writing, all Content is owned, controlled, or licensed by Darksheep or its licensors.  All Content is copyrighted under copyright laws and/or other intellectual property laws protecting it from unauthorized use. The Trademarks, logos, and designs may not be used without Darksheep express written permission. You agree not to copy, redistribute, publish or otherwise exploit any Content in violation of the intellectual property rights of Darksheep or any other third party.
+Notwithstanding anything to the contrary herein, you acknowledge and agree that you shall have no ownership or other proprietary rights in the Account. All right in and to the Account are and shall remain owned and inure to the benefit of Darksheep. \n
+7.2       	We may make Content available for you to download or use. Such Content will be subject to the terms of the license agreement that accompanies it. If there is no license agreement presented to you with the Content, then the following license, in addition to the other terms of these Terms of Use, shall govern your use of such Content. We grant you a personal, nonexclusive, nontransferable, limited license to install the Content on any single computer or device. The Content is protected by copyright and other intellectual property laws and treaties and is owned by us or our licensors. You may not sell or redistribute the Content. You may not incorporate it or any portion of it into another product. You may not reverse engineer, decompile, or disassemble the software or otherwise attempt to derive the source code (except where expressly permitted by law). You may not modify, adapt, or create derivative works from the software in any way or remove proprietary notices in the software. You agree to abide by all laws and regulations regarding your use of the Content. You may not authorize or assist any third party to do any of the things prohibited in this paragraph. We may automatically check your version of the Content and update it to improve its performance and capabilities. If you shut down the Content during an automatic update or otherwise interfere with the installation of the update, the content may be damaged and/or cease to operate. \n
+7.3       	The Service is continuously evolving and Darksheep may require that you accept updates to the Content and the Service. Such update may take place with and without notification. \n\n
 
-        "Light and shadow.\n\n"
+8. Termination\n
+8.1	General. Each user shall have the right to terminate the use of Darksheep products at any time via his/her account settings. Darkshee shall confirm such termination vis-a-vis the user. \n
 
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+9. Disclaimer of warranties and limitation of liability\n
+9.1       	We provide the Service with all faults and as available. We and our licensors make no express warranties or guarantees about the Service. Darksheep is not obligated to supply any support whatsoever. To the extent permitted by law, we and our suppliers disclaim implied warranties that the Service is merchantable, of satisfactory quality, accurate, timely, fit for a particular purpose or need, and non-infringing. We do not guarantee that the Service will meet your requirements or will be error-free, reliable, without interruption, or available at all times. We do not guarantee that the results that may be obtained from the use of the Service (including any support services) will be effective, reliable, or accurate or will meet your requirements. We do not guarantee that you will be able to access or use the Service (either directly or through third-party networks) at times or locations of your choosing. No oral or written information or advice given by a representative of Darksheep shall create a warranty. We may discontinue or change any service or feature of the Service at any time and without notice. You may have additional consumer rights under your local laws that this contract cannot change and that Darksheep will adhere to. \n
+9.2       	Your sole and exclusive remedy for any dispute with us is to discontinue your use of the Service. In no event shall our liability (or the liability of our parent company or our suppliers) for any and all claims relating to the use of the Service exceed the total amount of payments that you made to us during the six (6) months immediately preceding the event giving rise to the dispute. You acknowledge and agree that if you have not paid anything to Darksheep during such a time period, your sole remedy (and Darkseep exclusive liability) for any dispute with Darksheep is to stop using the Service and to deactivate your Account. If such remedies are deemed insufficient under any applicable law, Darksheep liability is instead limited to the lesser of 500 Euros or the minimum amount required by law. DARKSHEEP, ITS AFFILIATES, SUPPLIERS AND LICENSORS SHALL NOT BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, PUNITIVE OR OTHER SIMILAR DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF REVENUES, LOST PROFITS, LOST DATA OR BUSINESS INTERRUPTION OR OTHER INTANGIBLE LOSSES (HOWEVER SUCH LOSSES ARE QUALIFIED), ARISING OUT OF OR RELATING IN ANY WAY TO YOUR ACCESS TO AND USE OF THE SERVICE AND YOUR RIGHTS UNDER THESE TERMS OF USE OR ANY APPLICABLE ADDITIONAL TERMS, WHETHER BASED ON CONTRACT, TORT OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT DARKSHEEP HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. Because some countries, states, or jurisdictions do not allow the exclusion or the limitation of liability for consequential or incidental damages, in such countries, states, or jurisdictions, our liability (and the liability of our parent and suppliers) shall be limited to the extent permitted by law. \n
+9.3       	We make no representation that any Service is appropriate or available for use in locations outside Romania. If you choose to access the Service from a location outside Romania, you do so on your own initiative and you are responsible for compliance with local laws.
+The foregoing does dot prejudice the limitations of liability and the indemnifications, elsewhere in these terms conditions. \n
+9.4	Downloads. Darksheep assumes no liability for downloaded material or material obtained as a consequence of using the Darksheep. The Registered User is solely responsible for any damages caused by such materials to his or her smartphone system or for information that is lost as a consequence of downloading materials from any of the Darksheep app. \n
+9.5	Conflicts. The Registered User is exclusively liable for any claims of lawsuits of any kind in any way derived from or related to conflicts with other users. The Registered User acknowledges and accepts that CountingSheep will not, under any circumstances, be liable for the acts and omissions of other users, including the damages associated with such acts or omissions. \n
+9.6       	If in your view any copyright or other intellectual property right (“IP right”) that you may have is being infringed by/on the Service, please inform us of hereof immediately, thereby providing us with: \n
+1.	the electronic or physical signature of the owner of the IP right or the person authorized to act on the owner’s behalf. \n
+2.	a description of the IP right that you claim has been infringed and a description of the infringing activity. \n
+3.	identification of the location where the original or an authorized copy of the copyrighted work exists, for example, the URL of the website where it is posted or the name of the book in which it has been published or in case of a registered brand name, an excerpt of such register evidencing the registry. \n
+4.	if you are not the owner of the IP right, a copy of a license in which you are granted the right to use and to protect such IP rights. \n
+5.	identification of the URL or other specific location on this site where the material that you claim is infringing is located; this information must be specific enough in order to enable us to localize such material. \n
+6.	your name and full contact details. \n
+7.	a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law. \n
 
-        "Resting elevation.\n\n"
+10. Indemnifications\n
+Except for, and without prejudice to your full liability and indemnification obligations set forth in this Agreement, Darksheep shall not be liable for any lost profits, or any form of special, incidental, indirect, consequential or punitive damages arising out of or related to this agreement.
+Upon a request by us, you agree to defend, indemnify, and hold harmless us and our parent and other affiliated companies as well as any respective employees, contractors, officers, directors, and agents from all liabilities, claims, and expenses, including attorney’s fees that arise from your use or misuse of the Service. We reserve the right, at our own expense, to assume the exclusive defense and control of any matter otherwise subject to indemnification by you, in which event you will cooperate with us in asserting any available defenses. \n
+11. Miscellaneous\n
+11.1    	This contract and any supplemental terms, policies, rules, and guidelines posted on the Service constitute the entire agreement between you and us and supersede all previous written or oral agreements. If any part of these Terms of Use is held invalid or unenforceable, that portion shall be construed in a manner consistent with applicable law to reflect, as nearly as possible, the original intentions of the parties, and the remaining portions shall remain in full force and effect. \n
+11.2    	You agree that we may electronically provide to you required notices, agreements, and other information concerning the Service. If you no longer agree to receive notices electronically, please cease using the Service and/or expunge the Service from your computer or device. \n
+11.3    	We may change these Terms of Use and will provide notice thereof via the Service. The most recent version of these terms shall at all times be accessible via the Service. You are responsible for checking these Terms of Use periodically for changes. If you continue to use the Service after the changes to these Terms of Use have come into force, you are signifying your acceptance of the new terms. \n
+11.4    	These terms and conditions are governed by Romanian law. Any claims or dispute that may arise in connection with these terms and conditions or the use of the Service will be submitted to the competent court in Bucharest, Romania, unless otherwise agreed upon by Darksheep and/or another dispute resolution forum is available pursuant to mandatory consumer law. If a dispute arises between you and Darksheep, we strongly encourage you to first contact us directly to seek a resolution. You can contact us via team@darksheep.app. \n
+11.5    	Darksheep shall not be deemed in default hereunder for any cessation, interruption or delay in the performance of its obligations due to causes beyond its reasonable control, including but not limited to: earthquake, flood, or other natural disaster, act of God, labor controversy, civil disturbance, war (whether or not officially declared) or the inability to obtain sufficient supplies, transportation, or other essential commodity or service required in the conduct of its business, or any change in or the adoption of any law, regulation, judgment or decree (each a “Force Majeure Event”). \n
+11.6    	You acknowledge that the rights granted and obligations made under these Terms of Use to Darksheep are of a unique and irreplaceable nature, the loss of which shall irreparably harm Darksheep and which cannot be replaced by monetary damages alone so that Darkhseep shall be entitled to injunctive or other equitable relief (without the obligations of posting any bond or surety or proof of damages) in the event of any breach or anticipatory breach by you. \n
+You irrevocably waive all rights to seek injunctive or other equitable relief, or to enjoin or restrain the operation of the Service or any of Darksheep, exploitation of any advertising or other materials issued in connection therewith, or exploitation of the Service or any content or other material used or displayed through the Service and agree to limit your claims to claims for monetary damages.
+</string>
+    <string name="large_text2">
+1.About Privacy Policy\n
+This notice describes the Privacy Policy that applies to all information collected or submitted when you install or use the Darksheep application or any of the other proprietary software applications or services we provide, and when you visit our website (all of which are referred to collectively herein as the "Deepstash Technologies"). The Darksheep Technologies are owned and operated by Counting Sheep, SRL. (referred to herein as "we," "us," "our," "DarkSheep", "Counting Sheep"), which has developed applications and services for use in connection with a variety of devices and platforms. We understand your concerns about privacy. We want you to understand what types of information we collect and what may happen to that information if you install the Darksheep application, visit the Darksheep Website or use any of the Darksheep Technologies\n
+2.Types of collected information\n
+Darksheep collects certain information when you login and use the app. This information relates to how you use the app, including with which device, and may include information that you submit when creating an account with us or through your social network accounts such as Facebook. We may also collect information from ad network providers and other third parties such as payment service providers. When you play our APP, we collect (among others) the following information: \n
+Personal Information. For example, name, email address, telephone number, address, social profile links, and other contact details when you create a Darksheep account, submit a message or grant permissions in a third party app. \n
+Demographic information (such as your gender, age, country); \n
+Billing Information. For example, your credit card when you purchase one of our paid services. \n
+Referral Information. For example, when your browser sends us a referral URL indicating that you have visited from a page that has linked to us, we record information about the link that referred you to us. \n
+Other information that we receive from you, e.g. your emails, chats, surveys, or other communications and information exchanged with us on our social media channels related to Darksheep. \n
+To analyze site usage and to better understand the preferences of our visitors.; \n
+3.How the collected information is used\n
+3.1 We use the information we collect from our services to provide and maintain them, provide support for your usage or them, improve them, to develop new services and features. For example: \n
+To enable in-app purchases;
+To respond to your online inquiries and requests
+To analyze app usage and to better understand the preferences of our visitors.
+To enable social network integration, especially with Facebook.
+To prevent fraud and crime;
+To meet legal and tax obligations.
+Allowing you to share, follow, or some other enabled action as part of participation in a campaign
+generating your relevant statistics in the APP (snooze rate, number of alarms, money spent, number of credits). \n
+3.2 Your email address may be used for the following purposes: service emails (regarding updates, new design, new features, surveys, (new) apps, etc.);administrative purposes, such as notification of a violation of our terms of use;delivering messages you have allowed us to forward (e.g. from other users in your social network). \n
+3.3 Your personal data will only be stored for a period necessary for your use of the Game for the purposes as described in this Privacy Policy. We will, for example, periodically delete unused game accounts and we regularly review and anonymize unnecessary data. \n
+4.Working with third parties: \n
+4.1. Payment Service Providers Darksheep may also use third-party payment service providers (“PSP”), offering payment transaction services to Darksheep in order to sell a product or service through the app. The PSP acts a data controller with regards to the personal data related to the transactions (“transaction data”) processed for the purpose of purchasing the product or service. The transaction data may include your personal details, your payment card details, and the transaction details. Whenever you buy something in our APP (e.g., roast voiceovers). the information that you provide to the PSP is subject to their privacy policies, not ours. The legal basis for this processing is the performance of a contract. You explicitly consent that Darksheep may provide personal information collected from you to a PSP for the purpose of the offering of the payment-transaction service whenever you buy something in our APP and that such PSP may use such data for (statistical) analysis of payment transactions. After you have purchased a product or service, Darksheep and the PSP have a legal requirement to retain your information for a legally determined period of at least 7 years. Darksheep shall be allowed to notify a PSP regarding a user that engages in (or who a party believes has engaged in) any activity that is illegal, that violates any person’s rights, or that led to such a user’s suspension or termination of use of the APP. Darksheep shall be allowed to notify a PSP regarding a user who engages in (or who a party believes has engaged in) any activity that is illegal, that violates any person’s rights, or that resulted in such user’s suspension or termination of use of APP. \n
+4.2 ANALYTICS PARTNERS: Darksheep uses analytics partners in order to help get insights into the usage of the APP, time spent in the APP, and other information about how you use the APP. This data is used to analyze the use of the APP and to improve the APP and related services. Our analytics partners will act as a data processor in relation to the Usage Data. The legal basis for the processing of the Usage Data is legitimate interest. (“Usage Data”). \n
+4.3 DEVELOPERS: After the APP has been launched, it will be continuously monitored and improved to maintain and effectuate the best and fun experience for our gamers. Developers may therefore see and have access to your information, but they will only use this information for game optimization purposes. The legal basis for the processing of this data is a contractual necessity. \n
+4.4 SOCIAL NETWORKS: The APP can be played and synchronized on multiple devices by using your Facebook account to log in. The Facebook login is controlled by Facebook Inc., 1601 S. California Ave, Palo Alto, CA 94304, USA (Facebook). Facebook may provide certain information about you to us and we may use this information in order to show you advertisements. Facebook is a third party, so your activities on this social media platform are subject to their user and privacy policies, not ours. For more information on the sharing of your information with Facebook and their use of your personal data, please consult Facebook’s Data Policy at https://www.facebook.com/policy.php. \n
+4.5 Other We may supply information to other parties if we are required to do so by law or by a ruling from a court of law. \n
+5.Your Rights: \n
+5.1. Your personal data may be stored by Darksheep and its business partners. In case the applicable data protection laws provide so, you have the right to access, rectify, and erase the personal data we hold about you and to restrict or object to our processing of your personal data. To the extent that the legal basis for the processing of your personal data is consent, you have the right to withdraw that consent at any time. \n
+5.2. If you wish to exercise these rights, you can do so by sending a written request to Counting Sheep SRL, Sfantu Gheorghe City, 1 Decembrie 1918 Street, Number 32 detailing your request, (to prevent misuse of requests for information), or sending an email containing your request to team@darksheep.app. \n
+5.3. Darksheep does not knowingly process personal data from anyone under the age of 16 without parental consent. In the event we find out that we have processed personal data of anyone under the age of 16 without parental consent, we will promptly delete such data. Parents of users under the age of 16: if you wish to have access to your child’s personal data to view, correct, or delete the information that we have collected about your child, please send a written request to Counting Sheep SRL, 1 Decembrie 1918 32, Sfantu Gheorghe, Romania. detailing your request along with a copy of your passport (to prevent misuse of requests for information), or send an email with all such information to team@darksheep.app. After verification, the copy of your passport will be shredded. \n
+5.4 In the event you have any questions or concerns in relation to the processing of your personal data, you can send an email to our Data Protection Officer by email at team@darksheep.app. If you are not satisfied with our responses and/or support to resolve your concerns, you have the right to lodge a complaint with a supervisory authority, in particular in the European Union (or European Economic Area) Member State where you work, normally live, or where any alleged infringement of data protection laws occurred. \n
+5.5 We may decline to process requests that we find are unreasonable and that we are not legally obligated to fulfill. To protect your privacy and security, we will also take reasonable steps to verify your identity before granting access or making corrections. \n
+6.Security\n\n
+6.1. Darksheep has implemented appropriate measures to safeguard and help prevent unauthorized access, to maintain data security, and to correctly use the information we collect in relation to the APP. \n
+6.2. Although we allow you to set privacy options that limit access to your personal data, please be aware that no security measures are perfect or impenetrable. We are not responsible for the circumvention of any privacy settings or security measures contained in the APP. \n
+7.Miscellaneous\n\n
+7.1. We reserve the right to amend our Privacy Policy. Amendments will be effective from the moment of publication, so please check regularly to be sure you are familiar with the latest version. \n
+7.2 In the event of a transfer of (one of our) APP to a third party, we may transfer to such third party all personal information that we collected about you in accordance with this Privacy Policy. In such an event, users who have provided email addresses to us will be notified when information about those users is transferred and becomes subject to a different privacy policy. \n
+7.3 This Privacy Policy shall be governed by the laws of Romania and submitted to the exclusive jurisdiction of the courts in Romania. If you have any additional questions or requests, you may send an email to team@darksheep.app. \n
 
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
 
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="creditsText">From the first sight I knew\nyou’re poor. Here are 3$ credits\nfor your mornings. Please, keep\nusing free stuff, it will protect\nyour virginity.</string>
+    <string name="creditsText">I knew it! You\'re poor!\nHere\'s 3$ for your snoozing pleasure.\nKeep using free stuff.\nIt protects virginities.</string>
     <string name="action_settings">Settings</string>
     <string name="creditsLeft">Credits Left</string>
     <string name="spent">Spent</string>

@@ -14,6 +14,9 @@ public class Constants {
     public final static int PaymentRequestCode = 22;
 
 
+    public static final int ShareRequestCode  = 8;
+
+
     public final static String LOG_OUT = "event_logout";
 
 

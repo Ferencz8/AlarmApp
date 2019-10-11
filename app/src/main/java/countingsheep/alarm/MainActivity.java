@@ -244,9 +244,15 @@ public class MainActivity extends BaseActivity {
             }
 
         }
-        if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
+        else if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
             if (fragment != null && fragment instanceof SettingsFragment) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        else if (requestCode == Constants.ShareRequestCode){
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            if (fragment != null && fragment instanceof RoastHistoryFragment) {
                 fragment.onActivityResult(requestCode, resultCode, data);
             }
         }

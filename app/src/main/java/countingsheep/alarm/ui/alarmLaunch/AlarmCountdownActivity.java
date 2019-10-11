@@ -40,7 +40,7 @@ public class AlarmCountdownActivity extends BaseActivity {
     private TextView refundBtn;
     private ProgressBar timerCircle;
 
-    private int timeCountdownInSeconds = 3;
+    private int timeCountdownInSeconds = 10;
     private long timeCountInMilliSeconds;
     private CountDownTimer countDownTimer;
 
@@ -107,7 +107,7 @@ public class AlarmCountdownActivity extends BaseActivity {
 
     private void bindViews() {
         countdownTimerView = findViewById(R.id.timerTextViewId);
-        countdownTimerView.setText("00:03");
+        countdownTimerView.setText("00:10");
         timeCountInMilliSeconds = timeCountdownInSeconds * 1000;
         timerCircle = findViewById(R.id.timerCircleId);
         timerCircle.setMax((int) timeCountInMilliSeconds / 1000);

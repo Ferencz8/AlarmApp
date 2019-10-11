@@ -70,12 +70,12 @@ public class AlarmRoastActivity extends BaseActivity {
         send = findViewById(R.id.send);
         share = findViewById(R.id.share);
         share.setVisibility(View.GONE);
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ShareHelper(activity).displayShare("Subject", "Body");
-            }
-        });
+//        share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //new ShareHelper(activity).displayShare("Subject", "Body");
+//            }
+//        });
         roast.setText(roastMsg);
         roast.setTypeface(font);
         replyText.setTypeface(font);

@@ -56,37 +56,59 @@
         app:srcCompat="@drawable/facebook_button" />
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center|center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SignUpID">
+        app:layout_constraintTop_toBottomOf="@+id/SignUpID"
+        app:layout_constraintVertical_bias="0.615">
 
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:button="@drawable/ic_checked_box" />
-
+            android:layout_marginStart="20dp"
+            android:button="@drawable/ic_checked_box"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/Terms2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_toEndOf="@id/checkBox"
-            android:text="@string/i_agree_to_the_privacy_policy_nand_terms_of_service"
+            android:text="@string/i_agree_to_the_terms_of_service"
             android:textColor="@color/white_text_color"
-            android:textSize="11sp" />
-    </RelativeLayout>
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintTop_toTopOf="@+id/checkBox" />
+
+        <TextView
+            android:id="@+id/privacyPolicy_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:text="@string/i_agree_to_the_privacy_policy"
+            android:textColor="@color/white_text_color"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxPrivacyPolicy"
+            app:layout_constraintTop_toTopOf="@+id/checkBoxPrivacyPolicy" />
+
+        <CheckBox
+            android:id="@+id/checkBoxPrivacyPolicy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:button="@drawable/ic_checked_box"
+            app:layout_constraintStart_toStartOf="@+id/checkBox"
+            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/loadingCircle"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/new_background"
-    tools:context=".ui.settings.TermsAndConditionsActivity">
+    tools:context=".ui.settings.PrivacyPolicyActivity">
 
     <include
         android:id="@+id/headerBar"
@@ -29,12 +29,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerBar">
 
-    <TextView
-        android:id="@+id/termsAndConditionsTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/colorMenuBottomDefault" />
+        <TextView
+            android:id="@+id/privacyPolicyTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/colorMenuBottomDefault" />
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,6 +38,7 @@
         <activity android:name=".ui.settings.OnBoardingActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.settings.AlarmHistoryActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.settings.TermsAndConditionsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.settings.PrivacyPolicyActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

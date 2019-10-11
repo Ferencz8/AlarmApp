@@ -56,6 +56,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private CircleImageView userPhoto;
     private TextView username;
     private TextView termsAndConditions;
+    private TextView privacyPolicy;
     private TextView feedback;
     private TextView onBoarding;
     private TextView payment;
@@ -192,6 +193,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         termsAndConditions = view.findViewById(R.id.terms_text);
         termsAndConditions.setOnClickListener(this);
+        privacyPolicy = view.findViewById(R.id.privacyPolicy_Text);
+        privacyPolicy.setOnClickListener(this);
         feedback = view.findViewById(R.id.feedback_text);
         feedback.setOnClickListener(this);
         onBoarding = view.findViewById(R.id.onBoarding_text);
@@ -344,6 +347,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 Intent intent2 = new Intent(getActivity(), ProfileActivity.class);
                 startActivity(intent2);
                 break;
+            case R.id.privacyPolicy_Text:
+                firebaseAnalytics.logEvent("privacy_policy", null);
+                Intent intent3 = new Intent(getActivity(), PrivacyPolicyActivity.class);
+                startActivity(intent3);
             default:
                 break;
         }

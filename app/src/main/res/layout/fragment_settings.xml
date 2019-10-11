@@ -235,12 +235,12 @@
             android:layout_marginTop="24dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="Feedback"
+            android:text="Feedback (Roast us)"
             android:textColor="@color/white_text_color"
             app:layout_constraintEnd_toEndOf="@+id/view1"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/view1"
-            app:layout_constraintTop_toBottomOf="@+id/terms_text" />
+            app:layout_constraintTop_toBottomOf="@+id/privacyPolicy_Text" />
 
         <TextView
             android:id="@+id/onBoarding_text"
@@ -297,6 +297,20 @@
             app:layout_constraintEnd_toEndOf="@+id/view1"
             app:layout_constraintStart_toStartOf="@+id/view1"
             app:layout_constraintTop_toBottomOf="@+id/permissions_text" />
+
+        <TextView
+            android:id="@+id/privacyPolicy_Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Privacy Policy"
+            android:textColor="@color/white_text_color"
+            app:layout_constraintEnd_toEndOf="@+id/view1"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/view1"
+            app:layout_constraintTop_toBottomOf="@+id/terms_text" />
 
         <ProgressBar
             android:id="@+id/settingsProgressBar"

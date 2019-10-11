@@ -78,7 +78,7 @@ public class AlarmReactionServiceImpl implements AlarmReactionService {
                         this.sharedPreferencesContainer.setFreeCredits(--freeCreditsAmount);
                         alarmReaction.setPayable(false);
                         alarmReactionRepository.insert(alarmReaction);
-                        this.userService.syncCredits();
+                        //this.userService.syncCredits();
                     } else {
                         alarmReaction.setPayable(true);
                         alarmReactionRepository.insert(alarmReaction, dbAlarmReactionId ->

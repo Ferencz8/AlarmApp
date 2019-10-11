@@ -12,8 +12,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -28,7 +26,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.security.MessageDigest;
@@ -43,16 +40,21 @@ import countingsheep.alarm.core.services.interfaces.AuthenticationService;
 import countingsheep.alarm.core.contracts.api.SocialAuthenticationService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.ui.settings.OnBoardingActivity;
+import countingsheep.alarm.ui.settings.PrivacyPolicyActivity;
 import countingsheep.alarm.ui.settings.TermsAndConditionsActivity;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     ImageView SignUpButton;
-    CheckBox checkBox;
+    CheckBox tccheckBox;
+    CheckBox privacyPolicyCheckBox;
     TextView termsText;
+    TextView privacyText;
     Activity activity;
     ProgressBar spinner;
     private ImageView logo;
+    private boolean termsAndCondIsChecked = false;
+    private boolean privacyPolicyIsChecked = false;
 
     @Inject
     SocialAuthenticationService socialAuthenticationService;
@@ -65,8 +67,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void bindViews() {
         SignUpButton = findViewById(R.id.SignUpID);
-        checkBox = findViewById(R.id.checkBox);
+        tccheckBox = findViewById(R.id.checkBox);
+        privacyPolicyCheckBox = findViewById(R.id.checkBoxPrivacyPolicy);
         termsText = findViewById(R.id.Terms2);
+        privacyText = findViewById(R.id.privacyPolicy_Text);
         spinner = findViewById(R.id.loadingCircle);
         logo = findViewById(R.id.component);
         spinner.setVisibility(View.INVISIBLE);
@@ -76,7 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         //termsText.setTypeface(custom_font);
 
         termsText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#FFB800'>Terms of Service</font></b></p>"));
-
+        privacyText.setText(fromHtmlN("<p>I have read and agree to the <br><b><font color='#FFB800'>Privacy Policy</font></b></p>"));
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 logo,
                 PropertyValuesHolder.ofFloat("scaleX", 1.2f),
@@ -116,22 +120,51 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         final Drawable drawable = getDrawable(R.drawable.ic_box_checked_true);
         final Drawable drawableOff = getDrawable(R.drawable.ic_checked_box);
 
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        tccheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
+                    tccheckBox.setBackground(drawable);
+                }
+                else
+                {
+                    tccheckBox.setBackground(drawableOff);
+                }
+
+                if(privacyPolicyIsChecked && isChecked){
                     SignUpButton.setAlpha(1f);
-                    checkBox.setBackground(drawable);
+                }
+                else
+                {
+                    SignUpButton.setAlpha(0.7f);
+                }
+            }
+        });
+
+        privacyPolicyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    privacyPolicyCheckBox.setBackground(drawable);
 
                 } else {
+
+                    privacyPolicyCheckBox.setBackground(drawableOff);
+                }
+
+                if(termsAndCondIsChecked && isChecked){
+                    SignUpButton.setAlpha(1f);
+                }
+                else
+                {
                     SignUpButton.setAlpha(0.7f);
-                    checkBox.setBackground(drawableOff);
                 }
             }
         });
 
         SignUpButton.setOnClickListener(this);
         termsText.setOnClickListener(this);
+        privacyText.setOnClickListener(this);
     }
 
     @Override
@@ -165,8 +198,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         switch (view.getId()) {
             case R.id.SignUpID:
-                if (!checkBox.isChecked()) {
-                    Toast.makeText(LoginActivity.this, "Accept the terms and conditions! ", Toast.LENGTH_LONG).show();
+                if (!tccheckBox.isChecked() || !privacyPolicyCheckBox.isChecked()) {
+                    Toast.makeText(LoginActivity.this, "Accept the terms and conditions & privacy policy! ", Toast.LENGTH_LONG).show();
                 } else {
 
                     spinner.setVisibility(View.VISIBLE);
@@ -219,7 +252,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.Terms2:
                 Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
                 startActivity(intent);
-                //Toast.makeText(activity, "This is a term", Toast.LENGTH_SHORT);
+                break;
+            case R.id.privacyPolicy_Text:
+                Intent intent2 = new Intent(LoginActivity.this, PrivacyPolicyActivity.class);
+                startActivity(intent2);
                 break;
         }
     }

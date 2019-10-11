@@ -1,5 +1,7 @@
 package countingsheep.alarm.ui.roasts;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import countingsheep.alarm.Injector;
@@ -26,6 +29,7 @@ import countingsheep.alarm.R;
 import countingsheep.alarm.core.services.interfaces.MessageService;
 import countingsheep.alarm.db.SharedPreferencesContainer;
 import countingsheep.alarm.db.entities.Message;
+import countingsheep.alarm.infrastructure.ShareHelper;
 import countingsheep.alarm.ui.shared.EmptyAdapterDataObserver;
 
 public class RoastHistoryFragment extends Fragment {
@@ -34,6 +38,7 @@ public class RoastHistoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private RoastListRecyclerViewDataAdapter adapter;
     EmptyAdapterDataObserver dataObserver;
+    private ShareHelper shareHelper;
 
     @Inject
     MessageService messageService;
@@ -42,8 +47,9 @@ public class RoastHistoryFragment extends Fragment {
     SharedPreferencesContainer sharedPreferencesContainer;
 
     private static RoastHistoryFragment fragment;
+
     public static synchronized RoastHistoryFragment newInstance() {
-        if(fragment==null) {
+        if (fragment == null) {
             fragment = new RoastHistoryFragment();
         }
         return fragment;
@@ -57,7 +63,7 @@ public class RoastHistoryFragment extends Fragment {
         roasts = new ArrayList<>();
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-        firebaseAnalytics.logEvent("roastHistory",null);
+        firebaseAnalytics.logEvent("roastHistory", null);
     }
 
     @Nullable
@@ -71,8 +77,9 @@ public class RoastHistoryFragment extends Fragment {
         // Set layout manager.
         recyclerView.setLayoutManager(mLayoutManager);
 
+        shareHelper = new ShareHelper(getActivity());
         // Create recycler view data adapter with item list.
-        adapter = new RoastListRecyclerViewDataAdapter(getActivity(), roasts, messageService, sharedPreferencesContainer);
+        adapter = new RoastListRecyclerViewDataAdapter(getActivity(), roasts, messageService, sharedPreferencesContainer, shareHelper);
 
         // Set data adapter.
         recyclerView.setAdapter(adapter);
@@ -81,19 +88,13 @@ public class RoastHistoryFragment extends Fragment {
 
         initRoasts();
 
-        if(this.sharedPreferencesContainer.getUserInitiatedShare()){
-            this.sharedPreferencesContainer.setUserInitiatedShare(false);
-            this.sharedPreferencesContainer.increaseFreeCredits(5);
-            Toast.makeText(getContext(), "+ 5 Credits", Toast.LENGTH_LONG).show();
-        }
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(this.sharedPreferencesContainer.getUserInitiatedShare()){
+        if (this.sharedPreferencesContainer.getUserInitiatedShare()) {
             this.sharedPreferencesContainer.setUserInitiatedShare(false);
             this.sharedPreferencesContainer.increaseFreeCredits(5);
             Toast.makeText(getContext(), "+ 5 Credits", Toast.LENGTH_LONG).show();
@@ -110,5 +111,22 @@ public class RoastHistoryFragment extends Fragment {
             recyclerView.scrollToPosition(1);
             Log.e(RoastHistoryFragment.class.getName(), "InitRoasts 2");
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (ShareHelper.UserFinishedSharing) {
+                //GIVE CREDITS
+                ShareHelper.UserFinishedSharing = false;
+                shareHelper.onSuccess(null);
+            } else {
+                shareHelper.onFailure();
+            }
+        } else {
+            //CANCELED
+            shareHelper.cancelReactionTimer();
+        }
     }
 }
