@@ -124,8 +124,8 @@ public class AlarmRoastActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         finish();
-        Intent setIntent = new Intent(AlarmRoastActivity.this, MainActivity.class);
-        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(setIntent);
+//        Intent setIntent = new Intent(AlarmRoastActivity.this, MainActivity.class);
+//        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(setIntent);
     }
 }
