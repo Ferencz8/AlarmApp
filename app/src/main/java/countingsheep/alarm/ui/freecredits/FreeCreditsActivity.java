@@ -9,6 +9,9 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import countingsheep.alarm.Injector;
 import countingsheep.alarm.MainActivity;
 import countingsheep.alarm.R;
@@ -30,7 +33,8 @@ public class FreeCreditsActivity extends BaseActivity {
 
         Injector.getActivityComponent(this).inject(this);
 
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.logEvent("freeCredits",null);
 
         freeCreditsTxt = findViewById(R.id.freecreditTxt);
         gettingStarted = findViewById(R.id.gettingStartedBtn);

@@ -168,6 +168,8 @@ public class GetCreditsActivity extends BaseActivity
             return;
         }
 
+        firebaseAnalytics.logEvent("startedPayment",null);
+
         String selectedSku = "";
         switch (selectedPackage.getCredits()) {
             case 5: selectedSku = "5credits"; break;
@@ -213,8 +215,12 @@ public class GetCreditsActivity extends BaseActivity
             }
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.d(TAG, "User canceled the payment");
+
+            firebaseAnalytics.logEvent("paymentCanceledByUser",null);
         } else {
             Log.e(TAG, "Payment failed with status code " + billingResult.getResponseCode());
+
+            firebaseAnalytics.logEvent("paymentFailed",null);
 
             Toast.makeText(this, getString(R.string.payment_error), Toast.LENGTH_LONG).show();
         }
@@ -230,6 +236,8 @@ public class GetCreditsActivity extends BaseActivity
 
     @Override
     public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+        firebaseAnalytics.logEvent("paymentSuccessful",null);
+
         // payment was consumed; give credits to user
         if (selectedPackage != null) {
             if (selectedPackage.isEndless()) {
