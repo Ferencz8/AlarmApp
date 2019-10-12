@@ -48,6 +48,8 @@ public class AlarmRoastActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_roastreply);
 
+        activity = this;
+
         Injector.getActivityComponent(this).inject(this);
 
         if (getIntent() != null) {

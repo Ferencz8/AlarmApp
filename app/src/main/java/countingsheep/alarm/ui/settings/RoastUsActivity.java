@@ -39,6 +39,8 @@ public class RoastUsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_roastus);
 
+        activity = this;
+
         Injector.getActivityComponent(this).inject(this);
 
         font = Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Regular.otf");
