@@ -19,8 +19,10 @@ import countingsheep.alarm.R;
 import countingsheep.alarm.core.contracts.OnResult;
 import countingsheep.alarm.core.services.interfaces.UserService;
 import countingsheep.alarm.ui.BaseActivity;
+import countingsheep.alarm.util.DeviceUtil;
 
 public class RoastUsActivity extends BaseActivity {
+    private View root;
     private TextView roastusTxt;
     private EditText replyText;
     private TextView send;
@@ -49,9 +51,12 @@ public class RoastUsActivity extends BaseActivity {
     }
 
     private void bindViews() {
+        root = findViewById(R.id.root);
         roastusTxt = findViewById(R.id.roastusTxtId);
         replyText = findViewById(R.id.replyText);
         send = findViewById(R.id.send);
+
+        root.setOnClickListener(v -> DeviceUtil.hideKeyboard(this));
 
         roastusTxt.setText("Give us your best shot!");
         roastusTxt.setTypeface(font);
