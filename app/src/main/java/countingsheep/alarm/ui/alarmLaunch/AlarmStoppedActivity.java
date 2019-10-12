@@ -19,6 +19,8 @@ public class AlarmStoppedActivity extends BaseActivity {
         ((TextView) findViewById(R.id.dialog)).setTypeface(
                 Typeface.createFromAsset(getAssets(), "fonts/AvenirNextLTPro-Regular.otf")
         );
+
+        findViewById(R.id.backBtn).setOnClickListener(v -> onBackPressed());
     }
 
     @Override

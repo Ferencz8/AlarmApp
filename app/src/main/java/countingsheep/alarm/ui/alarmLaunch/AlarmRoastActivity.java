@@ -24,6 +24,7 @@ import countingsheep.alarm.infrastructure.ShareHelper;
 import countingsheep.alarm.ui.BaseActivity;
 
 public class AlarmRoastActivity extends BaseActivity {
+    private ImageView backBtn;
     private Group roastLayout;
     private TextView roast;
     private Group replyLayout;
@@ -63,6 +64,7 @@ public class AlarmRoastActivity extends BaseActivity {
     }
 
     private void bindViews() {
+        backBtn = findViewById(R.id.backBtn);
         roastLayout = findViewById(R.id.roastLayout);
         roast = findViewById(R.id.roast);
         replyLayout = findViewById(R.id.replyLayout);
@@ -71,6 +73,7 @@ public class AlarmRoastActivity extends BaseActivity {
         replyBtn = findViewById(R.id.reply);
         send = findViewById(R.id.send);
         share = findViewById(R.id.share);
+
         share.setVisibility(View.GONE);
 //        share.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -78,8 +81,10 @@ public class AlarmRoastActivity extends BaseActivity {
 //                //new ShareHelper(activity).displayShare("Subject", "Body");
 //            }
 //        });
+
         roast.setText(roastMsg);
         roast.setTypeface(font);
+
         replyText.setTypeface(font);
 
         replyBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +93,7 @@ public class AlarmRoastActivity extends BaseActivity {
                 replyLayout.setVisibility(View.VISIBLE);
             }
         });
+
         send.setOnClickListener(v -> {
             String content = replyText.getText().toString();
 
@@ -111,7 +117,10 @@ public class AlarmRoastActivity extends BaseActivity {
                 });
             }
         });
+
+        backBtn.setOnClickListener(v -> onBackPressed());
     }
+
     @Override
     public void onBackPressed() {
         finish();
