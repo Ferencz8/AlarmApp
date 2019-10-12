@@ -108,12 +108,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         activity = this;
 
-        if (socialAuthenticationService.isUserLoggedIn()) {
-            finish();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
-
         setContentView(R.layout.activity_login);
         printKeyHash();
         bindViews();
@@ -170,6 +164,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         SignUpButton.setOnClickListener(this);
         termsText.setOnClickListener(this);
         privacyText.setOnClickListener(this);
+
+        if (socialAuthenticationService.isUserLoggedIn()) {
+            finish();
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
