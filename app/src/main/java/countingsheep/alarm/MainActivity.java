@@ -1,5 +1,6 @@
 package countingsheep.alarm;
 
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -164,7 +165,7 @@ public class MainActivity extends BaseActivity {
                             //this will open auto start screen where user can enable permission for your app
                             Intent intentAutoStart = new Intent();
                             intentAutoStart.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-                            startActivity(intentAutoStart);
+                            try { startActivity(intentAutoStart); } catch (ActivityNotFoundException ignored) {}
                         }
 
                         @Override
@@ -181,7 +182,7 @@ public class MainActivity extends BaseActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent = new Intent();
                             intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
-                            startActivity(intent);
+                            try { startActivity(intent); } catch (ActivityNotFoundException ignored) {}
                             //sp.edit().putBoolean("protected",true).commit();
 //                            try {
 //                                String cmd = "am start -n com.huawei.systemmanager/.optimize.process.ProtectActivity";

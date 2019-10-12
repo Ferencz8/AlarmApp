@@ -1,6 +1,7 @@
 package countingsheep.alarm.ui.settings;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -115,14 +116,14 @@ public class PermissionsFragment extends Fragment {
             //this will open auto start screen where user can enable permission for your app
             Intent intentAutoStart = new Intent();
             intentAutoStart.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-            startActivity(intentAutoStart);
+            try { startActivity(intentAutoStart); } catch (ActivityNotFoundException ignored) {}
 
         }
         if("huawei".equalsIgnoreCase(android.os.Build.MANUFACTURER) ) {
 
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"));
-            startActivity(intent);
+            try { startActivity(intent); } catch (ActivityNotFoundException ignored) {}
         }
     }
 
