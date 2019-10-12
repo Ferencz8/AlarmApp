@@ -24,8 +24,5 @@ public class AlarmStoppedActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         finish();
-        Intent setIntent = new Intent(AlarmStoppedActivity.this, MainActivity.class);
-        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(setIntent);
     }
 }
