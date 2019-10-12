@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity {
         if (addToBackstack) {
             transaction.addToBackStack(null);
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     @Override
