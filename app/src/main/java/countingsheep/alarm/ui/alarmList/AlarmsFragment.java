@@ -216,10 +216,7 @@ public class AlarmsFragment extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
 
-                Alarm alarm = adapter.getAlarm(swipedPosition);
-                alarmLaunchHandler.cancelAlarm(alarm.getId());
-                alarmService.delete(alarm.getId());
-                adapter.remove(swipedPosition);
+                showDeleteAlarmDialog(swipedPosition);
             }
 
             @Override
@@ -255,6 +252,24 @@ public class AlarmsFragment extends Fragment {
         };
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void showDeleteAlarmDialog(int swipedPosition) {
+        this.dialogInteractor.displayReactiveDialog("Delete Alarm",
+                "Are you sure you want to delete this alarm?", new DialogInteractor.OnReaction() {
+                    @Override
+                    public void onPositive() {
+                        Alarm alarm = adapter.getAlarm(swipedPosition);
+                        alarmLaunchHandler.cancelAlarm(alarm.getId());
+                        alarmService.delete(alarm.getId());
+                        adapter.remove(swipedPosition);
+                    }
+
+                    @Override
+                    public void onNegative() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private void setUpAnimationDecoratorHelper() {
