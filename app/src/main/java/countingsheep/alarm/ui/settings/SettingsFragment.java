@@ -131,7 +131,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 if (response == null) {
                     response = 0;
                 }
-                alarmCount.setText(String.valueOf(response));
+                if (alarmCount != null) {
+                    alarmCount.setText(String.valueOf(response));
+                }
             }
         });
 
@@ -141,7 +143,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 if (response == null) {
                     response = 0;
                 }
-                snoozeRate.setText(String.valueOf(response * 100) + " %");
+                if (snoozeRate != null) {
+                    snoozeRate.setText(String.valueOf(response * 100) + " %");
+                }
             }
         });
 
@@ -305,7 +309,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 if (response == null) {
                     response = 0;
                 }
-                cashSpentAmount.setText(getString(R.string.price_template, response));
+                if (cashSpentAmount != null) {
+                    cashSpentAmount.setText(getString(R.string.price_template, response));
+                }
             }
         });
     }
