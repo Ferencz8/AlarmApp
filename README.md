@@ -4,7 +4,7 @@
 ![High Level Architecture](https://github.com/Ferencz8/AlarmApp/blob/master/docs/AlarmAppHighLevel.jpg)
 
 
-**Low Level Architecture**
+**Low Level Architecture for Android Mobile App**
 
 ![Low Level Architecture](https://github.com/Ferencz8/AlarmApp/blob/master/docs/AlarmAppDiagram.png)
 
