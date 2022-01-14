@@ -1,4 +1,8 @@
 # AlarmApp
+Alarm Android Mobile App, which charges 1$/ snooze and roasts you.
+
+![Presentation Website](https://www.darksheep.app/)
+
 **High Level Architecture**
 
 ![High Level Architecture](https://github.com/Ferencz8/AlarmApp/blob/master/docs/AlarmAppHighLevel.jpg)
